@@ -1,0 +1,21 @@
+/* 색깔 지정은 여기서 하시면 돼용 
+그래서 다른데서 꺼낼때 white컬러를 꺼내고싶다 ! 이러면 
+color : var(--white-color) 이렇게 해서 색깔을 여기서 한꺼번에 관리할 수 있어용
+일단 제가 개인과제 하면서 썼던거 긁어 왔는데 ㅋㅋㅋㅋㅋㅋ 나중에 바꾸면 됩니다
+*/
+:root {
+  --white-color: white;
+  --background-color: rgb(45, 196, 182);
+  --black-color: black;
+  --grey-color: grey;
+  --blue-color: rgb(0, 123, 255);
+  --darkblue-color: rgb(0, 86, 179);
+  --lightwhite-color: rgb(249, 249, 249);
+  --lightgrey-color: rgb(233, 236, 239);
+  --green-color: rgb(40, 167, 69);
+  --yellow-color: rgb(255, 193, 7);
+  --red-color: rgb(220, 53, 69);
+  --etc-color: rgb(23, 162, 184);
+  --darkred-color: rgb(204, 0, 0);
+  --darkgrey-color: rgb(90, 98, 104);
+}
