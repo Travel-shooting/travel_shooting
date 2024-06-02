@@ -1,4 +1,7 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import supabase from "../../util/supabase/supabaseClient";
 import PostDetail from "./PostDetail";
 import Slider from "./Slider";
 import Travel from "./Travel";
@@ -15,10 +18,30 @@ const Container = styled.div`
 `;
 
 function PostComponent() {
+  const [postDetailData, setPostDetailData] = useState({});
+  const [postImage, setPostImage] = useState([]);
+  const { postId } = useParams();
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase
+        .from("POST")
+        .select("*")
+        .eq("id", postId);
+      if (error) {
+        console.error(error);
+      } else {
+        console.log(data);
+        setPostDetailData(data[0]);
+
+        setPostImage(data[0].postImage.split(","));
+      }
+    };
+    fetchData();
+  }, [postId]);
   return (
     <Container>
-      <Slider />
-      <PostDetail />
+      <Slider postImage={postImage} />
+      <PostDetail postDetailData={postDetailData} />
       <Travel />
     </Container>
   );

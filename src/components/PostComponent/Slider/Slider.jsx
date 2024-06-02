@@ -12,7 +12,7 @@ const Img = styled.img`
   height: 100%;
   object-fit: scale-down;
 `;
-function Slider() {
+function Slider({ postImage }) {
   return (
     <div>
       <Swiper
@@ -23,12 +23,11 @@ function Slider() {
         navigation={true}
         modules={[Pagination, Navigation]}
       >
-        <SwiperSlide>
-          <Img src={"https://source.unsplash.com/random?nature"} />
-        </SwiperSlide>
-        <SwiperSlide>
-          <Img src={"https://source.unsplash.com/random?animal"} />
-        </SwiperSlide>
+        {postImage.map((image, i) => (
+          <SwiperSlide key={i}>
+            <Img src={image} />
+          </SwiperSlide>
+        ))}
       </Swiper>
     </div>
   );
