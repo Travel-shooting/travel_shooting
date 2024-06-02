@@ -1,1 +1,12 @@
-/** 리덕스가 오리지날 리덕스를 사용해야하는지 리덕스 툴킷을 사용해야할지 모르겠음.... */
+import { configureStore } from "@reduxjs/toolkit";
+import postReducer from "./reducers/post.reducer";
+import userReducer from "./reducers/user.reducer";
+
+const store = configureStore({
+  reducer: {
+    post: postReducer,
+    user: userReducer,
+  },
+});
+
+export default store;
