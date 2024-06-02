@@ -6,8 +6,12 @@ import Logo from "../styles/images/logo.png";
 const MenuContainer = styled.div`
   height: 50px;
   background-color: var(--lightgrey-color);
+`;
+const MenuInnerContainer = styled.div`
+  width: 80%;
+  height: 100%;
+  margin: 0 auto;
   display: flex;
-  padding: 10px;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
@@ -43,42 +47,44 @@ function Menubar() {
   };
   return (
     <MenuContainer>
-      <div>
-        <Link to="/">
-          <img src={Logo} />
-        </Link>
-      </div>
-      <ButtonBox>
-        {userId === 0 ? (
-          <Button
-            bgcolor={"var(--white-color)"}
-            color={"var(--golden-color)"}
-            bordercolor={"var(--golden-color)"}
-            onClick={handleLogIn}
-          >
-            Log In
-          </Button>
-        ) : (
-          <>
+      <MenuInnerContainer>
+        <div>
+          <Link to="/">
+            <img src={Logo} />
+          </Link>
+        </div>
+        <ButtonBox>
+          {userId === 0 ? (
             <Button
               bgcolor={"var(--white-color)"}
               color={"var(--golden-color)"}
               bordercolor={"var(--golden-color)"}
-              onClick={handleLogOut}
+              onClick={handleLogIn}
             >
-              Log Out
+              Log In
             </Button>
-            <Button
-              bgcolor={"var(--golden-color)"}
-              color={"var(--white-color)"}
-              bordercolor={"var(--golden-color)"}
-              onClick={goMyPage}
-            >
-              MY PAGE
-            </Button>
-          </>
-        )}
-      </ButtonBox>
+          ) : (
+            <>
+              <Button
+                bgcolor={"var(--white-color)"}
+                color={"var(--golden-color)"}
+                bordercolor={"var(--golden-color)"}
+                onClick={handleLogOut}
+              >
+                Log Out
+              </Button>
+              <Button
+                bgcolor={"var(--golden-color)"}
+                color={"var(--white-color)"}
+                bordercolor={"var(--golden-color)"}
+                onClick={goMyPage}
+              >
+                MY PAGE
+              </Button>
+            </>
+          )}
+        </ButtonBox>
+      </MenuInnerContainer>
     </MenuContainer>
   );
 }

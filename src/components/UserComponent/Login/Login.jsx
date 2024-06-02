@@ -1,12 +1,16 @@
 import Modal from "../../Modal";
 function Login() {
-  const handleLogIn = () => {};
+  const handleLogIn = () => {
+    const formData = {};
+  };
   return (
     <Modal>
       <div>로그인하세요</div>
-      <input />
-      <input />
-      <button onClick={handleLogIn}>로그인</button>
+      <form onSubmit={handleLogIn}>
+        <input />
+        <input />
+        <button type="submit">로그인</button>
+      </form>
     </Modal>
   );
 }

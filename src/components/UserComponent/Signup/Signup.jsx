@@ -1,4 +1,5 @@
+import Modal from "../../Modal";
 function Signup() {
-  return <div>회원가입</div>;
+  return <Modal>회원가입하세요</Modal>;
 }
 export default Signup;
