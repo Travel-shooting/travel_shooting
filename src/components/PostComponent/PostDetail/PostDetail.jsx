@@ -1,5 +1,7 @@
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
-const Title = styled.div`
+import Heart from "../../../styles/images/heart.png";
+const TitleBox = styled.div`
   display: flex;
   justify-content: space-between;
 `;
@@ -13,17 +15,31 @@ const Badge = styled.span`
   border-radius: 20px;
   padding: 5px;
 `;
-function Post() {
+const Img = styled.img`
+  cursor: pointer;
+`;
+const post = {
+  id: 0,
+  postUserId: 0,
+  postDate: "2023-05-31",
+  postTitle: "제목",
+  postContent: "내용",
+  postImage: ["이미지1", "이미지2"],
+};
+function PostDetail() {
   const tags = ["운치있는", "조용한", "맛있는", "대표적인"];
+  const postId = useParams();
   return (
     <div>
       <div>
-        <Title>
-          <h1>title입니다</h1>
-          <span>♡</span>
-        </Title>
+        <TitleBox>
+          <h1>{post.postTitle}</h1>
+          <span>
+            <Img src={Heart} />
+          </span>
+        </TitleBox>
 
-        <p>내용의 들어가는 자리입니다</p>
+        <p>{post.postContent}</p>
         <BadgeBox>
           {tags.map((tag, i) => (
             <Badge key={i}>#{tag}</Badge>
@@ -37,4 +53,4 @@ function Post() {
     </div>
   );
 }
-export default Post;
+export default PostDetail;

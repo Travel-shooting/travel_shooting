@@ -1,16 +1,14 @@
 import styled from "styled-components";
-import Post from "./Post";
+import PostDetail from "./PostDetail";
 import Slider from "./Slider";
 import Travel from "./Travel";
 const Container = styled.div`
   display: grid;
-  grid-template-rows: 500px 1fr;
-  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 700px 1fr;
+  grid-template-columns: 1.5fr 1fr;
   grid-template-areas: "slider" "post travel";
-  gap: 20px;
-  div {
-    background-color: red;
-  }
+  gap: 25px;
+
   div:nth-child(1) {
     grid-column: 1/3;
   }
@@ -20,7 +18,7 @@ function PostComponent() {
   return (
     <Container>
       <Slider />
-      <Post />
+      <PostDetail />
       <Travel />
     </Container>
   );

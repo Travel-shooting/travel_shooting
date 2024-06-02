@@ -1,11 +1,9 @@
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useModal } from "../contexts/modal.context";
 import Logo from "../styles/images/logo.png";
 const MenuContainer = styled.div`
-  position: fixed;
-  top: 0px;
-  left: 0px;
-  right: 0px;
   height: 50px;
   background-color: var(--lightgrey-color);
   display: flex;
@@ -30,9 +28,18 @@ const ButtonBox = styled.div`
 `;
 function Menubar() {
   const navigate = useNavigate();
-  const userId = 1; //지금 로그인한 유저 id
+  const modal = useModal();
+
+  const userId = useSelector((state) => state.log.logInUser);
+  console.log(userId);
   const goMyPage = () => {
     navigate(`/mypage/${userId}`);
+  };
+  const handleLogIn = () => {
+    modal.open({ type: "login" });
+  };
+  const handleLogOut = () => {
+    //로그아웃
   };
   return (
     <MenuContainer>
@@ -42,21 +49,35 @@ function Menubar() {
         </Link>
       </div>
       <ButtonBox>
-        <Button
-          bgcolor={"var(--white-color)"}
-          color={"var(--golden-color)"}
-          bordercolor={"var(--golden-color)"}
-        >
-          Log In
-        </Button>
-        <Button
-          bgcolor={"var(--golden-color)"}
-          color={"var(--white-color)"}
-          bordercolor={"var(--golden-color)"}
-          onClick={goMyPage}
-        >
-          MY PAGE
-        </Button>
+        {userId === 0 ? (
+          <Button
+            bgcolor={"var(--white-color)"}
+            color={"var(--golden-color)"}
+            bordercolor={"var(--golden-color)"}
+            onClick={handleLogIn}
+          >
+            Log In
+          </Button>
+        ) : (
+          <>
+            <Button
+              bgcolor={"var(--white-color)"}
+              color={"var(--golden-color)"}
+              bordercolor={"var(--golden-color)"}
+              onClick={handleLogOut}
+            >
+              Log Out
+            </Button>
+            <Button
+              bgcolor={"var(--golden-color)"}
+              color={"var(--white-color)"}
+              bordercolor={"var(--golden-color)"}
+              onClick={goMyPage}
+            >
+              MY PAGE
+            </Button>
+          </>
+        )}
       </ButtonBox>
     </MenuContainer>
   );
