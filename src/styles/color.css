@@ -8,16 +8,12 @@ color : var(--white-color) 이렇게 해서 색깔을 여기서 한꺼번에 관
   --background-color: rgb(45, 196, 182);
   --black-color: black;
   --grey-color: grey;
-  --blue-color: rgb(0, 123, 255);
-  --darkblue-color: rgb(0, 86, 179);
-  --lightwhite-color: rgb(249, 249, 249);
-  --lightgrey-color: rgb(233, 236, 239);
+  --lightgrey-color: #f0f0f0;
+  --golden-color: #bbb800;
   --green-color: #74c456;
   --lightgreen-color: #86d079;
   --yellow-color: #fff044;
   --lime-color: #d6e259;
-  --red-color: rgb(220, 53, 69);
-  --etc-color: rgb(23, 162, 184);
-  --darkred-color: rgb(204, 0, 0);
+
   --darkgrey-color: rgb(90, 98, 104);
 }
