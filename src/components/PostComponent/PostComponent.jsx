@@ -18,8 +18,9 @@ const Container = styled.div`
 `;
 
 function PostComponent() {
-  const [postDetailData, setPostDetailData] = useState({});
-  const [postImage, setPostImage] = useState([]);
+  const [postDetailDatas, setPostDetailDatas] = useState({});
+  const [postImages, setPostImages] = useState([]);
+  const [postTags, setPostTags] = useState([]);
   const { postId } = useParams();
   useEffect(() => {
     const fetchData = async () => {
@@ -31,17 +32,29 @@ function PostComponent() {
         console.error(error);
       } else {
         console.log(data);
-        setPostDetailData(data[0]);
+        setPostDetailDatas(data[0]);
 
-        setPostImage(data[0].postImage.split(","));
+        setPostImages(data[0].postImage.split(","));
+      }
+    };
+    const tagFetchData = async () => {
+      const { data, error } = await supabase
+        .from("TAGS")
+        .select("*")
+        .eq("postId", postId);
+      if (error) console.error(error);
+      else {
+        console.log(data);
+        setPostTags(data);
       }
     };
     fetchData();
+    tagFetchData();
   }, [postId]);
   return (
     <Container>
-      <Slider postImage={postImage} />
-      <PostDetail postDetailData={postDetailData} />
+      <Slider postImage={postImages} />
+      <PostDetail postDetailData={postDetailDatas} postTags={postTags} />
       <Travel />
     </Container>
   );
