@@ -34,14 +34,19 @@ function Login() {
           className="logo"
         />
       </div>
-      <p className="st-input-p">로그인</p>
-      <form className="st-form">
-        <input className="st-input" placeholder="아이디" />
-        <input className="st-input" placeholder="비밀번호" />
-        <button className="st-input-btn" type="submit">
+      <p className="login-p">로그인</p>
+      <form className="login-form ">
+        <input className="login-input" placeholder="아이디" />
+        <input className="login-input" placeholder="비밀번호" />
+        <button className="login-input-btn" type="submit">
           로그인
         </button>
       </form>
+      <div className="login-btn-div">
+        <button className="login-btn">아이디 찾기</button>
+        <button className="login-btn">비밀번호 찾기</button>
+        <button className="login-btn">회원가입</button>
+      </div>
     </Modal>
   );
 }

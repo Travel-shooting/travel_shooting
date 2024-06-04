@@ -23,18 +23,18 @@ button {
   margin: 60px auto 0px auto;
 }
 
-.logo{
+.logo {
   display: block; 
   margin: 0 auto 25px auto;
   text-align: center;
 }
 
-.st-form {
+.login-form {
   margin: auto;
   text-align: center;
 }
 
-.st-input{
+.login-input {
   width: 350px;
   height: 50px;
   border: 0;
@@ -44,24 +44,39 @@ button {
   font-size: 15px;
 }
 
-.st-input-p{
+.login-p {
   font-size: 24px;
   font-weight: 600;
   text-align: center;
   margin: 30px 0px 40px 0px;
 }
 
-.st-input-btn{
+.login-input-btn {
   width: 350px;
   height: 50px;
   font-size: 16px;
   font-weight: 600;
   display: block;
-  margin: 20px auto;
+  margin: 15px auto 30px auto;
   background-color: #bbb800;
   color: white;
   border: 0;
   border-radius: 8px;
+}
+
+.login-btn-div {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-btn {
+  width: 110px;
+  font-size: 15px;
+  border: 0;
+  background-color: transparent;
+  color: grey;
 }
 
 `;
