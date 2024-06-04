@@ -19,9 +19,7 @@ const Img = styled.img`
   cursor: pointer;
 `;
 const Button = styled.button``;
-function PostDetail({ postDetailData }) {
-  const tags = ["운치있는", "조용한", "맛있는", "대표적인"];
-
+function PostDetail({ postDetailData, postTags }) {
   return (
     <div>
       <div>
@@ -34,8 +32,8 @@ function PostDetail({ postDetailData }) {
 
         <p>{postDetailData.postContent}</p>
         <BadgeBox>
-          {tags.map((tag, i) => (
-            <Badge key={i}>#{tag}</Badge>
+          {postTags.map((tag) => (
+            <Badge key={tag.id}>{tag.tagId}</Badge>
           ))}
         </BadgeBox>
       </div>

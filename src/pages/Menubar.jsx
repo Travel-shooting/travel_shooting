@@ -1,7 +1,7 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useModal } from "../contexts/modal.context";
+import { open } from "../redux/slices/modalSlice";
 import Logo from "../styles/images/logo.png";
 const MenuContainer = styled.div`
   height: 50px;
@@ -32,15 +32,18 @@ const ButtonBox = styled.div`
 `;
 function Menubar() {
   const navigate = useNavigate();
-  const modal = useModal();
+  const dispatch = useDispatch();
 
   const userId = useSelector((state) => state.log.logInUser);
-  console.log(userId);
+
   const goMyPage = () => {
     navigate(`/mypage/${userId}`);
   };
+  const handleSignup = () => {
+    dispatch(open("signup"));
+  };
   const handleLogIn = () => {
-    modal.open({ type: "login" });
+    dispatch(open("login"));
   };
   const handleLogOut = () => {
     //로그아웃
@@ -55,14 +58,24 @@ function Menubar() {
         </div>
         <ButtonBox>
           {userId === 0 ? (
-            <Button
-              bgcolor={"var(--white-color)"}
-              color={"var(--golden-color)"}
-              bordercolor={"var(--golden-color)"}
-              onClick={handleLogIn}
-            >
-              Log In
-            </Button>
+            <>
+              <Button
+                bgcolor={"var(--white-color)"}
+                color={"var(--golden-color)"}
+                bordercolor={"var(--golden-color)"}
+                onClick={handleLogIn}
+              >
+                Log In
+              </Button>
+              <Button
+                bgcolor={"var(--golden-color)"}
+                color={"var(--white-color)"}
+                bordercolor={"var(--golden-color)"}
+                onClick={handleSignup}
+              >
+                Sign up
+              </Button>
+            </>
           ) : (
             <>
               <Button
