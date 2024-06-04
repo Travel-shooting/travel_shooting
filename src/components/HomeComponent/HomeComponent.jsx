@@ -1,5 +1,7 @@
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
 function HomeComponent() {
+  useEffect(() => {}, []);
   return (
     <div>
       메인 페이지입니다
