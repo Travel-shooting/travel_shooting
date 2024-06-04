@@ -1,6 +1,6 @@
+import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { useModal } from "../../contexts/modal.context";
-
+import { close } from "../../redux/slices/modalSlice";
 const BackWrap = styled.div`
   position: fixed;
   top: 0px;
@@ -20,10 +20,10 @@ const WhiteWrap = styled.div`
   height: 500px;
 `;
 function Modal({ children }) {
-  const modal = useModal();
+  const dispatch = useDispatch();
   return (
     <>
-      <BackWrap onClick={() => modal.close()}>
+      <BackWrap onClick={() => dispatch(close())}>
         <WhiteWrap onClick={(e) => e.stopPropagation()}>{children}</WhiteWrap>
       </BackWrap>
     </>
