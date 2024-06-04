@@ -1,7 +1,5 @@
-import { useEffect } from "react";
 import { Link } from "react-router-dom";
-function MainPage() {
-  useEffect(() => {}, []);
+function HomeComponent() {
   return (
     <div>
       메인 페이지입니다
@@ -9,4 +7,4 @@ function MainPage() {
     </div>
   );
 }
-export default MainPage;
+export default HomeComponent;
