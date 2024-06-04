@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Modal from "../../Modal";
 import styled from "styled-components";
+import supabase from "../../../util/supabase/supabaseClient";
 
 function Signup() {
   const [signUpId, setSignUpId] = useState("");
@@ -21,11 +22,11 @@ function Signup() {
   const signUpNewUser = async (e) => {
     e.preventDefault();
     const { data, error } = await supabase.auth.signUp({
-      signInId,
-      signInPw,
+      email: signUpId,
+      password: signUpPw,
     });
     console.log("signup: ", { data, error });
-    setUser(data, user);
+    // setUser(data, user);
   };
 
   return (
