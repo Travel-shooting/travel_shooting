@@ -7,6 +7,7 @@ import Slider from "../components/PostComponent/Slider";
 import Travel from "../components/PostComponent/Travel";
 import { loadPost } from "../redux/slices/postSlice";
 import supabase from "../util/supabase/supabaseClient";
+import Comments from "../components/PostComponent/Comment/Comments";
 const Container = styled.div`
   display: grid;
   grid-template-rows: 700px 1fr;
@@ -61,6 +62,7 @@ function PostPage() {
       <Slider postImage={postImages} />
       <PostDetail postDetailData={postDetailDatas} postTags={postTags} />
       <Travel />
+      <Comments />
     </Container>
   );
 }

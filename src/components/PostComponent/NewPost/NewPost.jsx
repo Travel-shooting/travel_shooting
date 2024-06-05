@@ -16,7 +16,7 @@ import Tags from "./Tags";
 const Container = styled.div`
   display: flex;
   flex-direction: ${(props) => props.direction};
-  gap: px;
+  gap: 20px;
 `;
 
 const HiddenInput = styled.input`
@@ -24,12 +24,13 @@ const HiddenInput = styled.input`
 `;
 
 const Button = styled.button`
-  width: 280px;
+  width: 240px;
   padding: 10px 20px;
   border: 1px solid ${(props) => props.color};
   background-color: ${(props) => props.bgcolor};
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+
   &:hover {
     transition: all 0.5s;
     background-color: var(--yellow-color);
@@ -148,6 +149,7 @@ function NewPost() {
         ref={(el) => (formRef.current[0] = el)}
         type="text"
         placeholder="제목을 입력해주세요"
+        className="title-input"
       />
       <Container direction={"row"}>
         <CountrySelect />
@@ -157,6 +159,7 @@ function NewPost() {
         ref={(el) => (formRef.current[1] = el)}
         type="text"
         placeholder="내용을 입력해주세요"
+        className="content-box"
       ></textarea>
       <Container direction={"row"}>
         <HiddenInput

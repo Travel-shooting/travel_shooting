@@ -5,18 +5,25 @@ import { tags } from "../../../util/tags";
 const Container = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: px;
 `;
 const TagLabel = styled.label`
   display: inline-block;
-  background-color: var(--lightgrey-color);
-  padding: 5px 10px;
-  border-radius: 15px;
+  padding: 10px 16px;
+  margin: 4px;
+  background-color: var(--black-color);
+  color: var(--white-color);
+  font-weight: 300;
+  border-radius: 50px;
+  font-size: 14px;
+  text-align: center;
   cursor: pointer;
+  letter-spacing: 0.05em;
   transition: background-color 0.3s;
 
   &:hover {
-    background-color: #e0e0e0;
+    background-color: var(--yellow-color);
+    color: var(--white-color);
   }
 `;
 
@@ -52,7 +59,7 @@ function Tags() {
   };
 
   return (
-    <Container>
+    <Container className="select-box">
       {tags.map((tag, i) => (
         <div key={i}>
           <HiddenCheckbox
@@ -61,7 +68,11 @@ function Tags() {
             checked={selectedTags.includes(tag)}
             value={tag}
           />
-          <TagLabel htmlFor={`tag-${i}`}>{tag}</TagLabel>
+          <div className="tags">
+            <TagLabel className="tag" htmlFor={`tag-${i}`}>
+              {tag}
+            </TagLabel>
+          </div>
         </div>
       ))}
     </Container>

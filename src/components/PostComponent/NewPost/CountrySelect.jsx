@@ -3,8 +3,8 @@ import styled from "styled-components";
 import api from "../../../util/api/api";
 const Select = styled.div`
   width: 230px;
-  h3 {
-    border-radius: 8px;
+  .select-box {
+    border-radius: 6px;
     cursor: pointer;
     padding: 10px;
     background-color: var(--lightgrey-color);
@@ -59,12 +59,13 @@ function CountrySelect() {
 
   return (
     <Select>
-      <h3
+      <div
+        className="select-box"
         ref={selectedCountry}
         onClick={() => setIsShowOptions((prev) => !prev)}
       >
         나라를 선택해주세요
-      </h3>
+      </div>
 
       <CountryBox selected={isShowOptions}>
         {isShowOptions && (

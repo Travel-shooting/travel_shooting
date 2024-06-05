@@ -23,6 +23,7 @@ body{
 div {
   box-sizing: border-box;
 }
+
 textarea{
   height: 200px;
   resize:none;
@@ -45,7 +46,7 @@ button {
 
 .post-box {
   weight: 100%;
-  border: 1px dashed var(--mintgreen-color);
+  border: 1px dashed var(--yellow-color);
   margin-bottom: 60px;
   border-radius: 6px;
 }
@@ -55,11 +56,11 @@ button {
   border-radius: 6px;
   cursor: pointer;
   width: 240px;
-  color: var(--white-color);
+  color: var(--black-color);
   display: block;
   margin-top: 14px;
   padding: 14px 0;
-  background-color: var(--mintgreen-color);
+  background-color: var(--yellow-color);
   box-sizing: border-box;
   font-size: 14px;
   text-align: center;
@@ -82,7 +83,7 @@ button {
   position: relative;
 }
 
-.search-input {
+.search-input, .title-input, .content-box {
   display: block;
   width: 100%;
   height: 100%;
@@ -95,16 +96,31 @@ button {
   text-align: left;
 
   &:focus {
-    border: 1px solid var(--mintgreen-color);
+    border: 1px solid var(--yellow-color);
     outline: none;
-  }
+  }}
 
-  &::placeholder {
+  .search-input::placeholder {
     color: #bbbbbb;
     text-align: center;
     font-size: 14px;
   }
-}
+
+  .title-input::placeholder {
+    color: #bbbbbb;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  .content-box {
+    height: 360px;
+
+    &::placeholder {
+      color: #bbbbbb;
+    text-align: left;
+    font-size: 14px;
+    }
+  }
 
 .search-icon {
   position: absolute;
@@ -132,15 +148,17 @@ button {
   text-align: center;
   cursor: pointer;
   letter-spacing: 0.05em;
+  transition: background-color 0.3s;
 }
 
 .tag:hover {
-  background-color: var(--mintgreen-color);
+  background-color: var(--yellow-color);
   color: var(--white-color);
 }
 
 .post {
   display: flex;
+  flex-direction: column;
   width: 340px;
   height: 400px;
   border-radius: 6px;
@@ -148,12 +166,35 @@ button {
   box-sizing: border-box;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .05);
   margin: 40px 0 20px 0;
+  background-size: cover;
+  overflow: hidden;
 }
 
-.post .post-img {
+.post-img {
   width: 100%;
-  height: 160px;
+  height: 300px;
   background-color: red;
+  position: relative;
+}
+
+.post-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.post-title {
+  font-weight: 500;
+  font-size: 32px;
+  text-decoration: none;
+
+}
+
+.post-date {
+  font-size: 14px;
 }
 
 .logo-div {
@@ -216,5 +257,12 @@ button {
   color: grey;
 }
 
+.select-box {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: center; */
+  gap: 4px;
+}
 `;
+
 export default GlobalStyle;

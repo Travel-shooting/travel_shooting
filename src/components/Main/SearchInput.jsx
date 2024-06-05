@@ -3,14 +3,12 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { loadPost } from "../../redux/slices/postSlice";
 import supabase from "../../util/supabase/supabaseClient";
-import { tags } from "../../util/tags";
 
 const SearchInput = ({ onSearch }) => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [postDatas, setPostDatas] = useState([]);
   const [tags, setTags] = useState([]);
-
   useEffect(() => {
     const tagData = async () => {
       const { data: tagData, tagError } = await supabase
@@ -19,12 +17,11 @@ const SearchInput = ({ onSearch }) => {
       if (tagError) console.error(tagError);
       else setTags(tagData);
     };
-  });
-
+    tagData();
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase.from("POST").select("*");
-
       if (error) {
         console.error(error);
       } else {
@@ -43,6 +40,7 @@ const SearchInput = ({ onSearch }) => {
 
     fetchData();
   }, []);
+
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
@@ -84,17 +82,21 @@ const SearchInput = ({ onSearch }) => {
       </div>
       <div className="tags">
         {tags.map((tag) => (
-          <div className="tag" key={tag} onClick={() => handleTagClick(tag)}>
-            #{tag}
+          <div
+            className="tag"
+            key={tag.id}
+            onClick={() => handleTagClick(tag.id)}
+          >
+            #{tag.tagValue}
           </div>
         ))}
         {postDatas.map((post) => (
           <Link to={`/post/${post.id}`} className="post" key={post.id}>
             <div className="post-img">
-              <img src={post.imageURL[0]} alt="image" width={"200px"} />
+              <img src={post.imageURL[0]} alt="image" />
             </div>
             <p className="post-title">{post.postTitle}</p>
-            <span>{post.postDate}</span>
+            <span className="post-date">{post.postDate}</span>
           </Link>
         ))}
       </div>
