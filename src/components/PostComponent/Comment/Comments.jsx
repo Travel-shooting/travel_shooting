@@ -14,7 +14,7 @@ const Comments = () => {
   const [editCommentId, setEditCommentId] = useState(null);
   const [editCommentText, setEditCommentText] = useState("");
   const comments = useSelector((state) => state.comment.comments);
-  const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // 로그인 상태를 가져옵니다.
+  // const isLoggedIn = useSelector((state) => state.auth.isLoggedIn); // 로그인 상태를 가져옵니다.
   const dispatch = useDispatch();
 
   // 댓글 가져오기
@@ -32,10 +32,10 @@ const Comments = () => {
   // 댓글 추가
   const handleAddComment = async (e) => {
     e.preventDefault();
-    if (!isLoggedIn) {
-      alert("로그인이 필요합니다");
-      return;
-    }
+    // if (!isLoggedIn) {
+    //   alert("로그인이 필요합니다");
+    //   return;
+    // }
 
     const { data, error } = await supabase.from("COMMENTS").insert([
       {
@@ -54,10 +54,10 @@ const Comments = () => {
   };
 
   const handleDeleteComment = async (id) => {
-    if (!isLoggedIn) {
-      alert("로그인이 필요합니다");
-      return;
-    }
+    // if (!isLoggedIn) {
+    //   alert("로그인이 필요합니다");
+    //   return;
+    // }
 
     const { error } = await supabase.from("COMMENTS").delete().eq("id", id);
 
@@ -68,10 +68,10 @@ const Comments = () => {
   // 댓글 수정
   const handleUpdateComment = async (e) => {
     e.preventDefault();
-    if (!isLoggedIn) {
-      alert("로그인이 필요합니다.");
-      return;
-    }
+    // if (!isLoggedIn) {
+    //   alert("로그인이 필요합니다.");
+    //   return;
+    // }
 
     const { data, error } = await supabase
       .from("COMMENTS")
@@ -119,21 +119,17 @@ const Comments = () => {
           ) : (
             <>
               <p>{comment.commentContent}</p>
-              {isLoggedIn && (
-                <>
-                  <button onClick={() => handleDeleteComment(comment.id)}>
-                    삭제
-                  </button>
-                  <button
-                    onClick={() => {
-                      setEditCommentId(comment.id);
-                      setEditCommentText(comment.commentContent);
-                    }}
-                  >
-                    수정
-                  </button>
-                </>
-              )}
+              <button onClick={() => handleDeleteComment(comment.id)}>
+                삭제
+              </button>
+              <button
+                onClick={() => {
+                  setEditCommentId(comment.id);
+                  setEditCommentText(comment.commentContent);
+                }}
+              >
+                수정
+              </button>
             </>
           )}
         </div>
