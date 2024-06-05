@@ -1,8 +1,13 @@
 import { useState } from "react";
 import supabase from "../../../util/supabase/supabaseClient";
 import Modal from "../../Modal";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  // 로그인 모달
+  const isOpenLoginModal = useSelector((state) => state.modal.isOpenLoginModal);
+  console.log(isOpenLoginModal);
+
   const loginUser = async (e) => {
     e.preventDefault();
 
@@ -17,10 +22,6 @@ function Login() {
       .eq("userId", userId);
     console.log("login : ", { data, error });
     setUser(data.user);
-
-    // if(response.data.user.id === ) { // 로그인 되면 모달창 닫고 로그인, 회원가입 버튼 없애기
-
-    // }
   };
 
   const [userId, setUserId] = useState("");
@@ -72,12 +73,7 @@ function Login() {
         <div className="login-btn-div">
           <button className="login-btn">아이디 찾기</button>
           <button className="login-btn">비밀번호 찾기</button>
-          <button
-            className="login-btn"
-            href="src\components\UserComponent\Signup\Signup.jsx"
-          >
-            회원가입
-          </button>
+          <button className="login-btn">회원가입</button>
         </div>
       </Modal>
     );

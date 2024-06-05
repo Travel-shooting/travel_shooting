@@ -4,6 +4,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   modalOptions: null,
+  isOpenLoginModal: false,
+  isOpenSignUpModal: false,
 };
 
 const modalSlice = createSlice({

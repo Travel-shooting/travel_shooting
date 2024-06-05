@@ -1,11 +1,36 @@
-import { useState } from "react";
-// import { useDispatch } from "react-redux";
+import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom";
+import { loadPost } from "../../redux/slices/postSlice";
 import supabase from "../../util/supabase/supabaseClient";
+import { tags } from "../../util/tags";
 
 const SearchInput = ({ onSearch }) => {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [search, setSearch] = useState("");
+  const [postDatas, setPostDatas] = useState([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.from("POST").select("*");
 
+      if (error) {
+        console.error(error);
+      } else {
+        const updatedData = data.map((item) => {
+          const imageURLs = JSON.parse(item.imageURL).map((obj) => obj.url);
+          return {
+            ...item,
+            imageURL: imageURLs,
+          };
+        });
+        console.log(updatedData);
+        setPostDatas(updatedData);
+        dispatch(loadPost(updatedData));
+      }
+    };
+
+    fetchData();
+  }, []);
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
@@ -46,30 +71,20 @@ const SearchInput = ({ onSearch }) => {
         </div>
       </div>
       <div className="tags">
-        {[
-          "조용한",
-          "따뜻한",
-          "화려한",
-          "관광지",
-          "박물관",
-          "유적지",
-          "추운",
-          "자연",
-          "도시",
-        ].map((tag) => (
+        {tags.map((tag) => (
           <div className="tag" key={tag} onClick={() => handleTagClick(tag)}>
             #{tag}
           </div>
         ))}
-        {/* {posts.map((post) => (
+        {postDatas.map((post) => (
           <Link to={`/post/${post.id}`} className="post" key={post.id}>
             <div className="post-img">
-              <img src={post.image_url || ""} alt="image" />
+              <img src={post.imageURL[0]} alt="image" width={"200px"} />
             </div>
-            <p className="post-title">{post.title}</p>
-            <span>{post.date}</span>
+            <p className="post-title">{post.postTitle}</p>
+            <span>{post.postDate}</span>
           </Link>
-        ))} */}
+        ))}
       </div>
     </>
   );
