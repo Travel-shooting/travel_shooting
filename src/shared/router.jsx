@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+import NewPost from "../components/PostComponent/NewPost";
 import Layout from "../layouts/Home";
 import HomeComponent from "../pages/MainPage";
 import UserComponent from "../pages/MyPage";
@@ -11,6 +12,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <HomeComponent />,
+      },
+      {
+        path: "/newpost",
+        element: <NewPost />,
       },
       {
         path: "/post/:postId",
