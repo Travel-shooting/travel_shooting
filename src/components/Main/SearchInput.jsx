@@ -3,16 +3,25 @@ import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { loadPost } from "../../redux/slices/postSlice";
 import supabase from "../../util/supabase/supabaseClient";
-import { tags } from "../../util/tags";
 
 const SearchInput = ({ onSearch }) => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [postDatas, setPostDatas] = useState([]);
+  const [tags, setTags] = useState([]);
+  useEffect(() => {
+    const tagData = async () => {
+      const { data: tagData, tagError } = await supabase
+        .from("POSTTAG")
+        .select("*");
+      if (tagError) console.error(tagError);
+      else setTags(tagData);
+    };
+    tagData();
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase.from("POST").select("*");
-
       if (error) {
         console.error(error);
       } else {
@@ -31,6 +40,7 @@ const SearchInput = ({ onSearch }) => {
 
     fetchData();
   }, []);
+
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
@@ -72,8 +82,12 @@ const SearchInput = ({ onSearch }) => {
       </div>
       <div className="tags">
         {tags.map((tag) => (
-          <div className="tag" key={tag} onClick={() => handleTagClick(tag)}>
-            #{tag}
+          <div
+            className="tag"
+            key={tag.id}
+            onClick={() => handleTagClick(tag.id)}
+          >
+            #{tag.tagValue}
           </div>
         ))}
         {postDatas.map((post) => (

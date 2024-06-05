@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { tags } from "../../../util/tags";
+import supabase from "../../../util/supabase/supabaseClient";
+
 const Container = styled.div`
   display: flex;
   flex-direction: row;
@@ -31,7 +32,21 @@ const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
 function Tags() {
   const dispatch = useDispatch();
   const [selectedTags, setSelectedTags] = useState([]);
+  const [tags, setTags] = useState([]);
+  useEffect(() => {
+    async function tagData() {
+      const { data: tagData, tagError } = await supabase
+        .from("POSTTAG")
+        .select("*");
 
+      if (tagError) console.error(tagError);
+      else {
+        console.log(tagData);
+        setTags(tagData);
+      }
+    }
+    tagData();
+  }, []);
   useEffect(() => {
     const storedTags = JSON.parse(localStorage.getItem("tags")) || [];
     setSelectedTags(storedTags);
@@ -53,15 +68,15 @@ function Tags() {
 
   return (
     <Container>
-      {tags.map((tag, i) => (
+      {tags?.map((tag, i) => (
         <div key={i}>
           <HiddenCheckbox
-            id={`tag-${i}`}
+            id={tag.id}
             onChange={(e) => handleCheckBoxChange(e)}
-            checked={selectedTags.includes(tag)}
-            value={tag}
+            checked={selectedTags.includes(tag.tagValue)}
+            value={tag.tagValue}
           />
-          <TagLabel htmlFor={`tag-${i}`}>{tag}</TagLabel>
+          <TagLabel htmlFor={tag.id}>{tag.tagValue}</TagLabel>
         </div>
       ))}
     </Container>
