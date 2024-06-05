@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import PostDetail from "../components/PostComponent/PostDetail";
 import Slider from "../components/PostComponent/Slider";
 import Travel from "../components/PostComponent/Travel";
+import { loadPost } from "../redux/slices/postSlice";
 import supabase from "../util/supabase/supabaseClient";
 const Container = styled.div`
   display: grid;
@@ -18,6 +20,7 @@ const Container = styled.div`
 `;
 
 function PostPage() {
+  const dispatch = useDispatch();
   const [postDetailDatas, setPostDetailDatas] = useState({});
   const [postImages, setPostImages] = useState([]);
   const [postTags, setPostTags] = useState([]);
@@ -35,6 +38,7 @@ function PostPage() {
         setPostDetailDatas(data[0]);
         const urls = JSON.parse(data[0].imageURL).map((image) => image.url, []);
         setPostImages(urls);
+        dispatch(loadPost(data[0]));
       }
     };
     const tagFetchData = async () => {
@@ -48,19 +52,9 @@ function PostPage() {
         setPostTags(data);
       }
     };
-    const fetchUserData = async () => {
-      const { data, error } = await supabase
-        .from("USER")
-        .select("*")
-        .eq("id", postDetailDatas.postUserId);
-      console.log(data);
-      if (error) console.log("user 테이블 못불러옴");
-      else console.log(data);
-    };
 
     fetchData();
     tagFetchData();
-    fetchUserData();
   }, [postId]);
   return (
     <Container>

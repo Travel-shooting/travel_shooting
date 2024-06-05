@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { addHeart } from "../../../redux/slices/postSlice";
 import Heart from "../../../styles/images/heart.png";
 import supabase from "../../../util/supabase/supabaseClient";
 
@@ -28,21 +29,25 @@ const Font = styled.p`
 `;
 const Button = styled.button``;
 function PostDetail({ postDetailData, postTags }) {
-  const detailData = useSelector((state) => state.post.totalData);
+  const dispatch = useDispatch();
+  const detailData = useSelector((state) => state.post.loadData);
+  const postLike = useSelector((state) => state.post.loadData.postLike);
+
   useEffect(() => {
     const fetchUserData = async () => {
       const { data, error } = await supabase
         .from("USER")
         .select("*")
         .eq("id", detailData.postUserId);
-      console.log(data);
       if (error) console.log("user 테이블 못불러옴");
-      else console.log(data);
+      else {
+        console.log(data[0]);
+      }
     };
     fetchUserData();
   }, []);
   const handleAddHeart = () => {
-    alert("하트누름");
+    dispatch(addHeart());
   };
   return (
     <div>
@@ -51,7 +56,7 @@ function PostDetail({ postDetailData, postTags }) {
           <Font>{postDetailData.postTitle}</Font>
 
           <div>
-            <span>{postDetailData.postLike}</span>
+            <span>{postLike}</span>
             <Img src={Heart} onClick={handleAddHeart} />
           </div>
         </TitleBox>
