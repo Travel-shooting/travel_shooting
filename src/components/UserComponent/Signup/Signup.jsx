@@ -30,6 +30,7 @@ function Signup() {
     console.log(data.user.id);
     console.log(error);
 
+
     await supabase.from("USER").insert({
       uuid: data.user.id,
       userId: signUpId,
@@ -37,6 +38,11 @@ function Signup() {
         "https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg",
     });
 
+//     await supabase
+//       .from("USER")
+//       .insert({ uuid: data.user.id, userId: signUpId, userImageURL: "https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg" });
+
+    
     // const { data, error } = await supabase
     //   .from("USER") // 여기에서 'USER'은 테이블 이름입니다.
     //   .select("*")
