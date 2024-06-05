@@ -207,6 +207,8 @@ button {
 }
 
 .login-btn-div {
+  height: 30px;
+  margin: auto;
   display: flex;
   text-align: center;
   align-items: center;
@@ -215,10 +217,12 @@ button {
 
 .login-btn {
   width: 110px;
+  height: 100%;
   font-size: 15px;
   border: 0;
   background-color: transparent;
   color: grey;
+  margin: 0;
 }
 
 `;

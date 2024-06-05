@@ -17,13 +17,11 @@ function Login() {
       .eq("userId", userId);
     console.log("login : ", { data, error });
     setUser(data.user);
+
+    // if(response.data.user.id === ) { // 로그인 되면 모달창 닫고 로그인, 회원가입 버튼 없애기
+
+    // }
   };
-  // const handleLogIn = () => {
-  //   const formData = {
-  //     id: crypto.randomUUID(),
-  //   };
-  // };
-  // const users = [{ id: 0, userId: "ididid", userPw: "blabla" }];
 
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
@@ -35,7 +33,6 @@ function Login() {
   const onChangePw = (e) => {
     setUserPw(e.target.value);
   };
-  const onClickLogin = (e) => {};
 
   if (!user) {
     return (

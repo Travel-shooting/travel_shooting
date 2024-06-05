@@ -2,6 +2,7 @@ import { useState } from "react";
 import Modal from "../../Modal";
 import styled from "styled-components";
 import supabase from "../../../util/supabase/supabaseClient";
+import Toast from "../../Toast";
 
 function Signup() {
   const [signUpId, setSignUpId] = useState("");
@@ -29,17 +30,18 @@ function Signup() {
     console.log(data.user.id);
     console.log(error);
 
-    await supabase
-      .from("USER")
-      .insert({ uuid: data.user.id, userId: signUpId });
+    await supabase.from("USER").insert({
+      uuid: data.user.id,
+      userId: signUpId,
+      userImageURL:
+        "https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg",
+    });
 
-    // const { data, error } = await supabase
-    //   .from("USER") // 여기에서 'USER'은 테이블 이름입니다.
-    //   .select("*")
-    //   .eq("userId", signUpId)
-    //   .eq("userPw", signUpPw);
-    // console.log("login : ", { data, error });
-    // setUser(data.user);
+    if (signUpPw.length < 6) {
+      alert("비밀번호는 6자리 이상으로 작성해주세요.");
+    } else if (signUpPw !== signUpPwConfirm) {
+      alert("비밀번호가 일치하지 않습니다.");
+    }
   };
 
   return (
