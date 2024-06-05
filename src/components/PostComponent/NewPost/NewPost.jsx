@@ -77,16 +77,15 @@ function NewPost() {
   };
 
   const handleSubmit = async () => {
+    const postId = crypto.randomUUID();
     try {
-      const postId = Date.now();
-
       const uploadedImageUrls = await uploadImagesToSupabase(realFiles, postId);
 
       const imageURLs = uploadedImageUrls.map((url) => ({
         url,
       }));
       const postFormData = {
-        id: postId,
+        postId,
         postUserId: 5,
         postTitle: formRef.current[0].value,
         postContent: formRef.current[1].value,
@@ -97,7 +96,6 @@ function NewPost() {
       };
 
       const tagsFormData = tags.map((tag) => ({
-        postId,
         tagId: tag,
       }));
 
@@ -128,6 +126,12 @@ function NewPost() {
       const { data, error } = await supabase.from("POST").insert(postFormData);
       if (error) console.error(error);
       else console.log(data);
+
+      const { tagData, tagError } = await supabase
+        .from("TAGS")
+        .insert(tagsFormData);
+      if (tagError) console.error(tagError);
+      else console.log(tagData);
 
       alert("데이터가 정상적으로 추가되었습니다");
       navigate("/");

@@ -1,17 +1,13 @@
 /** 데이터에 관한 Reducer를 여기서 관리할 것입니당 */
 
 import { createSlice } from "@reduxjs/toolkit";
-import supabase from "../../util/supabase/supabaseClient";
 
 const initialState = {
-
   loadData: [],
   formData: {},
   tags: [],
   previewImages: [],
   realImageFiles: [],
-  totalData: [],
-
 };
 
 const postSlice = createSlice({
@@ -51,6 +47,5 @@ export const {
   manageRealImages,
   addHeart,
 } = postSlice.actions;
-
 
 export default postSlice.reducer;
