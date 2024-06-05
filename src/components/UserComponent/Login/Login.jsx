@@ -2,15 +2,31 @@ import { useState } from "react";
 import supabase from "../../../util/supabase/supabaseClient";
 import Modal from "../../Modal";
 import { useNavigate } from "react-router-dom";
+import Toast from "../../Toast";
 
 function Login() {
   // 로그인 모달
-  const isOpenLoginModal = useSelector((state) => state.modal.isOpenLoginModal);
-  console.log(isOpenLoginModal);
+  // const isOpenLoginModal = useSelector((state) => state.modal.isOpenLoginModal);
+  // console.log(isOpenLoginModal);
+  const [userId, setUserId] = useState("");
+  const [userPw, setUserPw] = useState("");
+  const [user, setUser] = useState(null);
+  const [showToast, setShowToast] = useState(false);
+
+  const onChangeId = (e) => {
+    setUserId(e.target.value);
+  };
+  const onChangePw = (e) => {
+    setUserPw(e.target.value);
+  };
 
   const loginUser = async (e) => {
     e.preventDefault();
-
+    if (!userId.includes("@") || userPw.length < 6) {
+      setShowToast(true);
+    } else {
+      setShowToast(false);
+    }
     const response = await supabase.auth.signInWithPassword({
       email: userId,
       password: userPw,
@@ -24,20 +40,17 @@ function Login() {
     setUser(data.user);
   };
 
-  const [userId, setUserId] = useState("");
-  const [userPw, setUserPw] = useState("");
-  const [user, setUser] = useState(null);
-
-  const onChangeId = (e) => {
-    setUserId(e.target.value);
-  };
-  const onChangePw = (e) => {
-    setUserPw(e.target.value);
-  };
-
   if (!user) {
     return (
       <Modal>
+        {showToast && (
+          <Toast
+            toast={{
+              message: "아이디 또는 비밀번호를 확인해주세요.",
+              seconds: 5000,
+            }}
+          />
+        )}
         <div className="logo-div">
           <img
             src="src\styles\images\logo-icon.png"
@@ -71,8 +84,6 @@ function Login() {
           </button>
         </form>
         <div className="login-btn-div">
-          <button className="login-btn">아이디 찾기</button>
-          <button className="login-btn">비밀번호 찾기</button>
           <button className="login-btn">회원가입</button>
         </div>
       </Modal>

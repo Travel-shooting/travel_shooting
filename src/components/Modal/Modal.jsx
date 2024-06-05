@@ -1,7 +1,6 @@
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { close } from "../../redux/slices/modalSlice";
-import { useState } from "react";
 const BackWrap = styled.div`
   position: fixed;
   top: 0px;

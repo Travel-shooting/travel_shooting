@@ -2,13 +2,18 @@ import { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const BackDrop = styled.div`
-  border: 1px solid var(--grey-color);
-  background-color: var(--white-color);
+  width: 500px;
+  height: 50px;
+  color: #990000;
+  background-color: #ffcece;
+  border: 1px solid #990000;
+  text-align: center;
+  margin: auto;
   border-radius: 8px;
-  padding: 10px;
+  padding: 15px;
   transform: ${(props) =>
-    props.isDisplayed ? "translateX(0)" : "translateX(calc(100% + 20px))"};
-  transition-duration: 500;
+    props.isDisplayed ? "translateY(-73px)" : "translateY(calc(100% - 200px))"};
+  transition-duration: 3000;
 `;
 
 function Toast({ toast }) {
