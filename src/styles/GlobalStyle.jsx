@@ -27,13 +27,11 @@ textarea{
   height: 200px;
   resize:none;
 }
+
 input[type=text],textarea {
   width:100%;
- 
-  border: none;
-  border-radius: 8px;
-    padding: 10px;
-    background-color: var(--lightgrey-color);
+  border-radius: 6px;
+  padding: 10px;
 }
 
 button {
@@ -43,7 +41,6 @@ button {
   margin: 40px auto;
   border-radius: 6px;
   cursor: pointer;
-  border: 0px;
 }
 
 .post-box {
@@ -57,10 +54,9 @@ button {
   margin: 40px auto;
   border-radius: 6px;
   cursor: pointer;
-  width: 200px;
+  width: 240px;
   color: var(--white-color);
   display: block;
-  width: 60%;
   margin-top: 14px;
   padding: 14px 0;
   background-color: var(--mintgreen-color);
@@ -71,7 +67,7 @@ button {
 
 .h2 {
   font-size: 32px;
-  line-height: 1.2;
+  line-height: 1.3;
   font-weight: bold;
   color: var(--black-color);
   text-align: center;
@@ -110,7 +106,6 @@ button {
   }
 }
 
-
 .search-icon {
   position: absolute;
   transform: translateY(-50%);
@@ -121,7 +116,7 @@ button {
 .tags {
   display: flex; /* 기존의 inline-block 대신 flex를 사용 */
   flex-wrap: wrap; /* 태그들이 넘칠 때 다음 줄로 넘어가도록 설정 */
-  justify-content: center; /* 가운데 정렬 */
+  justify-content: center;
   gap: 4px;
 }
 

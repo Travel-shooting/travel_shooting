@@ -16,7 +16,7 @@ import Tags from "./Tags";
 const Container = styled.div`
   display: flex;
   flex-direction: ${(props) => props.direction};
-  gap: 10px;
+  gap: px;
 `;
 
 const HiddenInput = styled.input`
