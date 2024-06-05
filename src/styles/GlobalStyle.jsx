@@ -23,8 +23,17 @@ body{
 div {
   box-sizing: border-box;
 }
-input {
-  
+textarea{
+  height: 200px;
+  resize:none;
+}
+input[type=text],textarea {
+  width:100%;
+ 
+  border: none;
+  border-radius: 8px;
+    padding: 10px;
+    background-color: var(--lightgrey-color);
 }
 
 button {

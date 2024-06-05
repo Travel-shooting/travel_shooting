@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import PostDetail from "../components/PostComponent/PostDetail";
 import Slider from "../components/PostComponent/Slider";
 import Travel from "../components/PostComponent/Travel";
+import { loadPost } from "../redux/slices/postSlice";
 import supabase from "../util/supabase/supabaseClient";
 const Container = styled.div`
   display: grid;
@@ -18,6 +20,7 @@ const Container = styled.div`
 `;
 
 function PostPage() {
+  const dispatch = useDispatch();
   const [postDetailDatas, setPostDetailDatas] = useState({});
   const [postImages, setPostImages] = useState([]);
   const [postTags, setPostTags] = useState([]);
@@ -31,10 +34,11 @@ function PostPage() {
       if (error) {
         console.error(error);
       } else {
-        console.log(data);
+        console.log(data[0]);
         setPostDetailDatas(data[0]);
-
-        setPostImages(data[0].postImage.split(","));
+        const urls = JSON.parse(data[0].imageURL).map((image) => image.url, []);
+        setPostImages(urls);
+        dispatch(loadPost(data[0]));
       }
     };
     const tagFetchData = async () => {
@@ -48,6 +52,7 @@ function PostPage() {
         setPostTags(data);
       }
     };
+
     fetchData();
     tagFetchData();
   }, [postId]);

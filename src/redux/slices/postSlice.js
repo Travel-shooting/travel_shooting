@@ -4,50 +4,53 @@ import { createSlice } from "@reduxjs/toolkit";
 import supabase from "../../util/supabase/supabaseClient";
 
 const initialState = {
-  posts: [],
-  signIn: false,
+
+  loadData: [],
+  formData: {},
+  tags: [],
+  previewImages: [],
+  realImageFiles: [],
+  totalData: [],
+
 };
 
 const postSlice = createSlice({
   name: "post",
   initialState,
   reducers: {
+    loadPost: (state, action) => {
+      state.loadData = action.payload;
+    },
     addPost: (state, action) => {
-      state.posts.push(action.payload);
+      state.formData = action.payload;
     },
-    searchPost: (state, action) => {
-      return {
-        ...state,
-        posts: state.posts.filter((post) =>
-          post.country.includes(action.payload)
-        ),
-      };
+    modifyPost: (state, action) => {},
+    deletePost: (state, action) => {},
+    manageTags: (state, action) => {
+      state.tags = action.payload;
     },
-    modifyPost: (state, action) => {
-      const { id, newData } = action.payload;
-      const index = state.posts.findIndex((post) => post.id === id);
-      if (index !== -1) {
-        state.posts[index] = { ...state.posts[index], ...newData };
-      }
+    manageImages: (state, action) => {
+      state.previewImages = action.payload;
     },
-    deletePost: (state, action) => {
-      const id = action.payload;
-      state.posts = state.posts.filter((post) => post.id !== id);
+    manageRealImages: (state, action) => {
+      state.realImageFiles = action.payload;
+    },
+    addHeart: (state) => {
+      state.formData.postLike += 1;
     },
   },
 });
 
-export const { addPost, searchPost, modifyPost, deletePost } =
-  postSlice.actions;
+export const {
+  loadPost,
+  addPost,
+  modifyPost,
+  deletePost,
+  manageTags,
+  manageImages,
+  manageRealImages,
+  addHeart,
+} = postSlice.actions;
+
 
 export default postSlice.reducer;
-
-export const fetchPosts = () => async (dispatch) => {
-  const { data } = await supabase.from("posts").select("*");
-  dispatch(setPosts(data));
-};
-
-export const setPosts = (posts) => ({
-  type: "post/setPosts",
-  payload: posts,
-});

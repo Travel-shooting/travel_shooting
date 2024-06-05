@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-// import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import SearchInput from "../components/Main/SearchInput";
 import supabase from "../util/supabase/supabaseClient";
@@ -127,5 +126,6 @@ function MainPage() {
     </>
   );
 }
+
 
 export default MainPage;
