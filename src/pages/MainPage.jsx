@@ -24,7 +24,7 @@ async function getPost(userId) {
 function MainPage() {
   const [posts, setPosts] = useState([]);
   const [filteredPosts, setFilteredPosts] = useState([]);
-  const [userId, setUserId] = useState(null); // 사용자 ID를 관리할 상태
+  const [userId, setUserId] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
