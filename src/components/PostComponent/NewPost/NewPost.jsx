@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -7,6 +7,7 @@ import {
   manageRealImages,
   manageTags,
 } from "../../../redux/slices/postSlice";
+import { getPresentTime } from "../../../util/date";
 import supabase from "../../../util/supabase/supabaseClient";
 import Slider from "../Slider";
 import CountrySelect from "./CountrySelect";
@@ -38,7 +39,7 @@ const Button = styled.button`
 function NewPost() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const tags = useSelector((state) => state.post.tags);
+  const tags = JSON.parse(localStorage.getItem("tags")) || [];
   const [fileImages, setFileImages] = useState([]);
   const [realFiles, setRealFiles] = useState([]);
   const fileInputRef = useRef();
@@ -53,7 +54,6 @@ function NewPost() {
     const newPreviewUrls = files.map((file) => URL.createObjectURL(file));
     setFileImages(newPreviewUrls);
     setRealFiles(files);
-    console.log(files);
   };
 
   const uploadImagesToSupabase = async (files, postId) => {
@@ -65,8 +65,9 @@ function NewPost() {
           .from("postImages")
           .upload(fileName, file);
 
-        if (error) throw new Error("이미지 업로드 실패");
-        else console.log("이미지 성공...", data);
+        if (error) {
+          console.error(error);
+        } else console.log("이미지 성공...", data);
 
         return `${
           import.meta.env.VITE_SUPABASE_URL
@@ -78,30 +79,56 @@ function NewPost() {
   const handleSubmit = async () => {
     try {
       const postId = Date.now();
+
+      const uploadedImageUrls = await uploadImagesToSupabase(realFiles, postId);
+
+      const imageURLs = uploadedImageUrls.map((url) => ({
+        url,
+      }));
       const postFormData = {
         id: postId,
         postUserId: 5,
         postTitle: formRef.current[0].value,
         postContent: formRef.current[1].value,
+        postDate: getPresentTime(),
         postLike: 0,
+        imageURL: imageURLs,
         country: JSON.parse(localStorage.getItem("country")),
       };
+
       const tagsFormData = tags.map((tag) => ({
         postId,
         tagId: tag,
       }));
 
+      const postError = {
+        title: !formRef.current[0].value.trim().length,
+        content: !formRef.current[1].value.trim().length,
+        country: JSON.parse(localStorage.getItem("country")) == "",
+        imageURL: !imageURLs.length,
+        tags: !tagsFormData.length,
+      };
+      if (
+        postError.title ||
+        postError.content ||
+        postError.country ||
+        postError.imageURL ||
+        postError.tags
+      ) {
+        alert("업로드에 문제가생겼어요 확인해주세요");
+        return;
+      }
+
       dispatch(addPost({ postFormData }));
       dispatch(manageTags({ tagsFormData }));
-
-      const uploadedImageUrls = await uploadImagesToSupabase(realFiles, postId);
-
-      await supabase.from("POST").insert({
-        ...postFormData,
-        imageUrls: uploadedImageUrls,
-      });
-
       dispatch(manageRealImages(postFormData));
+
+      console.log("postFormData: ", postFormData);
+
+      const { data, error } = await supabase.from("POST").insert(postFormData);
+      if (error) console.error(error);
+      else console.log(data);
+
       alert("데이터가 정상적으로 추가되었습니다");
       navigate("/");
     } catch (error) {

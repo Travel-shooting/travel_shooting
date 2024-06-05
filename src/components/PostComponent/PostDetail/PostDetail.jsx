@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
 import Heart from "../../../styles/images/heart.png";
@@ -29,18 +29,17 @@ const Font = styled.p`
 const Button = styled.button``;
 function PostDetail({ postDetailData, postTags }) {
   const detailData = useSelector((state) => state.post.totalData);
-  const [detailDataUserId, setDetailDataUserId] = useState(null);
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchUserData = async () => {
       const { data, error } = await supabase
         .from("USER")
         .select("*")
-        .eq("id", postDetailData.postUserId);
+        .eq("id", detailData.postUserId);
       console.log(data);
       if (error) console.log("user 테이블 못불러옴");
-      else setDetailDataUserId(data.userId);
+      else console.log(data);
     };
-    fetchData();
+    fetchUserData();
   }, []);
   const handleAddHeart = () => {
     alert("하트누름");
@@ -50,11 +49,13 @@ function PostDetail({ postDetailData, postTags }) {
       <div>
         <TitleBox>
           <Font>{postDetailData.postTitle}</Font>
-          <span>
-            <Img src={Heart} onClick={handleAddHeart} />
-          </span>
-        </TitleBox>
 
+          <div>
+            <span>{postDetailData.postLike}</span>
+            <Img src={Heart} onClick={handleAddHeart} />
+          </div>
+        </TitleBox>
+        <p>{postDetailData.postDate}</p>
         <p>{postDetailData.postContent}</p>
         <BadgeBox>
           {postTags.map((tag) => (
@@ -63,7 +64,7 @@ function PostDetail({ postDetailData, postTags }) {
         </BadgeBox>
       </div>
       <div>
-        <h1>{detailDataUserId}</h1>
+        <h1>{postDetailData.postUserId}</h1>
         <Button>Follow</Button>
       </div>
     </div>

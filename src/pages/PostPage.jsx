@@ -31,10 +31,10 @@ function PostPage() {
       if (error) {
         console.error(error);
       } else {
-        console.log(data);
+        console.log(data[0]);
         setPostDetailDatas(data[0]);
-
-        setPostImages(data[0].postImage.split(","));
+        const urls = JSON.parse(data[0].imageURL).map((image) => image.url, []);
+        setPostImages(urls);
       }
     };
     const tagFetchData = async () => {
@@ -48,8 +48,19 @@ function PostPage() {
         setPostTags(data);
       }
     };
+    const fetchUserData = async () => {
+      const { data, error } = await supabase
+        .from("USER")
+        .select("*")
+        .eq("id", postDetailDatas.postUserId);
+      console.log(data);
+      if (error) console.log("user 테이블 못불러옴");
+      else console.log(data);
+    };
+
     fetchData();
     tagFetchData();
+    fetchUserData();
   }, [postId]);
   return (
     <Container>

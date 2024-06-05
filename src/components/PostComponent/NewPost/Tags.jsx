@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import { manageTags } from "../../../redux/slices/postSlice";
 import { tags } from "../../../util/tags";
 const Container = styled.div`
   display: flex;
@@ -42,11 +41,13 @@ function Tags() {
     if (e.target.checked) {
       const newSelectedTags = [...selectedTags, e.target.value];
       setSelectedTags(newSelectedTags);
-      dispatch(manageTags(newSelectedTags));
+      //dispatch(manageTags(newSelectedTags));
+      localStorage.setItem("tags", JSON.stringify(newSelectedTags));
     } else {
       const newSelectedTags = selectedTags.filter((t) => t !== e.target.value);
       setSelectedTags(newSelectedTags);
-      dispatch(manageTags(newSelectedTags));
+      //dispatch(manageTags(newSelectedTags));
+      localStorage.setItem("tags", JSON.stringify(newSelectedTags));
     }
   };
 
