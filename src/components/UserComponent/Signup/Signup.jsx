@@ -1,9 +1,10 @@
 import { useState } from "react";
-import Modal from "../../Modal";
-import styled from "styled-components";
+import { useDispatch } from "react-redux";
 import supabase from "../../../util/supabase/supabaseClient";
+import Modal from "../../Modal";
 
 function Signup() {
+  const dispatch = useDispatch();
   const [signUpId, setSignUpId] = useState("");
   const [signUpPw, setSignUpPw] = useState("");
   const [signUpPwConfirm, setSignUpPwConfirm] = useState("");
@@ -29,10 +30,19 @@ function Signup() {
     console.log(data.user.id);
     console.log(error);
 
-    await supabase
-      .from("USER")
-      .insert({ uuid: data.user.id, userId: signUpId, userImageURL: "https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg" });
 
+    await supabase.from("USER").insert({
+      uuid: data.user.id,
+      userId: signUpId,
+      userImageURL:
+        "https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg",
+    });
+
+//     await supabase
+//       .from("USER")
+//       .insert({ uuid: data.user.id, userId: signUpId, userImageURL: "https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg" });
+
+    
     // const { data, error } = await supabase
     //   .from("USER") // 여기에서 'USER'은 테이블 이름입니다.
     //   .select("*")
@@ -40,6 +50,7 @@ function Signup() {
     //   .eq("userPw", signUpPw);
     // console.log("login : ", { data, error });
     // setUser(data.user);
+    dispatch(close());
   };
 
   return (
