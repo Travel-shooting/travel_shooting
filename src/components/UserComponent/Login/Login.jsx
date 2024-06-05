@@ -19,7 +19,8 @@ function Login() {
       .select("*")
       .eq("userId", userId);
     console.log("login : ", { data, error });
-    dispatch(logIn(data[0]));
+    localStorage.setItem("logInUser", JSON.stringify(response.data.user.id));
+    dispatch(logIn(response.data.user.id));
     dispatch(close());
     setUser(data.user);
   };
@@ -34,7 +35,6 @@ function Login() {
   const onChangePw = (e) => {
     setUserPw(e.target.value);
   };
-  const onClickLogin = (e) => {};
 
   if (!user) {
     return (

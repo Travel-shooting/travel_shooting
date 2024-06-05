@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -39,7 +39,7 @@ const Button = styled.button`
 function NewPost() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userId = useSelector((state) => state.log.logInUser);
+  const userId = JSON.parse(localStorage.getItem("logInUser"));
   const [tags, setTags] = useState([]);
   const [fileImages, setFileImages] = useState([]);
   const [realFiles, setRealFiles] = useState([]);

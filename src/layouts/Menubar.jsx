@@ -1,9 +1,10 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { logOut } from "../redux/slices/logSlice";
 import { open } from "../redux/slices/modalSlice";
 import Logo from "../styles/images/logo.png";
+import supabase from "../util/supabase/supabaseClient";
 const MenuContainer = styled.div`
   height: 80px;
   background-color: var(--lightgrey-color);
@@ -35,7 +36,7 @@ function Menubar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userId = useSelector((state) => state.log.logInUser);
+  const userId = JSON.parse(localStorage.getItem("logInUser"));
 
   const goMyPage = () => {
     navigate(`/mypage/${userId}`);
@@ -47,7 +48,16 @@ function Menubar() {
     dispatch(open("login"));
   };
   const handleLogOut = () => {
-    dispatch(logOut());
+    const signOut = async () => {
+      const { data, error } = await supabase.auth.signOut();
+      if (error) console.error(error);
+      else {
+        dispatch(logOut());
+        localStorage.removeItem("logInUser");
+        alert("로그아웃되었습니다");
+      }
+    };
+    signOut();
   };
   return (
     <MenuContainer>
@@ -58,26 +68,7 @@ function Menubar() {
           </Link>
         </div>
         <ButtonBox>
-          {userId === 0 ? (
-            <>
-              <Button
-                bgcolor={"var(--white-color)"}
-                color={"var(--golden-color)"}
-                bordercolor={"var(--golden-color)"}
-                onClick={handleLogIn}
-              >
-                Log In
-              </Button>
-              <Button
-                bgcolor={"var(--golden-color)"}
-                color={"var(--white-color)"}
-                bordercolor={"var(--golden-color)"}
-                onClick={handleSignup}
-              >
-                Sign up
-              </Button>
-            </>
-          ) : (
+          {userId ? (
             <>
               <Button
                 bgcolor={"var(--white-color)"}
@@ -94,6 +85,25 @@ function Menubar() {
                 onClick={goMyPage}
               >
                 MY PAGE
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button
+                bgcolor={"var(--white-color)"}
+                color={"var(--golden-color)"}
+                bordercolor={"var(--golden-color)"}
+                onClick={handleLogIn}
+              >
+                Log In
+              </Button>
+              <Button
+                bgcolor={"var(--golden-color)"}
+                color={"var(--white-color)"}
+                bordercolor={"var(--golden-color)"}
+                onClick={handleSignup}
+              >
+                Sign up
               </Button>
             </>
           )}
