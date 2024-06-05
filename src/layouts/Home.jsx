@@ -17,7 +17,6 @@ function Home() {
     <>
       {modal == "login" && <Login />}
       {modal == "signup" && <Signup />}
-      <GlobalStyle />
       <Menubar />
       <Container>
         <Outlet />

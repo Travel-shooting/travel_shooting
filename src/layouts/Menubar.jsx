@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { open } from "../redux/slices/modalSlice";
 import Logo from "../styles/images/logo.png";
 const MenuContainer = styled.div`
-  height: 50px;
+  height: 80px;
   background-color: var(--lightgrey-color);
 `;
 const MenuInnerContainer = styled.div`
@@ -17,13 +17,13 @@ const MenuInnerContainer = styled.div`
   justify-content: space-between;
 `;
 const Button = styled.button`
-  padding: 5px;
-  border-radius: 5px;
+  padding: 6px;
+  border-radius: 4px;
   border: 1px solid ${(props) => props.bordercolor};
   background-color: ${(props) => props.bgcolor};
   color: ${(props) => props.color};
   width: 100px;
-  font-size: 16px;
+  font-size: 14px;
 `;
 const ButtonBox = styled.div`
   display: flex;

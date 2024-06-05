@@ -1,8 +1,9 @@
 import { createBrowserRouter } from "react-router-dom";
-import HomeComponent from "../components/HomeComponent";
-import PostComponent from "../components/PostComponent";
-import Layout from "../pages/Home";
-import UserComponent from "../components/UserComponent"; // 수정된 경로
+import NewPost from "../components/PostComponent/NewPost";
+import Layout from "../layouts/Home";
+import HomeComponent from "../pages/MainPage";
+import MyPage from "../pages/MyPage"; // 수정된 컴포넌트
+import PostComponent from "../pages/PostPage";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,7 @@ const router = createBrowserRouter([
       },
       {
         path: "/mypage/*",
-        element: <UserComponent />, // 수정된 컴포넌트
+        element: <MyPage />, // 수정된 컴포넌트
       },
     ],
   },
