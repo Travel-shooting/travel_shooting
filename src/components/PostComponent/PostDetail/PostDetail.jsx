@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { addHeart } from "../../../redux/slices/postSlice";
@@ -32,19 +32,28 @@ function PostDetail({ postDetailData, postTags }) {
   const dispatch = useDispatch();
   const detailData = useSelector((state) => state.post.loadData);
   const postLike = useSelector((state) => state.post.loadData.postLike);
-
+  const [tags, setTags] = useState([]);
+  const [postEmail, setPostEmail] = useState("");
   useEffect(() => {
     const fetchUserData = async () => {
       const { data, error } = await supabase
         .from("USER")
         .select("*")
-        .eq("id", detailData.postUserId);
+        .eq("uuid", detailData.postUserId);
       if (error) console.log("user 테이블 못불러옴");
       else {
-        console.log(data[0]);
+        setPostEmail(data.email);
+      }
+    };
+    const fetchTagsData = async () => {
+      const { data, error } = await supabase.from("POSTTAG").select("*");
+      if (error) console.log("POSTTAG 테이블 못불러옴");
+      else {
+        setTags(data);
       }
     };
     fetchUserData();
+    fetchTagsData();
   }, []);
   const handleAddHeart = () => {
     dispatch(addHeart());
@@ -69,7 +78,7 @@ function PostDetail({ postDetailData, postTags }) {
         </BadgeBox>
       </div>
       <div>
-        <h1>{postDetailData.postUserId}</h1>
+        <h1>{postEmail}</h1>
         <Button>Follow</Button>
       </div>
     </div>

@@ -52,9 +52,12 @@ function Tags() {
     setSelectedTags(storedTags);
   }, []);
 
-  const handleCheckBoxChange = (e) => {
+  const handleCheckBoxChange = (tagId, e) => {
     if (e.target.checked) {
-      const newSelectedTags = [...selectedTags, e.target.value];
+      const newSelectedTags = [
+        ...selectedTags,
+        { id: tagId, tagValue: e.target.value },
+      ];
       setSelectedTags(newSelectedTags);
       //dispatch(manageTags(newSelectedTags));
       localStorage.setItem("tags", JSON.stringify(newSelectedTags));
@@ -68,11 +71,11 @@ function Tags() {
 
   return (
     <Container>
-      {tags?.map((tag, i) => (
+      {tags.map((tag, i) => (
         <div key={i}>
           <HiddenCheckbox
             id={tag.id}
-            onChange={(e) => handleCheckBoxChange(e)}
+            onChange={(e) => handleCheckBoxChange(tag.id, e)}
             checked={selectedTags.includes(tag.tagValue)}
             value={tag.tagValue}
           />

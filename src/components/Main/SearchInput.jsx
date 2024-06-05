@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 import { loadPost } from "../../redux/slices/postSlice";
 import supabase from "../../util/supabase/supabaseClient";
-
-const SearchInput = ({ onSearch }) => {
+const Img = styled.img`
+  cursor: pointer;
+`;
+const SearchInput = () => {
   const dispatch = useDispatch();
   const [search, setSearch] = useState("");
   const [postDatas, setPostDatas] = useState([]);
+  const loadData = useSelector((state) => state.post.loadData);
   const [tags, setTags] = useState([]);
   useEffect(() => {
     const tagData = async () => {
@@ -44,17 +48,35 @@ const SearchInput = ({ onSearch }) => {
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
+  const handleSearch = (query) => {
+    const filtered = postDatas.filter((post) =>
+      post.postTitle.toLowerCase().includes(query)
+    );
+    setPostDatas(filtered);
+  };
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter" && search) {
-      onSearch(search);
+      handleSearch(search);
     } else if (e.key === "Enter" && !search) {
       alert("나라를 입력하세요");
     }
   };
-
-  const handleTagClick = (tag) => {
-    onSearch(tag);
+  const handleTags = (query) => {
+    const fetchTags = async () => {
+      const { data: tagData, error } = await supabase
+        .from("TAGS")
+        .select("*")
+        .eq("tagId", query);
+      if (error) console.error(error);
+      else {
+        const filteredPostDatas = loadData.filter((postData) =>
+          tagData.some((tag) => tag.postId === postData.id)
+        );
+        setPostDatas(filteredPostDatas);
+      }
+    };
+    fetchTags();
   };
 
   return (
@@ -74,19 +96,16 @@ const SearchInput = ({ onSearch }) => {
           onKeyPress={handleKeyPress}
         />
         <div className="search-icon">
-          <img
+          <Img
             src="https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/icon/search.svg"
             alt="검색"
+            onClick={() => handleSearch(search)}
           />
         </div>
       </div>
       <div className="tags">
         {tags.map((tag) => (
-          <div
-            className="tag"
-            key={tag.id}
-            onClick={() => handleTagClick(tag.id)}
-          >
+          <div className="tag" key={tag.id} onClick={() => handleTags(tag.id)}>
             #{tag.tagValue}
           </div>
         ))}

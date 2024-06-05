@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { logIn } from "../../../redux/slices/logSlice";
 import supabase from "../../../util/supabase/supabaseClient";
 import Modal from "../../Modal";
 
 function Login() {
+  const dispatch = useDispatch();
   const loginUser = async (e) => {
     e.preventDefault();
 
@@ -16,14 +19,10 @@ function Login() {
       .select("*")
       .eq("userId", userId);
     console.log("login : ", { data, error });
+    dispatch(logIn(data[0]));
+    dispatch(close());
     setUser(data.user);
   };
-  // const handleLogIn = () => {
-  //   const formData = {
-  //     id: crypto.randomUUID(),
-  //   };
-  // };
-  // const users = [{ id: 0, userId: "ididid", userPw: "blabla" }];
 
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");

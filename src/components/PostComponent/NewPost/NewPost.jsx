@@ -1,5 +1,5 @@
-import { useRef, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useEffect, useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import {
@@ -39,12 +39,18 @@ const Button = styled.button`
 function NewPost() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const tags = JSON.parse(localStorage.getItem("tags")) || [];
+  const userId = useSelector((state) => state.log.logInUser);
+  const [tags, setTags] = useState([]);
   const [fileImages, setFileImages] = useState([]);
   const [realFiles, setRealFiles] = useState([]);
   const fileInputRef = useRef();
   const formRef = useRef([]);
 
+  useEffect(() => {
+    const tag = JSON.parse(localStorage.getItem("tags")) || [];
+    setTags(tag);
+    console.log(tag);
+  }, []);
   const handleClick = () => {
     fileInputRef.current.click();
   };
@@ -77,16 +83,16 @@ function NewPost() {
   };
 
   const handleSubmit = async () => {
-    const postId = crypto.randomUUID();
+    const id = crypto.randomUUID();
     try {
-      const uploadedImageUrls = await uploadImagesToSupabase(realFiles, postId);
+      const uploadedImageUrls = await uploadImagesToSupabase(realFiles, id);
 
       const imageURLs = uploadedImageUrls.map((url) => ({
         url,
       }));
       const postFormData = {
-        postId,
-        postUserId: 5,
+        id,
+        postUserId: userId,
         postTitle: formRef.current[0].value,
         postContent: formRef.current[1].value,
         postDate: getPresentTime(),
@@ -95,10 +101,15 @@ function NewPost() {
         country: JSON.parse(localStorage.getItem("country")),
       };
 
-      const tagsFormData = tags.map((tag) => ({
-        tagId: tag,
-      }));
-
+      const tagsFormData = tags.map(
+        (tag) => ({
+          id: crypto.randomUUID(),
+          tagId: tag.id,
+          postId: id,
+        }),
+        []
+      );
+      console.log(tagsFormData);
       const postError = {
         title: !formRef.current[0].value.trim().length,
         content: !formRef.current[1].value.trim().length,
@@ -127,14 +138,14 @@ function NewPost() {
       if (error) console.error(error);
       else console.log(data);
 
-      const { tagData, tagError } = await supabase
+      const { data: tagData, tagError } = await supabase
         .from("TAGS")
         .insert(tagsFormData);
       if (tagError) console.error(tagError);
       else console.log(tagData);
 
       alert("데이터가 정상적으로 추가되었습니다");
-      navigate("/");
+      // navigate("/");
     } catch (error) {
       console.error("Error uploading files:", error);
       alert("에러 발생: " + error.message);

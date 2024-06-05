@@ -1,9 +1,10 @@
 import { useState } from "react";
-import Modal from "../../Modal";
-import styled from "styled-components";
+import { useDispatch } from "react-redux";
 import supabase from "../../../util/supabase/supabaseClient";
+import Modal from "../../Modal";
 
 function Signup() {
+  const dispatch = useDispatch();
   const [signUpId, setSignUpId] = useState("");
   const [signUpPw, setSignUpPw] = useState("");
   const [signUpPwConfirm, setSignUpPwConfirm] = useState("");
@@ -40,6 +41,7 @@ function Signup() {
     //   .eq("userPw", signUpPw);
     // console.log("login : ", { data, error });
     // setUser(data.user);
+    dispatch(close());
   };
 
   return (

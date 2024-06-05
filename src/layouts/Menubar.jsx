@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { logOut } from "../redux/slices/logSlice";
 import { open } from "../redux/slices/modalSlice";
 import Logo from "../styles/images/logo.png";
 const MenuContainer = styled.div`
@@ -46,7 +47,7 @@ function Menubar() {
     dispatch(open("login"));
   };
   const handleLogOut = () => {
-    //로그아웃
+    dispatch(logOut());
   };
   return (
     <MenuContainer>

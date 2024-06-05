@@ -8,16 +8,12 @@ import supabase from "../util/supabase/supabaseClient";
 function MainPage() {
   const dispatch = useDispatch();
   const [userPosts, setUserPosts] = useState([]);
-  const loadData = useSelector((state) => state.post.loadData);
   const userId = useSelector((state) => state.log.logInUser);
-
   useEffect(() => {
     const fetchUserData = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: user } = await supabase.auth.getUser();
       if (user) {
-        dispatch(logIn(user.id)); // 현재 로그인된 사용자의 ID 설정
+        dispatch(logIn(user.uuid)); // 현재 로그인된 사용자의 ID 설정
       }
     };
     fetchUserData();
@@ -29,7 +25,7 @@ function MainPage() {
         const { data, error } = await supabase
           .from("POST")
           .select("*")
-          .eq("userId", userId);
+          .eq("postUserId", userId);
 
         if (error) console.error(error);
         else {
@@ -39,17 +35,7 @@ function MainPage() {
       }
     };
     fetchData();
-  }, [userId]);
-
-  const handleSearch = (query) => {
-    const lowerCaseQuery = query.toLowerCase();
-    const filtered = loadData.filter(
-      (post) =>
-        post.postTitle.toLowerCase().includes(lowerCaseQuery) ||
-        (post.tags && post.tags.toLowerCase().includes(lowerCaseQuery))
-    );
-    setUserPosts(filtered);
-  };
+  }, []);
 
   // if (userId === null) {
   //   return (
@@ -115,7 +101,7 @@ function MainPage() {
           </Link>
         </div>
       </div>
-      <SearchInput onSearch={handleSearch} />
+      <SearchInput />
     </>
   );
 }
