@@ -1,5 +1,9 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { addHeart } from "../../../redux/slices/postSlice";
 import Heart from "../../../styles/images/heart.png";
+import supabase from "../../../util/supabase/supabaseClient";
 
 const TitleBox = styled.div`
   display: flex;
@@ -18,18 +22,45 @@ const Badge = styled.span`
 const Img = styled.img`
   cursor: pointer;
 `;
+
+const Font = styled.p`
+  font-size: 25px;
+  font-weight: bold;
+`;
 const Button = styled.button``;
 function PostDetail({ postDetailData, postTags }) {
+  const dispatch = useDispatch();
+  const detailData = useSelector((state) => state.post.loadData);
+  const postLike = useSelector((state) => state.post.loadData.postLike);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const { data, error } = await supabase
+        .from("USER")
+        .select("*")
+        .eq("id", detailData.postUserId);
+      if (error) console.log("user 테이블 못불러옴");
+      else {
+        console.log(data[0]);
+      }
+    };
+    fetchUserData();
+  }, []);
+  const handleAddHeart = () => {
+    dispatch(addHeart());
+  };
   return (
     <div>
       <div>
         <TitleBox>
-          <h1>{postDetailData.postTitle}</h1>
-          <span>
-            <Img src={Heart} />
-          </span>
-        </TitleBox>
+          <Font>{postDetailData.postTitle}</Font>
 
+          <div>
+            <span>{postLike}</span>
+            <Img src={Heart} onClick={handleAddHeart} />
+          </div>
+        </TitleBox>
+        <p>{postDetailData.postDate}</p>
         <p>{postDetailData.postContent}</p>
         <BadgeBox>
           {postTags.map((tag) => (
@@ -38,7 +69,7 @@ function PostDetail({ postDetailData, postTags }) {
         </BadgeBox>
       </div>
       <div>
-        <h1>swiss-lover</h1>
+        <h1>{postDetailData.postUserId}</h1>
         <Button>Follow</Button>
       </div>
     </div>
