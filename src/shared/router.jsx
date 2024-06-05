@@ -1,8 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
-import HomeComponent from "../components/HomeComponent";
-import PostComponent from "../components/PostComponent";
-import UserComponent from "../components/UserComponent";
-import Layout from "../pages/Home";
+import Layout from "../layouts/Home";
+import HomeComponent from "../pages/MainPage";
+import UserComponent from "../pages/MyPage";
+import PostComponent from "../pages/PostPage";
 
 const router = createBrowserRouter([
   {

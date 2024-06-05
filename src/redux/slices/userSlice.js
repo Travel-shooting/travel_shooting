@@ -2,7 +2,9 @@
 
 import { createSlice } from "@reduxjs/toolkit";
 
-const initialState = {};
+const initialState = {
+  totalData: [],
+};
 
 const userSlice = createSlice({
   name: "user",

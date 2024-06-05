@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
-function HomeComponent() {
+function MainPage() {
   useEffect(() => {}, []);
   return (
     <div>
@@ -9,4 +9,4 @@ function HomeComponent() {
     </div>
   );
 }
-export default HomeComponent;
+export default MainPage;
