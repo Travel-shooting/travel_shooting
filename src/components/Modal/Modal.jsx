@@ -16,8 +16,8 @@ const BackWrap = styled.div`
 
 const WhiteWrap = styled.div`
   background-color: var(--lightgrey-color);
-  width: 500px;
-  height: 500px;
+  width: 600px;
+  height: 600px;
 `;
 function Modal({ children }) {
   const dispatch = useDispatch();
