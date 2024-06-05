@@ -1,29 +1,15 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import SearchInput from "../components/Main/SearchInput";
+import { logIn } from "../redux/slices/logSlice";
 import supabase from "../util/supabase/supabaseClient";
 
-async function getPost(userId) {
-  try {
-    const { data, error } = await supabase
-      .from("POST")
-      .select("*")
-      .eq("userId", userId);
-    if (error) {
-      throw error;
-    }
-    return data;
-    // console.log(data);
-  } catch (error) {
-    console.log("Error fetching posts:", error.message);
-    return [];
-  }
-}
-
 function MainPage() {
-  const [posts, setPosts] = useState([]);
-  const [filteredPosts, setFilteredPosts] = useState([]);
-  const [userId, setUserId] = useState(null);
+  const dispatch = useDispatch();
+  const [userPosts, setUserPosts] = useState([]);
+  const loadData = useSelector((state) => state.post.loadData);
+  const userId = useSelector((state) => state.log.logInUser);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,7 +17,7 @@ function MainPage() {
         data: { user },
       } = await supabase.auth.getUser();
       if (user) {
-        setUserId(user.id); // 현재 로그인된 사용자의 ID 설정
+        dispatch(logIn(user.id)); // 현재 로그인된 사용자의 ID 설정
       }
     };
     fetchUserData();
@@ -40,9 +26,16 @@ function MainPage() {
   useEffect(() => {
     const fetchData = async () => {
       if (userId) {
-        const data = await getPost(userId);
-        setPosts(data);
-        setFilteredPosts(data);
+        const { data, error } = await supabase
+          .from("POST")
+          .select("*")
+          .eq("userId", userId);
+
+        if (error) console.error(error);
+        else {
+          setUserPosts(data);
+          console.log(data);
+        }
       }
     };
     fetchData();
@@ -50,12 +43,12 @@ function MainPage() {
 
   const handleSearch = (query) => {
     const lowerCaseQuery = query.toLowerCase();
-    const filtered = posts.filter(
+    const filtered = loadData.filter(
       (post) =>
-        post.title.toLowerCase().inclues(lowerCaseQuery) ||
-        (post.tags && post.tags.toLowerCase().inclues(lowerCaseQuery))
+        post.postTitle.toLowerCase().includes(lowerCaseQuery) ||
+        (post.tags && post.tags.toLowerCase().includes(lowerCaseQuery))
     );
-    setFilteredPosts(filtered);
+    setUserPosts(filtered);
   };
 
   // if (userId === null) {
@@ -90,7 +83,7 @@ function MainPage() {
     <>
       <div className="post-box">
         <p className="h2">나의 여행지 기록</p>
-        {filteredPosts.length === 0 ? (
+        {userPosts.length === 0 ? (
           <div
             style={{
               textAlign: "center",
@@ -102,7 +95,7 @@ function MainPage() {
             {"나의 기록이 아직 없어요!"}
           </div>
         ) : (
-          filteredPosts.map((post) => (
+          userPosts.map((post) => (
             <Link to={`/post/${post.id}`} className="post" key={post.id}>
               <div className="post-img">
                 <img src={post.image_url || ""} alt="image" />
@@ -114,7 +107,7 @@ function MainPage() {
         )}
         <div>
           <Link
-            to="/newpost/1"
+            to="/newpost"
             className="button post-btn"
             style={{ textDecoration: "none" }}
           >
@@ -126,6 +119,5 @@ function MainPage() {
     </>
   );
 }
-
 
 export default MainPage;
