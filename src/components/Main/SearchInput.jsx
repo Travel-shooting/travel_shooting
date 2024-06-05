@@ -1,23 +1,21 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import styled from "styled-components";
-import { loadPost } from "../../redux/slices/postSlice";
-import supabase from "../../util/supabase/supabaseClient";
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { loadPost } from '../../redux/slices/postSlice';
+import supabase from '../../util/supabase/supabaseClient';
 const Img = styled.img`
   cursor: pointer;
 `;
 const SearchInput = () => {
   const dispatch = useDispatch();
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState('');
   const [postDatas, setPostDatas] = useState([]);
   const loadData = useSelector((state) => state.post.loadData);
   const [tags, setTags] = useState([]);
   useEffect(() => {
     const tagData = async () => {
-      const { data: tagData, tagError } = await supabase
-        .from("POSTTAG")
-        .select("*");
+      const { data: tagData, tagError } = await supabase.from('POSTTAG').select('*');
       if (tagError) console.error(tagError);
       else setTags(tagData);
     };
@@ -25,7 +23,7 @@ const SearchInput = () => {
   }, []);
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from("POST").select("*");
+      const { data, error } = await supabase.from('POST').select('*');
       if (error) {
         console.error(error);
       } else {
@@ -33,7 +31,7 @@ const SearchInput = () => {
           const imageURLs = JSON.parse(item.imageURL).map((obj) => obj.url);
           return {
             ...item,
-            imageURL: imageURLs,
+            imageURL: imageURLs
           };
         });
         console.log(updatedData);
@@ -49,30 +47,23 @@ const SearchInput = () => {
     setSearch(e.target.value);
   };
   const handleSearch = (query) => {
-    const filtered = postDatas.filter((post) =>
-      post.postTitle.toLowerCase().includes(query)
-    );
+    const filtered = postDatas.filter((post) => post.postTitle.toLowerCase().includes(query));
     setPostDatas(filtered);
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter" && search) {
+    if (e.key === 'Enter' && search) {
       handleSearch(search);
-    } else if (e.key === "Enter" && !search) {
-      alert("나라를 입력하세요");
+    } else if (e.key === 'Enter' && !search) {
+      alert('나라를 입력하세요');
     }
   };
   const handleTags = (query) => {
     const fetchTags = async () => {
-      const { data: tagData, error } = await supabase
-        .from("TAGS")
-        .select("*")
-        .eq("tagId", query);
+      const { data: tagData, error } = await supabase.from('TAGS').select('*').eq('tagId', query);
       if (error) console.error(error);
       else {
-        const filteredPostDatas = loadData.filter((postData) =>
-          tagData.some((tag) => tag.postId === postData.id)
-        );
+        const filteredPostDatas = loadData.filter((postData) => tagData.some((tag) => tag.postId === postData.id));
         setPostDatas(filteredPostDatas);
       }
     };
@@ -112,7 +103,7 @@ const SearchInput = () => {
         {postDatas.map((post) => (
           <Link to={`/post/${post.id}`} className="post" key={post.id}>
             <div className="post-img">
-              <img src={post.imageURL[0]} alt="image" width={"200px"} />
+              <img src={post.imageURL[0]} alt="image" width={'100%'} />
             </div>
             <p className="post-title">{post.postTitle}</p>
             <span>{post.postDate}</span>

@@ -1,8 +1,9 @@
-import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { logIn } from "../../../redux/slices/logSlice";
-import supabase from "../../../util/supabase/supabaseClient";
-import Modal from "../../Modal";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { logIn } from '../../../redux/slices/logSlice';
+import { close } from '../../../redux/slices/modalSlice';
+import supabase from '../../../util/supabase/supabaseClient';
+import Modal from '../../Modal';
 
 function Login() {
   const dispatch = useDispatch();
@@ -11,22 +12,19 @@ function Login() {
 
     const response = await supabase.auth.signInWithPassword({
       email: userId,
-      password: userPw,
+      password: userPw
     });
     console.log(response.data.user.id);
-    const { data, error } = await supabase
-      .from("USER")
-      .select("*")
-      .eq("userId", userId);
-    console.log("login : ", { data, error });
-    localStorage.setItem("logInUser", JSON.stringify(response.data.user.id));
+    const { data, error } = await supabase.from('USER').select('*').eq('userId', userId);
+    console.log('login : ', { data, error });
     dispatch(logIn(response.data.user.id));
+    localStorage.setItem('logInUser', JSON.stringify(response.data.user.id));
     dispatch(close());
     setUser(data.user);
   };
 
-  const [userId, setUserId] = useState("");
-  const [userPw, setUserPw] = useState("");
+  const [userId, setUserId] = useState('');
+  const [userPw, setUserPw] = useState('');
   const [user, setUser] = useState(null);
 
   const onChangeId = (e) => {
@@ -40,33 +38,13 @@ function Login() {
     return (
       <Modal>
         <div className="logo-div">
-          <img
-            src="src\styles\images\logo-icon.png"
-            alt="logo"
-            className="logo"
-          />
-          <img
-            src="src\styles\images\logo-text.png"
-            alt="logo"
-            className="logo"
-          />
+          <img src="src\styles\images\logo-icon.png" alt="logo" className="logo" />
+          <img src="src\styles\images\logo-text.png" alt="logo" className="logo" />
         </div>
         <p className="login-p">로그인</p>
         <form className="login-form ">
-          <input
-            className="login-input"
-            placeholder="이메일"
-            type="email"
-            value={userId}
-            onChange={onChangeId}
-          />
-          <input
-            className="login-input"
-            placeholder="비밀번호"
-            type="password"
-            value={userPw}
-            onChange={onChangePw}
-          />
+          <input className="login-input" placeholder="이메일" type="email" value={userId} onChange={onChangeId} />
+          <input className="login-input" placeholder="비밀번호" type="password" value={userPw} onChange={onChangePw} />
           <button className="login-input-btn" type="submit" onClick={loginUser}>
             로그인
           </button>
@@ -74,10 +52,7 @@ function Login() {
         <div className="login-btn-div">
           <button className="login-btn">아이디 찾기</button>
           <button className="login-btn">비밀번호 찾기</button>
-          <button
-            className="login-btn"
-            href="src\components\UserComponent\Signup\Signup.jsx"
-          >
+          <button className="login-btn" href="src\components\UserComponent\Signup\Signup.jsx">
             회원가입
           </button>
         </div>

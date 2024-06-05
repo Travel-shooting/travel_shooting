@@ -1,54 +1,68 @@
-import React, { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
-
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import supabase from '../../../util/supabase/supabaseClient';
+import Pagination from '../../Pagination';
+const itemCountPerPage = 5; //한페이지당 보여줄 아이템 갯수
+const pageCountPerPage = 5; //보여줄 페이지 갯수
 const MyPosts = () => {
-  const [posts, setPosts] = useState([]);
-  const [error, setError] = useState(null);
-
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const [error, setError] = useState(false);
+  const [userPosts, setUserPosts] = useState([]);
+  const userId = useSelector((state) => state.log.logInUser);
+  const navigate = useNavigate();
+  //페이지네이션
+  const [offset, setOffset] = useState(0); //현재페이지에서 시작할 item index
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const userId = 'email0@email.com'; // 로그인한 사용자의 이메일
+    const fetchData = async () => {
+      const { data, error } = await supabase.from('POST').select('*').eq('postUserId', userId);
 
-      const { data, error } = await supabase
-        .from('posts') // 게시물 테이블 이름
-        .select('*')
-        .eq('postUserId', userId); // postUserId가 로그인한 사용자와 동일한 게시물들을 가져옵니다.
-
-      if (error) {
-        console.error('Error fetching posts:', error.message);
-        setError(error.message);
-        return;
+      if (error) setError(true);
+      else {
+        const updatedData = data.map((item) => {
+          const imageURLs = JSON.parse(item.imageURL).map((obj) => obj.url);
+          return {
+            ...item,
+            imageURL: imageURLs
+          };
+        });
+        setUserPosts(updatedData);
+        console.log(data);
       }
-
-      setPosts(data);
     };
-
-    fetchPosts();
+    fetchData();
   }, []);
-
+  const handleNavigate = (postId) => {
+    navigate(`/post/${postId}`);
+  };
+  /** 현재페이지당 보여줄 item index들 계산하는 함수 */
+  const setCurrentPageFunc = (page) => {
+    const lastOffset = (page - 1) * itemCountPerPage; // (2-1) * 2 = 2
+    setOffset(lastOffset);
+  };
   return (
     <div>
       <h2>내가 쓴 글</h2>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <ul>
-        {posts.map((post) => (
-          <li key={post.id}>
+        {userPosts.slice(offset, offset + itemCountPerPage).map((post) => (
+          <li key={post.id} onClick={() => handleNavigate(post.id)}>
             <h3>{post.postTitle}</h3>
             <p>{post.postContent}</p>
-            <p>{new Date(post.postDate).toLocaleDateString()}</p>
+            <p>{post.postDate}</p>
             <div>
-              {post.imageURL && JSON.parse(post.imageURL).map((img, index) => (
-                <img key={index} src={img.url} alt={`Post image ${index + 1}`} style={{ width: '100px', height: '100px', marginRight: '10px' }} />
-              ))}
+              <img src={post.imageURL[0]} style={{ width: '100px', height: '100px', marginRight: '10px' }} />
             </div>
             <p>{post.country}</p>
           </li>
         ))}
       </ul>
+      <Pagination
+        itemCount={userPosts.length}
+        pageCountPerPage={pageCountPerPage}
+        itemCountPerPage={itemCountPerPage}
+        clickListener={setCurrentPageFunc}
+      />
     </div>
   );
 };

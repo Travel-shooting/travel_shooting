@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import styled from "styled-components";
-import supabase from "../../../util/supabase/supabaseClient";
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import styled from 'styled-components';
+import supabase from '../../util/supabase/supabaseClient';
 
 const Container = styled.div`
   display: flex;
@@ -21,7 +21,7 @@ const TagLabel = styled.label`
   }
 `;
 
-const HiddenCheckbox = styled.input.attrs({ type: "checkbox" })`
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   display: none;
 
   &:checked + ${TagLabel} {
@@ -35,9 +35,7 @@ function Tags() {
   const [tags, setTags] = useState([]);
   useEffect(() => {
     async function tagData() {
-      const { data: tagData, tagError } = await supabase
-        .from("POSTTAG")
-        .select("*");
+      const { data: tagData, tagError } = await supabase.from('POSTTAG').select('*');
 
       if (tagError) console.error(tagError);
       else {
@@ -48,24 +46,21 @@ function Tags() {
     tagData();
   }, []);
   useEffect(() => {
-    const storedTags = JSON.parse(localStorage.getItem("tags")) || [];
+    const storedTags = JSON.parse(localStorage.getItem('tags')) || [];
     setSelectedTags(storedTags);
   }, []);
 
   const handleCheckBoxChange = (tagId, e) => {
     if (e.target.checked) {
-      const newSelectedTags = [
-        ...selectedTags,
-        { id: tagId, tagValue: e.target.value },
-      ];
+      const newSelectedTags = [...selectedTags, { id: tagId, tagValue: e.target.value }];
       setSelectedTags(newSelectedTags);
       //dispatch(manageTags(newSelectedTags));
-      localStorage.setItem("tags", JSON.stringify(newSelectedTags));
+      localStorage.setItem('tags', JSON.stringify(newSelectedTags));
     } else {
       const newSelectedTags = selectedTags.filter((t) => t !== e.target.value);
       setSelectedTags(newSelectedTags);
       //dispatch(manageTags(newSelectedTags));
-      localStorage.setItem("tags", JSON.stringify(newSelectedTags));
+      localStorage.setItem('tags', JSON.stringify(newSelectedTags));
     }
   };
 

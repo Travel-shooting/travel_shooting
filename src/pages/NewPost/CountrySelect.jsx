@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
-import api from "../../../util/api/api";
+import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
+import api from '../../util/api/api';
 const Select = styled.div`
   width: 230px;
   h3 {
@@ -19,7 +19,7 @@ const Select = styled.div`
 const CountryBox = styled.div`
   overflow-y: auto;
   width: 100%;
-  height: ${(props) => (props.selected ? "200px" : "0px")};
+  height: ${(props) => (props.selected ? '200px' : '0px')};
 
   position: relative;
 `;
@@ -54,15 +54,12 @@ function CountrySelect() {
   const handleSelectValue = (e) => {
     selectedCountry.current.innerText = e.target.innerText;
     setIsShowOptions(false); // 선택 후 드롭다운 닫기
-    localStorage.setItem("country", JSON.stringify(e.target.innerText));
+    localStorage.setItem('country', JSON.stringify(e.target.innerText));
   };
 
   return (
     <Select>
-      <h3
-        ref={selectedCountry}
-        onClick={() => setIsShowOptions((prev) => !prev)}
-      >
+      <h3 ref={selectedCountry} onClick={() => setIsShowOptions((prev) => !prev)}>
         나라를 선택해주세요
       </h3>
 
