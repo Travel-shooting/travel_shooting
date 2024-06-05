@@ -21,12 +21,25 @@ function Signup() {
 
   const signUpNewUser = async (e) => {
     e.preventDefault();
+
     const { data, error } = await supabase.auth.signUp({
       email: signUpId,
       password: signUpPw,
     });
-    console.log("signup: ", { data, error });
-    // setUser(data, user);
+    console.log(data.user.id);
+    console.log(error);
+
+    await supabase
+      .from("USER")
+      .insert({ uuid: data.user.id, userId: signUpId });
+
+    // const { data, error } = await supabase
+    //   .from("USER") // 여기에서 'USER'은 테이블 이름입니다.
+    //   .select("*")
+    //   .eq("userId", signUpId)
+    //   .eq("userPw", signUpPw);
+    // console.log("login : ", { data, error });
+    // setUser(data.user);
   };
 
   return (
