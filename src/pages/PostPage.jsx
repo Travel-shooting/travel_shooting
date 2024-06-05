@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import supabase from "../../util/supabase/supabaseClient";
-import PostDetail from "./PostDetail";
-import Slider from "./Slider";
-import Travel from "./Travel";
+import PostDetail from "../components/PostComponent/PostDetail";
+import Slider from "../components/PostComponent/Slider";
+import Travel from "../components/PostComponent/Travel";
+import supabase from "../util/supabase/supabaseClient";
 const Container = styled.div`
   display: grid;
   grid-template-rows: 700px 1fr;
@@ -17,7 +17,7 @@ const Container = styled.div`
   }
 `;
 
-function PostComponent() {
+function PostPage() {
   const [postDetailDatas, setPostDetailDatas] = useState({});
   const [postImages, setPostImages] = useState([]);
   const [postTags, setPostTags] = useState([]);
@@ -60,4 +60,4 @@ function PostComponent() {
   );
 }
 
-export default PostComponent;
+export default PostPage;
