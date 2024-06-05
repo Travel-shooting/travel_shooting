@@ -13,15 +13,14 @@ const SearchInput = () => {
   const [postDatas, setPostDatas] = useState([]);
   const loadData = useSelector((state) => state.post.loadData);
   const [tags, setTags] = useState([]);
+
   useEffect(() => {
     const tagData = async () => {
       const { data: tagData, tagError } = await supabase.from('POSTTAG').select('*');
       if (tagError) console.error(tagError);
       else setTags(tagData);
     };
-    tagData();
-  }, []);
-  useEffect(() => {
+
     const fetchData = async () => {
       const { data, error } = await supabase.from('POST').select('*');
       if (error) {
@@ -34,12 +33,11 @@ const SearchInput = () => {
             imageURL: imageURLs
           };
         });
-        console.log(updatedData);
         setPostDatas(updatedData);
         dispatch(loadPost(updatedData));
       }
     };
-
+    tagData();
     fetchData();
   }, []);
 

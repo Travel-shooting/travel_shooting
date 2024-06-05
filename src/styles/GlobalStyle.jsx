@@ -1,5 +1,5 @@
-import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";
+import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
 
 /**
  * 전역스타일링인데 막 html 태그 기본 스타일 설정을 여기서 해줘용
@@ -220,6 +220,12 @@ button {
   background-color: transparent;
   color: grey;
 }
-
+.swiper-slide{
+  border-radius: 25px;
+  &:hover{
+    transition: all 0.5s;
+    transform: scale(1.1);
+  }
+}
 `;
 export default GlobalStyle;

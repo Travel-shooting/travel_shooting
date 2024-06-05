@@ -1,16 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import styled from 'styled-components';
+import 'swiper/css';
+import 'swiper/css/virtual';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import SearchInput from '../components/Main/SearchInput';
 import { logIn } from '../redux/slices/logSlice';
 import supabase from '../util/supabase/supabaseClient';
-const Container = styled.div`
-  display: flex;
-  gap: 20px;
 
-  overflow-x: hidden;
-`;
 function MainPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -51,39 +48,12 @@ function MainPage() {
   const handleNavigate = (postId) => {
     navigate(`/post/${postId}`);
   };
-  // if (userId === null) {
-  //   return (
-  //     <div
-  //       style={{
-  //         textAlign: "center",
-  //         color: "#bbbbbb",
-  //         marginBottom: "32px",
-  //         fontSize: "40px",
-  //         font: "pretendard-regular",
-  //       }}
-  //     >
-  //       Loading...
-  //     </div>
-  //   );
-  // } else if (!userId) {
-  //   return (
-  //     <div
-  //       style={{
-  //         textAlign: "center",
-  //         color: "var(--mintgreen-color)",
-  //         marginBottom: "32px",
-  //         fontSize: "40px",
-  //       }}
-  //     >
-  //       로그인이 필요합니다
-  //     </div>
-  //   );
-  // } else {
+
   return (
     <>
       <div className="post-box">
         <p className="h2">나의 여행지 기록</p>
-        <Container>
+        <div>
           {!userPosts.length ? (
             <div
               style={{
@@ -93,20 +63,37 @@ function MainPage() {
                 fontSize: '16px'
               }}
             >
-              {'나의 기록이 아직 없어요!'}
+              나의 기록이 아직 없어요!
             </div>
           ) : (
-            userPosts.map((post) => (
-              <div onClick={() => handleNavigate(post.id)} className="post" key={post.id}>
-                <div className="post-img">
-                  <img src={post.imageURL[0]} alt="image" width={'100%'} />
-                </div>
-                <p className="post-title">{post.postTitle}</p>
-                <span>{post.postDate}</span>
-              </div>
-            ))
+            <Swiper
+              className="swiper"
+              spaceBetween={40}
+              centeredSlides={true}
+              breakpoints={{
+                980: {
+                  slidesPerView: 3.5
+                },
+                568: {
+                  slidesPerView: 2.5
+                },
+                0: {
+                  slidesPerView: 1.5
+                }
+              }}
+            >
+              {userPosts.map((post) => (
+                <SwiperSlide onClick={() => handleNavigate(post.id)} className="swiper-slide post" key={post.id}>
+                  <div>
+                    <img src={post.imageURL[0]} alt="image" width={'100%'} />
+                    <h1>{post.postTitle}</h1>
+                    <span>{post.postDate}</span>
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           )}
-        </Container>
+        </div>
 
         <div>
           <Link to="/newpost" className="button post-btn" style={{ textDecoration: 'none' }}>
