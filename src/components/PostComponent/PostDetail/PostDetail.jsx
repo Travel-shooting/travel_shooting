@@ -75,7 +75,7 @@ function PostDetail({ postDetailData, postTags }) {
         <p>{postDetailData.postContent}</p>
         <BadgeBox>
           {tags.map((tag, i) => (
-            <Badge key={i}>{tag}</Badge>
+            <Badge key={i}>#{tag}</Badge>
           ))}
         </BadgeBox>
       </div>

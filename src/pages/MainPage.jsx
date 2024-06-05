@@ -13,7 +13,7 @@ function MainPage() {
   const dispatch = useDispatch();
   const [userPosts, setUserPosts] = useState([]);
   const userId = useSelector((state) => state.log.logInUser);
-
+  const [activeSlide, setActiveSlide] = useState(0);
   useEffect(() => {
     const fetchUserData = async () => {
       const { data: user } = await supabase.auth.getUser();
@@ -45,6 +45,12 @@ function MainPage() {
     };
     fetchData();
   }, []);
+  const slideStyle = (index) => {
+    return index === activeSlide ? { transform: 'scale(1.1)', transition: 'all 0.5s' } : {};
+  };
+  const handleSlideChange = (swiper) => {
+    setActiveSlide(swiper.activeIndex);
+  };
   const handleNavigate = (postId) => {
     navigate(`/post/${postId}`);
   };
@@ -70,6 +76,7 @@ function MainPage() {
               className="swiper"
               spaceBetween={40}
               centeredSlides={true}
+              onSlideChange={handleSlideChange}
               breakpoints={{
                 980: {
                   slidesPerView: 3.5
@@ -82,8 +89,13 @@ function MainPage() {
                 }
               }}
             >
-              {userPosts.map((post) => (
-                <SwiperSlide onClick={() => handleNavigate(post.id)} className="swiper-slide post" key={post.id}>
+              {userPosts.map((post, i) => (
+                <SwiperSlide
+                  style={slideStyle(i)}
+                  onClick={() => handleNavigate(post.id)}
+                  className="swiper-slide post"
+                  key={post.id}
+                >
                   <div>
                     <img src={post.imageURL[0]} alt="image" width={'100%'} />
                     <h1>{post.postTitle}</h1>

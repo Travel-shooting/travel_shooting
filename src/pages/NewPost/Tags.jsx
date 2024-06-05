@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { manageTags } from '../../redux/slices/postSlice';
 import supabase from '../../util/supabase/supabaseClient';
 
 const Container = styled.div`
@@ -8,6 +9,7 @@ const Container = styled.div`
   flex-direction: row;
   gap: 10px;
 `;
+
 const TagLabel = styled.label`
   display: inline-block;
   background-color: var(--lightgrey-color);
@@ -24,27 +26,29 @@ const TagLabel = styled.label`
 const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   display: none;
 
-  &:checked + ${TagLabel} {
+  &:checked + label {
     background-color: var(--golden-color);
     color: var(--white-color);
   }
 `;
+
 function Tags() {
   const dispatch = useDispatch();
   const [selectedTags, setSelectedTags] = useState([]);
   const [tags, setTags] = useState([]);
+
   useEffect(() => {
     async function tagData() {
-      const { data: tagData, tagError } = await supabase.from('POSTTAG').select('*');
+      const { data: tagData, error: tagError } = await supabase.from('POSTTAG').select('*');
 
       if (tagError) console.error(tagError);
       else {
-        console.log(tagData);
         setTags(tagData);
       }
     }
     tagData();
   }, []);
+
   useEffect(() => {
     const storedTags = JSON.parse(localStorage.getItem('tags')) || [];
     setSelectedTags(storedTags);
@@ -54,13 +58,13 @@ function Tags() {
     if (e.target.checked) {
       const newSelectedTags = [...selectedTags, { id: tagId, tagValue: e.target.value }];
       setSelectedTags(newSelectedTags);
-      //dispatch(manageTags(newSelectedTags));
-      localStorage.setItem('tags', JSON.stringify(newSelectedTags));
+      dispatch(manageTags(newSelectedTags));
+      //localStorage.setItem('tags', JSON.stringify(newSelectedTags));
     } else {
-      const newSelectedTags = selectedTags.filter((t) => t !== e.target.value);
+      const newSelectedTags = selectedTags.filter((t) => t.id !== tagId);
       setSelectedTags(newSelectedTags);
-      //dispatch(manageTags(newSelectedTags));
-      localStorage.setItem('tags', JSON.stringify(newSelectedTags));
+      dispatch(manageTags(newSelectedTags));
+      //localStorage.setItem('tags', JSON.stringify(newSelectedTags));
     }
   };
 
@@ -69,12 +73,12 @@ function Tags() {
       {tags.map((tag, i) => (
         <div key={i}>
           <HiddenCheckbox
-            id={tag.id}
+            id={`checkbox-${tag.id}`}
             onChange={(e) => handleCheckBoxChange(tag.id, e)}
-            checked={selectedTags.includes(tag.tagValue)}
+            checked={selectedTags.some((t) => t.id === tag.id)}
             value={tag.tagValue}
           />
-          <TagLabel htmlFor={tag.id}>{tag.tagValue}</TagLabel>
+          <TagLabel htmlFor={`checkbox-${tag.id}`}>{tag.tagValue}</TagLabel>
         </div>
       ))}
     </Container>

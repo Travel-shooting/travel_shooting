@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -36,17 +36,12 @@ function NewPost() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.log.logInUser);
-  const [tags, setTags] = useState([]);
+  const selectedTags = useSelector((state) => state.post.tags);
   const [fileImages, setFileImages] = useState([]);
   const [realFiles, setRealFiles] = useState([]);
   const fileInputRef = useRef();
   const formRef = useRef([]);
 
-  useEffect(() => {
-    const tag = JSON.parse(localStorage.getItem('tags')) || [];
-    setTags(tag);
-    console.log(tag);
-  }, []);
   const handleClick = () => {
     fileInputRef.current.click();
   };
@@ -93,7 +88,7 @@ function NewPost() {
         country: JSON.parse(localStorage.getItem('country'))
       };
 
-      const tagsFormData = tags.map(
+      const tagsFormData = selectedTags.map(
         (tag) => ({
           id: crypto.randomUUID(),
           tagId: tag.id,
@@ -101,7 +96,6 @@ function NewPost() {
         }),
         []
       );
-      console.log(tagsFormData);
       const postError = {
         title: !formRef.current[0].value.trim().length,
         content: !formRef.current[1].value.trim().length,

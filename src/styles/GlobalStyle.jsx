@@ -47,7 +47,7 @@ button {
 }
 
 .post-box {
-  weight: 100%;
+  width: 100%;
   border: 1px dashed var(--mintgreen-color);
   margin-bottom: 60px;
   border-radius: 6px;
@@ -125,24 +125,6 @@ button {
   gap: 4px;
 }
 
-.tag {
-  display: inline-block;
-  padding: 10px 16px;
-  margin: 4px;
-  background-color: var(--black-color);
-  color: var(--white-color);
-  font-weight: 300;
-  border-radius: 50px;
-  font-size: 14px;
-  text-align: center;
-  cursor: pointer;
-  letter-spacing: 0.05em;
-}
-
-.tag:hover {
-  background-color: var(--mintgreen-color);
-  color: var(--white-color);
-}
 
 .post {
   display: flex;
@@ -222,10 +204,7 @@ button {
 }
 .swiper-slide{
   border-radius: 25px;
-  &:hover{
-    transition: all 0.5s;
-    transform: scale(1.1);
-  }
+
 }
 `;
 export default GlobalStyle;
