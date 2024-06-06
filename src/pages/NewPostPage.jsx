@@ -78,51 +78,53 @@ function NewPost() {
 
   const handleSubmit = async () => {
     const id = crypto.randomUUID();
-    try {
-      const uploadedImageUrls = await uploadImagesToSupabase(realFiles, id);
+    if (confirm('업로드 하시겠습니까? 사진은 수정이 불가능합니다')) {
+      try {
+        const uploadedImageUrls = await uploadImagesToSupabase(realFiles, id);
 
-      const postFormData = {
-        id,
-        postUserId: userId,
-        postTitle: formRef.current[0].value,
-        postContent: formRef.current[1].value,
-        postDate: getPresentTime(),
-        postLike: 0,
-        imageURL: uploadedImageUrls,
-        country: country
-      };
+        const postFormData = {
+          id,
+          postUserId: userId,
+          postTitle: formRef.current[0].value,
+          postContent: formRef.current[1].value,
+          postDate: getPresentTime(),
+          postLike: 0,
+          imageURL: uploadedImageUrls,
+          country: country
+        };
 
-      const tagsFormData = selectedTags.map(
-        (tag) => ({
-          id: crypto.randomUUID(),
-          tagId: tag.id,
-          postId: id
-        }),
-        []
-      );
-      const postError = {
-        title: !formRef.current[0].value.trim().length,
-        content: !formRef.current[1].value.trim().length,
-        country: country == '',
-        imageURL: !uploadedImageUrls.length,
-        tags: !tagsFormData.length
-      };
-      if (postError.title || postError.content || postError.country || postError.imageURL || postError.tags) {
-        alert('업로드에 문제가생겼어요 확인해주세요');
-        return;
+        const tagsFormData = selectedTags.map(
+          (tag) => ({
+            id: crypto.randomUUID(),
+            tagId: tag.id,
+            postId: id
+          }),
+          []
+        );
+        const postError = {
+          title: !formRef.current[0].value.trim().length,
+          content: !formRef.current[1].value.trim().length,
+          country: country == '',
+          imageURL: !uploadedImageUrls.length,
+          tags: !tagsFormData.length
+        };
+        if (postError.title || postError.content || postError.country || postError.imageURL || postError.tags) {
+          alert('업로드에 문제가생겼어요 확인해주세요');
+          return;
+        }
+
+        await supabase.from('POST').insert(postFormData);
+        await supabase.from('TAGS').insert(tagsFormData);
+
+        dispatch(addPost({ postFormData }));
+        dispatch(manageTags({ tagsFormData }));
+        dispatch(manageRealImages(postFormData));
+
+        alert('데이터가 정상적으로 추가되었습니다');
+        navigate('/');
+      } catch (error) {
+        console.error('에러 발생: ' + error.message);
       }
-
-      await supabase.from('POST').insert(postFormData);
-      await supabase.from('TAGS').insert(tagsFormData);
-
-      dispatch(addPost({ postFormData }));
-      dispatch(manageTags({ tagsFormData }));
-      dispatch(manageRealImages(postFormData));
-
-      alert('데이터가 정상적으로 추가되었습니다');
-      navigate('/');
-    } catch (error) {
-      console.error('에러 발생: ' + error.message);
     }
   };
 

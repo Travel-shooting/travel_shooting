@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/virtual';
@@ -12,7 +12,7 @@ function MainPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userPosts, setUserPosts] = useState([]);
-  const userId = useSelector((state) => state.log.logInUser);
+  const userId = JSON.parse(sessionStorage.getItem('logInUser'));
   const [activeSlide, setActiveSlide] = useState(0);
   useEffect(() => {
     const fetchUserData = async () => {

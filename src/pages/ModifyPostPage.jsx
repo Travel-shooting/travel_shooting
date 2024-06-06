@@ -32,13 +32,15 @@ function ModifyPostPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { postId } = useParams();
-  const userId = useSelector((state) => state.log.logInUser);
+  //const userId = useSelector((state) => state.log.logInUser);
   const selectedTags = useSelector((state) => state.post.tags);
   const [fileImages, setFileImages] = useState([]);
-  const country = useSelector((state) => state.post.country);
 
   const formRef = useRef([]);
   const [postData, setPostData] = useState([]);
+
+  const country = useSelector((state) => state.post.country) || postData.country;
+
   const [postTags, setPostTags] = useState([]);
   useEffect(() => {
     formRef.current[0].focus();
@@ -64,31 +66,25 @@ function ModifyPostPage() {
   }, [dispatch, postId]);
 
   const handleSubmit = async () => {
-    const id = crypto.randomUUID();
-
     try {
       const postFormData = {
-        id,
-        postUserId: userId,
         postTitle: formRef.current[0].value,
         postContent: formRef.current[1].value,
         postDate: getPresentTime(),
-        postLike: 0,
         country: country
       };
-
       const tagsFormData = selectedTags.map(
         (tag) => ({
           id: crypto.randomUUID(),
           tagId: tag.tagId,
-          postId: id
+          postId: postId
         }),
         []
       );
       const postError = {
         title: !formRef.current[0].value.trim().length,
         content: !formRef.current[1].value.trim().length,
-        country: country == '',
+        country: postFormData.country == '',
         tags: !tagsFormData.length
       };
       if (postError.title || postError.content || postError.country || postError.tags) {
@@ -99,9 +95,10 @@ function ModifyPostPage() {
         return;
       }
       await supabase.from('POST').update(postFormData).eq('id', postId);
-      await supabase.from('TAGS').delete().eq('postId', postId);
-      await supabase.from('TAGS').insert(tagsFormData).eq('postId', postId);
-
+      const { error: deleteError } = await supabase.from('TAGS').delete().eq('postId', postId);
+      const { error: insertError } = await supabase.from('TAGS').insert(tagsFormData);
+      if (deleteError) console.error(deleteError);
+      if (insertError) console.error(insertError);
       dispatch(addPost({ postFormData }));
       dispatch(manageTags({ tagsFormData }));
 

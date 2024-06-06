@@ -1,14 +1,41 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import supabase from '../../../util/supabase/supabaseClient';
 import Pagination from '../../Pagination';
-const itemCountPerPage = 5; //한페이지당 보여줄 아이템 갯수
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+`;
+const List = styled.ul`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 15px;
+  height: 1000px;
+`;
+const Item = styled.li`
+  width: 25%;
+  height: 220px;
+
+  img {
+    width: 100%;
+    height: 100%;
+  }
+`;
+const Font = styled.h3`
+  font-size: ${(props) => props.size};
+  font-weight: ${(props) => props.weight};
+  color: ${(props) => props.color};
+  overflow: hidden;
+`;
+const itemCountPerPage = 12; //한페이지당 보여줄 아이템 갯수
 const pageCountPerPage = 5; //보여줄 페이지 갯수
 const MyPosts = () => {
   const [error, setError] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
-  const userId = useSelector((state) => state.log.logInUser);
+  const userId = JSON.parse(sessionStorage.getItem('logInUser'));
   const navigate = useNavigate();
   //페이지네이션
   const [offset, setOffset] = useState(0); //현재페이지에서 시작할 item index
@@ -27,7 +54,6 @@ const MyPosts = () => {
           };
         });
         setUserPosts(updatedData);
-        console.log(data);
       }
     };
     fetchData();
@@ -42,27 +68,34 @@ const MyPosts = () => {
   };
   return (
     <div>
-      <h2>내가 쓴 글</h2>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      <ul>
-        {userPosts.slice(offset, offset + itemCountPerPage).map((post) => (
-          <li key={post.id} onClick={() => handleNavigate(post.id)}>
-            <h3>{post.postTitle}</h3>
-            <p>{post.postContent}</p>
-            <p>{post.postDate}</p>
-            <div>
-              <img src={post.imageURL[0]} style={{ width: '100px', height: '100px', marginRight: '10px' }} />
-            </div>
-            <p>{post.country}</p>
-          </li>
-        ))}
-      </ul>
-      <Pagination
-        itemCount={userPosts.length}
-        pageCountPerPage={pageCountPerPage}
-        itemCountPerPage={itemCountPerPage}
-        clickListener={setCurrentPageFunc}
-      />
+      <Container>
+        <Font size={'25px'} weight={'bold'} color={'var(--grey-color)'}>
+          내가 쓴 글
+        </Font>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
+        {userPosts.length > 0 ? (
+          <>
+            <List>
+              {userPosts.slice(offset, offset + itemCountPerPage).map((post) => (
+                <Item key={post.id} onClick={() => handleNavigate(post.id)}>
+                  <img src={post.imageURL[0]} />
+                  <Font size={'18px'} weight={'500'}>
+                    {post.postTitle}
+                  </Font>
+                </Item>
+              ))}
+            </List>
+            <Pagination
+              itemCount={userPosts.length}
+              pageCountPerPage={pageCountPerPage}
+              itemCountPerPage={itemCountPerPage}
+              clickListener={setCurrentPageFunc}
+            />
+          </>
+        ) : (
+          <div>없음</div>
+        )}
+      </Container>
     </div>
   );
 };
