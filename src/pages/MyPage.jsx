@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import MyPosts from '../components/UserComponent/MyPosts/MyPosts';
 import ProfileEdit from '../components/UserComponent/ProfileEdit/ProfileEdit';
@@ -23,7 +23,7 @@ const Profile = styled.div`
 const ProfileImage = styled.img`
   width: 150px;
   height: 150px;
-  background-color: red;
+
   background-image: contain;
   border-radius: 50%;
 `;

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { logIn } from '../../../redux/slices/logSlice';
 import { close } from '../../../redux/slices/modalSlice';
 import supabase from '../../../util/supabase/supabaseClient';
-import Modal from '../../Modal';
+import Modal from '../../LogModal';
 
 function Login() {
   const dispatch = useDispatch();
