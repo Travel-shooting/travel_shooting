@@ -14,7 +14,6 @@ const NavigationButton = styled.div`
   width: 50px; // 버튼 크기 조절
   height: 50px; // 버튼 크기 조절
   cursor: pointer;
-  z-index: 2;
 `;
 
 const PrevButton = styled(NavigationButton)`
