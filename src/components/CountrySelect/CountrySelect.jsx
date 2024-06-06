@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import { manageCountry } from '../../redux/slices/postSlice';
 import api from '../../util/api/api';
 const Select = styled.div`
   width: 230px;
@@ -39,6 +41,7 @@ const CountryItem = styled.li`
   }
 `;
 function CountrySelect({ country }) {
+  const dispatch = useDispatch();
   const [countries, setCountries] = useState([]);
   const [isShowOptions, setIsShowOptions] = useState(false);
   const selectedCountry = useRef(null);
@@ -54,7 +57,7 @@ function CountrySelect({ country }) {
   const handleSelectValue = (e) => {
     selectedCountry.current.innerText = e.target.innerText;
     setIsShowOptions(false); // 선택 후 드롭다운 닫기
-    localStorage.setItem('country', JSON.stringify(e.target.innerText));
+    dispatch(manageCountry(e.target.innerText));
   };
 
   return (

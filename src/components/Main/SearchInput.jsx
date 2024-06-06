@@ -18,7 +18,6 @@ const Tag = styled.button`
   background-color: ${(props) => (props.selected ? 'var(--mintgreen-color)' : 'var(--black-color)')};
   &:hover {
     background-color: var(--mintgreen-color);
-    color: var(--white-color);
   }
 `;
 const NoData = styled.div`
@@ -36,47 +35,40 @@ const SearchInput = () => {
   const loadData = useSelector((state) => state.post.loadData);
   const [tags, setTags] = useState([]);
   const [selectedTagId, setSelectedTagId] = useState(null);
-  useEffect(() => {
-    const tagData = async () => {
-      const { data: tagData, tagError } = await supabase.from('POSTTAG').select('*');
-      if (tagError) console.error(tagError);
-      else setTags(tagData);
-    };
 
+  useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from('POST').select('*');
-      if (error) {
-        console.error(error);
-      } else {
-        const updatedData = data.map((item) => {
+      const { data: postDatas, error: postError } = await supabase.from('POST').select('*');
+      const { data: tagData, tagError } = await supabase.from('POSTTAG').select('*');
+
+      if (postError || tagError) console.error(postError || tagError);
+      else {
+        const updatedData = postDatas.map((item) => {
           const imageURLs = JSON.parse(item.imageURL).map((obj) => obj.url);
           return {
             ...item,
             imageURL: imageURLs
           };
         });
+        setTags(tagData);
         setPostDatas(updatedData);
+        localStorage.setItem('loadData', JSON.stringify(updatedData));
         dispatch(loadPost(updatedData));
       }
     };
-    tagData();
     fetchData();
-  }, []);
+  }, [dispatch]);
 
-  const searchHandler = (e) => {
-    setSearch(e.target.value);
-  };
+  const searchHandler = (e) => setSearch(e.target.value);
+
   const handleSearch = (query) => {
     const filtered = postDatas.filter((post) => post.postTitle.toLowerCase().includes(query));
     setPostDatas(filtered);
   };
 
   const handleKeyPress = (e) => {
-    if (e.key === 'Enter' && search) {
-      handleSearch(search);
-    } else if (e.key === 'Enter' && !search) {
-      alert('나라를 입력하세요');
-    }
+    if (e.key === 'Enter' && search) handleSearch(search);
+    else if (e.key === 'Enter' && !search) alert('나라를 입력하세요');
   };
   const handleTags = (query) => {
     setSelectedTagId(query);
@@ -90,9 +82,8 @@ const SearchInput = () => {
     };
     fetchTags();
   };
-  const handleNavigate = (postId) => {
-    navigate(`/post/${postId}`);
-  };
+  const handleNavigate = (postId) => navigate(`/post/${postId}`);
+
   return (
     <>
       <p className="h2">

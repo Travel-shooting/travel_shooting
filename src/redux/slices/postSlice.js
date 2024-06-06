@@ -3,11 +3,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  loadData: [],
+  loadData: JSON.parse(localStorage.getItem('loadData')) || [],
   formData: {},
   tags: [],
   previewImages: [],
-  realImageFiles: []
+  realImageFiles: [],
+  country: ''
 };
 
 const postSlice = createSlice({
@@ -20,7 +21,6 @@ const postSlice = createSlice({
     addPost: (state, action) => {
       state.formData = action.payload;
     },
-    modifyPost: (state, action) => {},
     deletePost: (state, action) => {
       state.loadData = action.payalod;
     },
@@ -33,13 +33,13 @@ const postSlice = createSlice({
     manageRealImages: (state, action) => {
       state.realImageFiles = action.payload;
     },
-    addHeart: (state) => {
-      state.formData.postLike += 1;
+    manageCountry: (state, action) => {
+      state.country = action.payload;
     }
   }
 });
 
-export const { loadPost, addPost, modifyPost, deletePost, manageTags, manageImages, manageRealImages, addHeart } =
+export const { loadPost, addPost, deletePost, manageTags, manageImages, manageRealImages, manageCountry } =
   postSlice.actions;
 
 export default postSlice.reducer;
