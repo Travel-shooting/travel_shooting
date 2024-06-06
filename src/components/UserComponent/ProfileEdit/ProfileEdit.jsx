@@ -1,12 +1,114 @@
 import { useEffect, useState } from 'react';
-import supabase from '../../../util/supabase/supabaseClient';
+import { useDispatch } from 'react-redux';
+import { updateImage } from '../../../redux/slices/logSlice';
 import styled from 'styled-components';
+import supabase from '../../../util/supabase/supabaseClient';
+
+const ProfileEditWrapper = styled.div`
+`;
+
+const ProfileContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  background-color: #f8f8f8; /* 네모 박스 배경색 */
+  padding: 20px;
+  border-radius: 10px; /* 둥근 모서리 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 그림자 효과 */
+  position: relative;
+`;
+
+const ProfileImageContainer = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const ProfileImage = styled.img`
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 20px;
+`;
+
+const Username = styled.h2`
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 20px;
+`;
+
+const Font = styled.h3`
+  font-size: ${(props) => props.size};
+  font-weight: ${(props) => props.weight};
+  color: ${(props) => props.color};
+  overflow: hidden;
+  margin-bottom: 20px;
+`;
+
+const EditButton = styled.button`
+  width: 250px;
+  padding: 10px 10px;
+  border: 1px solid ${(props) => props.color};
+  background-color: ${(props) => props.bgcolor};
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    transition: all 0.5s;
+    background-color: var(--yellow-color);
+  }
+  margin-bottom: 10px;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: ${(props) => (props.editMode ? 'none' : 'block')};
+`;
+
+const EditForm = styled.form`
+  display: ${(props) => (props.editMode ? 'flex' : 'none')};
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 20px;
+`;
+
+const Label = styled.label`
+  margin: 10px 0;
+  font-size: 16px;
+`;
+
+const Input = styled.input`
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 10px;
+`;
+
+const FormButton = styled.button`
+  width: 140px;
+  padding: 10px 20px;
+  border: 1px solid ${(props) => props.color};
+  background-color: ${(props) => props.bgcolor};
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    transition: all 0.5s;
+    background-color: var(--yellow-color);
+  }
+`;
 
 const ProfileEdit = () => {
+  const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({
     userId: '',
     userImageURL: '',
-    password: ''
   });
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState(null);
@@ -24,17 +126,15 @@ const ProfileEdit = () => {
       }
 
       if (data && data.length > 0) {
-        const userData = data[0];
         setUserInfo({
-          userId: userData.userId,
-          userImageURL: userData.userImageURL,
-          password: userData.password // 암호화된 비밀번호
+          userId: data[0].userId,
+          userImageURL: data[0].userImageURL,
         });
       }
     };
 
     fetchUserData();
-  }, []);
+  }, [logInUserId]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,108 +143,109 @@ const ProfileEdit = () => {
 
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
-  };
-
-  const handleUpload = async () => {
-    if (!file) return;
-
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${logInUserId}.${fileExt}`;
-    const filePath = `public/${fileName}`;
-
-    const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file);
-
-    if (uploadError) {
-      setError(uploadError.message);
-      return;
-    }
-
-    const { data, error: urlError } = await supabase.storage.from('avatars').getPublicUrl(filePath);
-
-    if (urlError) {
-      setError(urlError.message);
-      return;
-    }
-
-    setUserInfo((prev) => ({ ...prev, userImageURL: data.publicUrl }));
+    console.log(e.target.files[0]);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!editMode) {
+      setEditMode(false);
+      return;
+    }
+    let updatedUserInfo = { ...userInfo };
 
-    if (file) await handleUpload();
+    if (file) {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Date.now()}.${fileExt}`;
+      const filePath = `public/${fileName}`;
+      const realPath = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/avatars/${filePath}`;
 
-    const updates = {
-      userId: userInfo.userId,
-      userImageURL: userInfo.userImageURL
-      // 비밀번호 업데이트는 별도의 핸들링이 필요할 수 있음
-    };
+      const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file);
+      if (uploadError) {
+        setError(uploadError.message);
+        alert('이미 있는 똑같은 이미지');
+        return;
+      }
 
-    const { error } = await supabase.from('USER').update(updates).eq('uuid', logInUserId); // 로그인한 사용자의 이메일을 사용합니다.
+      const { error: urlError } = await supabase.storage.from('avatars').getPublicUrl(filePath);
+      if (urlError) {
+        setError(urlError.message);
+        console.error(urlError);
+        return;
+      }
+
+      updatedUserInfo.userImageURL = realPath;
+      dispatch(updateImage(realPath));
+
+      const logInData = JSON.parse(sessionStorage.getItem('logIn'));
+      logInData.userImageURL = realPath;
+      const updatedLogInData = JSON.stringify(logInData);
+      sessionStorage.setItem('logIn', updatedLogInData);
+    }
+
+    const { data, error } = await supabase
+      .from('USER')
+      .update({
+        userImageURL: updatedUserInfo.userImageURL,
+        userId: updatedUserInfo.userId,
+      })
+      .eq('uuid', logInUserId);
 
     if (error) {
       console.error('Error updating user data:', error.message);
       setError(error.message);
       return;
+    } else {
+      console.log(data);
+      setEditMode(false); // 수정 모드 종료
+      alert('프로필이 성공적으로 업데이트되었습니다.');
     }
-
-    setEditMode(false); // 수정 모드 종료
-    alert('프로필이 성공적으로 업데이트되었습니다.');
   };
 
   return (
-    <div>
+    <ProfileEditWrapper>
       <Font size={'25px'} weight={'bold'} color={'var(--grey-color)'}>
-          내가 쓴 글
-        </Font>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-      {editMode ? (
-        <form onSubmit={handleSubmit}>
-          <div>
-            <label>프로필 이미지:</label>
-            <input type="file" onChange={handleFileChange} />
-          </div>
-          {userInfo.userImageURL && (
-            <div>
-              <img
-                src={userInfo.userImageURL}
-                alt="프로필"
-                style={{ width: '100px', height: '100px', borderRadius: '50%' }}
-              />
-            </div>
-          )}
-          <div>
-            <label>이름:</label>
-            <input type="text" name="name" value={userInfo.name} onChange={handleChange} />
-          </div>
-          <div>
-            <label>비밀번호:</label>
-            <input type="password" name="password" value={userInfo.password} onChange={handleChange} />
-          </div>
-          <button type="submit">프로필 업데이트</button>
-          <button type="button" onClick={() => setEditMode(false)}>
-            취소
-          </button>
-        </form>
-      ) : (
-        <div>
-          <div>
-            <img
-              src={userInfo.userImageURL}
-              alt="프로필"
-              style={{ width: '100px', height: '100px', borderRadius: '50%' }}
-            />
-          </div>
-          <div>
-            <span>이름: {userInfo.userId}</span>
-          </div>
-          <div>
-            <span>비밀번호: {userInfo.password}</span> {/* 암호화된 비밀번호 */}
-          </div>
-          <button onClick={() => setEditMode(true)}>프로필 수정</button>
-        </div>
-      )}
-    </div>
+        프로필 수정
+      </Font>
+      <ProfileContainer>
+        <ProfileImageContainer>
+          <ProfileImage src={userInfo.userImageURL || 'default-profile.png'} alt="프로필" />
+          <Username>{userInfo.userId}</Username>
+        </ProfileImageContainer>
+
+        <EditButton
+          editMode={editMode}
+          bgcolor={'var(--yellow-color)'}
+          color={'var(--white-color)'}
+          onClick={() => setEditMode(true)}
+        >
+          수정하기
+        </EditButton>
+
+        <EditForm onSubmit={handleSubmit} editMode={editMode}>
+          <Label>사진 수정</Label>
+          <Input type="file" onChange={handleFileChange} />
+          <Label>아이디 수정</Label>
+          <Input type="text" name="userId" value={userInfo.userId} onChange={handleChange} />
+          <ButtonContainer>
+            <FormButton
+              bgcolor={'var(--yellow-color)'}
+              color={'var(--white-color)'}
+              type="submit"
+            >
+              저장하기
+            </FormButton>
+            <FormButton
+              bgcolor={'var(--white-color)'}
+              color={'var(--yellow-color)'}
+              onClick={() => setEditMode(false)}
+            >
+              취소
+            </FormButton>
+          </ButtonContainer>
+        </EditForm>
+      </ProfileContainer>
+    </ProfileEditWrapper>
   );
 };
 

@@ -4,7 +4,8 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   logInUser: JSON.parse(sessionStorage.getItem('logInUser')) || null,
-  logInEmail: JSON.parse(sessionStorage.getItem('logInEmail')) || null
+  logInEmail: JSON.parse(sessionStorage.getItem('logInEmail')) || null,
+  logInImage: JSON.parse(sessionStorage.getItem('logInImage')) || null
 };
 
 const logSlice = createSlice({
@@ -16,10 +17,13 @@ const logSlice = createSlice({
     },
     logOut: (state) => {
       state.logInUser = null;
+    },
+    updateImage: (state, action) => {
+      state.logInImage = action.payload;
     }
   }
 });
 
-export const { logIn, logOut } = logSlice.actions;
+export const { logIn, logOut, updateImage } = logSlice.actions;
 
 export default logSlice.reducer;
