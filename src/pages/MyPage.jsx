@@ -7,10 +7,6 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;
   gap: 10px;
-
-  div:nth-child(2) {
-    border-left: 2px solid #ccc;
-  }
 `;
 
 const Profile = styled.div`

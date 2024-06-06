@@ -62,7 +62,7 @@ const SearchInput = () => {
   const searchHandler = (e) => setSearch(e.target.value);
 
   const handleSearch = (query) => {
-    const filtered = postDatas.filter((post) => post.postTitle.toLowerCase().includes(query));
+    const filtered = postDatas.filter((post) => post.country.toLowerCase().includes(query));
     setPostDatas(filtered);
   };
 

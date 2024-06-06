@@ -50,6 +50,7 @@ function getRandomElements(arr, count) {
 function Travel() {
   const navigate = useNavigate();
   const loadData = JSON.parse(localStorage.getItem('loadData')) || [];
+  console.log(loadData);
   const randomData = getRandomElements(loadData, 4); // 랜덤으로 4개 선택
   const handleNavigate = (postId) => {
     navigate(`/post/${postId}`);

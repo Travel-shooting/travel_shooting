@@ -34,6 +34,7 @@ function PostDetail({ postDetailData, postTags }) {
   const [tags, setTags] = useState([]);
   const [postEmail, setPostEmail] = useState('');
   const userId = JSON.parse(sessionStorage.getItem('logInUser'));
+
   useEffect(() => {
     const fetchTagsData = async () => {
       const { data, error } = await supabase.from('POSTTAG').select('*');
@@ -50,7 +51,7 @@ function PostDetail({ postDetailData, postTags }) {
   useEffect(() => {
     const fetchUserData = async () => {
       const { data, error } = await supabase.from('USER').select('*').eq('uuid', postDetailData.postUserId);
-      if (error) console.error('user 테이블 못불러옴');
+      if (error) console.error(error);
       else setPostEmail(data[0].userId);
     };
     fetchUserData();
@@ -65,15 +66,17 @@ function PostDetail({ postDetailData, postTags }) {
       if (fileNames.length > 0) await deleteImagesFromSupabase(fileNames);
       else console.log('삭제할 이미지가 없습니다.');
 
-      if (error || tagError) alert('삭제하는데 에러발생했암');
-      else {
+      if (error || tagError) {
+        if (error) console.error(error);
+        else if (tagError) console.error(tagError);
+      } else {
         dispatch(deletePost(data));
         navigate('/');
       }
     };
-    fetchDeleteUserData();
+    if (confirm('삭제하시겠습니까?')) fetchDeleteUserData();
   };
-  // 특정 postId와 관련된 이미지 파일 목록을 조회
+
   const fetchImagesWithPostId = async (postId) => {
     const { data, error } = await supabase.storage.from('postImages').list('', {
       search: `${postId}-`
@@ -82,7 +85,6 @@ function PostDetail({ postDetailData, postTags }) {
     return data.map((file) => file.name);
   };
 
-  // 이미지 파일 삭제
   const deleteImagesFromSupabase = async (fileNames) => {
     const { data, error } = await supabase.storage.from('postImages').remove(fileNames);
     if (error) console.error('이미지 삭제 실패...', error);
@@ -90,7 +92,7 @@ function PostDetail({ postDetailData, postTags }) {
   };
 
   const handleModify = () => {
-    navigate(`/post/modify/${postDetailData.id}`);
+    if (confirm('수정하시겠습니까 ?')) navigate(`/post/modify/${postDetailData.id}`);
   };
   return (
     <div>
