@@ -5,28 +5,49 @@ import styled from 'styled-components';
 import { deletePost } from '../../../redux/slices/postSlice';
 import supabase from '../../../util/supabase/supabaseClient';
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+`;
+
 const FlexBox = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 8px;
   justify-content: ${(props) => props.justifycontent};
 `;
 
 const Badge = styled.div`
   background-color: var(--lightgrey-color);
-  border-radius: 20px;
-  padding: 10px;
+  border-radius: 50px;
+  font-size: 14px;
+  padding: 10px 16px;
+  margin: 10px 0;
 `;
 
 const Font = styled.span`
-  font-size: 25px;
+  display: block;
+  font-size: 32px;
   font-weight: bold;
   flex: 1;
-  text-decoration: none;
 `;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 8px;
+`;
+
 const Button = styled.button`
   padding: 8px;
   background-color: var(--yellow-color);
+  border-radius: 6px;
+  font-size: 14px;
+  width: 120px;
+  height: 40px;
 `;
 function PostDetail({ postDetailData, postTags }) {
   const dispatch = useDispatch();
@@ -96,24 +117,33 @@ function PostDetail({ postDetailData, postTags }) {
   };
   return (
     <div>
-      <FlexBox justifycontent={'space-between'}>
+      <Container>
         <Font>{postDetailData.postTitle}</Font>
-        {userId == postDetailData.postUserId && (
-          <>
-            <Button onClick={handleModify}>수정</Button>
-            <Button onClick={handleDelete}>삭제</Button>
-          </>
-        )}
-      </FlexBox>
-      <p>{postDetailData.postDate}</p>
-      <p>{postDetailData.postContent}</p>
-      <FlexBox justifycontent={'flex-start'}>
-        {tags.map((tag, i) => (
-          <Badge key={i}>#{tag}</Badge>
-        ))}
-      </FlexBox>
+        <p className="post-date">{postDetailData.postDate}</p>
 
-      <Font>{postEmail.slice(0, postEmail.indexOf('@'))}</Font>
+        <FlexBox justifycontent={'flex-start'}>
+          {tags.map((tag, i) => (
+            <Badge key={i}>#{tag}</Badge>
+          ))}
+        </FlexBox>
+
+        <p className="user-id" style={{ marginTop: '20px' }}>
+          {postEmail.slice(0, postEmail.indexOf('@'))}
+        </p>
+        <p style={{ marginBottom: '40px' }}>{postDetailData.postContent}</p>
+
+        {userId == postDetailData.postUserId && (
+          <ButtonContainer>
+            <Button onClick={handleModify}>수정</Button>
+            <Button
+              style={{ backgroundColor: 'var(--black-color)', color: 'var(--white-color)' }}
+              onClick={handleDelete}
+            >
+              삭제
+            </Button>
+          </ButtonContainer>
+        )}
+      </Container>
     </div>
   );
 }

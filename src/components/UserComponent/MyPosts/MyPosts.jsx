@@ -9,15 +9,15 @@ const Container = styled.div`
   gap: 15px;
 `;
 const List = styled.ul`
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4개의 열로 설정 */
   gap: 15px;
-  height: 1000px;
 `;
+
 const Item = styled.li`
-  width: 25%;
+  width: 100%;
   height: 220px;
+  margin-bottom: 15px;
 
   img {
     width: 100%;
@@ -73,28 +73,30 @@ const MyPosts = () => {
           내가 쓴 글
         </Font>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        {userPosts.length > 0 ? (
-          <>
-            <List>
-              {userPosts.slice(offset, offset + itemCountPerPage).map((post) => (
-                <Item key={post.id} onClick={() => handleNavigate(post.id)}>
-                  <img src={post.imageURL[0]} />
-                  <Font size={'18px'} weight={'500'}>
-                    {post.postTitle}
-                  </Font>
-                </Item>
-              ))}
-            </List>
-            <Pagination
-              itemCount={userPosts.length}
-              pageCountPerPage={pageCountPerPage}
-              itemCountPerPage={itemCountPerPage}
-              clickListener={setCurrentPageFunc}
-            />
-          </>
-        ) : (
-          <div>없음</div>
-        )}
+        <div style={{ height: '1000px' }}>
+          {userPosts.length > 0 ? (
+            <>
+              <List>
+                {userPosts.slice(offset, offset + itemCountPerPage).map((post) => (
+                  <Item key={post.id} onClick={() => handleNavigate(post.id)}>
+                    <img src={post.imageURL[0]} />
+                    <Font size={'18px'} weight={'500'}>
+                      {post.postTitle}
+                    </Font>
+                  </Item>
+                ))}
+              </List>
+            </>
+          ) : (
+            <div>없음</div>
+          )}
+        </div>
+        <Pagination
+          itemCount={userPosts.length}
+          pageCountPerPage={pageCountPerPage}
+          itemCountPerPage={itemCountPerPage}
+          clickListener={setCurrentPageFunc}
+        />
       </Container>
     </div>
   );
