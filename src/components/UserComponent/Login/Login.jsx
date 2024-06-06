@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { logIn } from '../../../redux/slices/logSlice';
 import { close } from '../../../redux/slices/modalSlice';
 import supabase from '../../../util/supabase/supabaseClient';
-import Modal from '../../Modal';
+import Modal from '../../Modal/Modal';
 import { useNavigate } from 'react-router-dom';
 import Toast from '../../Toast';
 import LogModal from '../../LogModal';
@@ -27,20 +27,9 @@ function Login() {
   const loginUser = async (e) => {
     e.preventDefault();
     if (!userId.includes('@') || userPw.length < 6) {
-      setToast({ message: '아이디 또는 비밀번호를 확인해주세요.', seconds: 2000 });
-      setShowToast(false);
-      setShowToast(true);
-      return; // 유효성 검사가 실패하면 함수를 종료합니다.
-    }
-    if (error) {
-      console.error('login error:', error.message);
-      setToast({ message: '로그인에 실패했습니다. 다시 시도해주세요.', seconds: 2000 });
-      setShowToast(false);
-      setShowToast(true);
-      return;
+      alert('아이디 또는 비밀번호를 확인해주세요.');
     } else {
-      console.log('login successful:', data);
-      setShowToast(false);
+      alert('로그인 되었습니다.');
     }
     const response = await supabase.auth.signInWithPassword({
       email: userId,

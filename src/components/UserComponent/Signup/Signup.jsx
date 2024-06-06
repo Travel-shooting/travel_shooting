@@ -32,13 +32,9 @@ function Signup() {
     });
 
     if (!signUpId.includes('@') || signUpPw.length < 6) {
-      setToast({ message: '아이디 또는 비밀번호를 확인해주세요.', seconds: 2000 });
-      setShowToast(false);
-      setShowToast(true);
-      return; // 유효성 검사가 실패하면 함수를 종료합니다.
+      alert('아이디 또는 비밀번호를 확인해주세요.');
     } else {
-      console.log('Signup successful:', data);
-      setShowToast(false);
+      alert('회원가입 되었습니다. 로그인 해주세요.');
     }
 
     await supabase.from('USER').insert({
