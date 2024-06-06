@@ -1,10 +1,10 @@
-import { useDispatch } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import { logOut } from "../redux/slices/logSlice";
-import { open } from "../redux/slices/modalSlice";
-import Logo from "../styles/images/logo.png";
-import supabase from "../util/supabase/supabaseClient";
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { logOut } from '../redux/slices/logSlice';
+import { open } from '../redux/slices/modalSlice';
+import Logo from '../styles/images/logo.png';
+import supabase from '../util/supabase/supabaseClient';
 const MenuContainer = styled.div`
   height: 80px;
   background-color: var(--lightgrey-color);
@@ -36,16 +36,15 @@ function Menubar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userId = JSON.parse(localStorage.getItem("logInUser"));
-
+  const userId = JSON.parse(localStorage.getItem('logInUser'));
   const goMyPage = () => {
     navigate(`/mypage/${userId}`);
   };
   const handleSignup = () => {
-    dispatch(open("signup"));
+    dispatch(open('signup'));
   };
   const handleLogIn = () => {
-    dispatch(open("login"));
+    dispatch(open('login'));
   };
   const handleLogOut = () => {
     const signOut = async () => {
@@ -53,8 +52,9 @@ function Menubar() {
       if (error) console.error(error);
       else {
         dispatch(logOut());
-        localStorage.removeItem("logInUser");
-        alert("로그아웃되었습니다");
+        localStorage.removeItem('logInUser');
+        alert('로그아웃되었습니다');
+        navigate('/');
       }
     };
     signOut();
@@ -71,17 +71,17 @@ function Menubar() {
           {userId ? (
             <>
               <Button
-                bgcolor={"var(--white-color)"}
-                color={"var(--golden-color)"}
-                bordercolor={"var(--golden-color)"}
+                bgcolor={'var(--white-color)'}
+                color={'var(--golden-color)'}
+                bordercolor={'var(--golden-color)'}
                 onClick={handleLogOut}
               >
                 Log Out
               </Button>
               <Button
-                bgcolor={"var(--golden-color)"}
-                color={"var(--white-color)"}
-                bordercolor={"var(--golden-color)"}
+                bgcolor={'var(--golden-color)'}
+                color={'var(--white-color)'}
+                bordercolor={'var(--golden-color)'}
                 onClick={goMyPage}
               >
                 MY PAGE
@@ -90,17 +90,17 @@ function Menubar() {
           ) : (
             <>
               <Button
-                bgcolor={"var(--white-color)"}
-                color={"var(--golden-color)"}
-                bordercolor={"var(--golden-color)"}
+                bgcolor={'var(--white-color)'}
+                color={'var(--golden-color)'}
+                bordercolor={'var(--golden-color)'}
                 onClick={handleLogIn}
               >
                 Log In
               </Button>
               <Button
-                bgcolor={"var(--golden-color)"}
-                color={"var(--white-color)"}
-                bordercolor={"var(--golden-color)"}
+                bgcolor={'var(--golden-color)'}
+                color={'var(--white-color)'}
+                bordercolor={'var(--golden-color)'}
                 onClick={handleSignup}
               >
                 Sign up

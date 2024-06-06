@@ -1,13 +1,13 @@
 /** 모달에 관한 reducer를 관리할 겁니당 */
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  logInUser: null,
+  logInUser: JSON.parse(localStorage.getItem('logInUser')) || null
 };
 
 const logSlice = createSlice({
-  name: "log",
+  name: 'log',
   initialState,
   reducers: {
     logIn: (state, action) => {
@@ -15,8 +15,8 @@ const logSlice = createSlice({
     },
     logOut: (state) => {
       state.logInUser = null;
-    },
-  },
+    }
+  }
 });
 
 export const { logIn, logOut } = logSlice.actions;
