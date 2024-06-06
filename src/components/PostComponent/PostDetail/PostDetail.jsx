@@ -20,8 +20,8 @@ const Badge = styled.span`
   padding: 5px;
 `;
 
-const Font = styled.p`
-  font-size: 25px;
+const Title = styled.p`
+  font-size: 32px;
   font-weight: bold;
 `;
 const Button = styled.button`
@@ -116,7 +116,7 @@ function PostDetail({ postDetailData, postTags }) {
     <div>
       <div>
         <TitleBox>
-          <Font>{postDetailData.postTitle}</Font>
+          <Title>{postDetailData.postTitle}</Title>
           <BadgeBox>
             {userId == postDetailData.postUserId && (
               <>
@@ -126,7 +126,7 @@ function PostDetail({ postDetailData, postTags }) {
             )}
           </BadgeBox>
         </TitleBox>
-        <p>{postDetailData.postDate}</p>
+        <p className="post-date">{postDetailData.postDate}</p>
         <p>{postDetailData.postContent}</p>
         <BadgeBox>
           {tags.map((tag, i) => (

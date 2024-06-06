@@ -67,6 +67,17 @@ button {
   text-align: center;
 }
 
+.photo-upload {
+  display: block;
+  width: 100%;
+  border: 1px solid var(--yellow-color);
+  margin-bottom: 40px;
+  border-radius: 6px;
+  padding: 20px auto;
+
+
+}
+
 .h2 {
   font-size: 32px;
   line-height: 1.3;
@@ -87,8 +98,7 @@ button {
 .search-input, .title-input, .content-box {
   display: block;
   width: 100%;
-  height: 100%;
-  padding: 14px 18px 16px 18px;
+  height: 40px;
   background-color: var(--white-color);
   border-radius: 6px;
   border: solid 1px #e6e6ea;
@@ -150,11 +160,11 @@ button {
   cursor: pointer;
   letter-spacing: 0.05em;
   transition: background-color 0.3s;
-}
 
-.tag:hover {
+  &:hover {
   background-color: var(--yellow-color);
   color: var(--white-color);
+}
 }
 
 .post-container {

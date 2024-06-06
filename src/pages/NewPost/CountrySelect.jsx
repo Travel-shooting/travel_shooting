@@ -3,25 +3,14 @@ import styled from 'styled-components';
 import api from '../../util/api/api';
 const Select = styled.div`
   width: 230px;
-  h3 {
-    border-radius: 8px;
-    cursor: pointer;
-    padding: 10px;
-    background-color: var(--lightgrey-color);
-  }
-
-  div:nth-child(1) {
-    padding: 10px;
-    border: none;
-    border-radius: 8px;
-  }
 `;
 const CountryBox = styled.div`
-  overflow-y: auto;
+  position: absolute;
+  overflow-y: scroll;
   width: 100%;
   height: ${(props) => (props.selected ? '200px' : '0px')};
-
-  position: relative;
+  margin-bottom: 4px;
+  border: ${(props) => (props.selected ? 'solid 1px #e6e6ea ' : '0px')};
 `;
 const CountryList = styled.ul`
   list-style: none;
@@ -29,13 +18,15 @@ const CountryList = styled.ul`
   grid-template-columns: 1fr;
   align-content: flex-start;
   row-gap: 8px;
-  position: absolute;
+  position: relative;
+  background-color: var(--white-color);
+  width: 100%;
 `;
 const CountryItem = styled.li`
   padding: 10px;
   &:hover {
     cursor: pointer;
-    background-color: var(--lightgrey-color);
+    background-color: var(--yellow-color);
   }
 `;
 function CountrySelect() {
@@ -59,9 +50,18 @@ function CountrySelect() {
 
   return (
     <Select>
-      <h3 ref={selectedCountry} onClick={() => setIsShowOptions((prev) => !prev)}>
+      <div
+        className="title-input"
+        ref={selectedCountry}
+        onClick={() => setIsShowOptions((prev) => !prev)}
+        style={{
+          fontSize: '14px',
+          textAlign: 'left',
+          color: '#bbbbbb'
+        }}
+      >
         나라를 선택해주세요
-      </h3>
+      </div>
 
       <CountryBox selected={isShowOptions}>
         {isShowOptions && (

@@ -16,7 +16,6 @@ function Slider({ postImage }) {
   return (
     <div>
       <Swiper
-        className="swiper-img"
         slidesPerView={1}
         pagination={{
           clickable: true

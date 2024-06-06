@@ -12,25 +12,25 @@ import Tags from './Tags';
 const Container = styled.div`
   display: flex;
   flex-direction: ${(props) => props.direction};
-  gap: 10px;
+  gap: 16px;
 `;
 
 const HiddenInput = styled.input`
   display: none;
 `;
 
-const Button = styled.button`
-  width: 280px;
-  padding: 10px 20px;
-  border: 1px solid ${(props) => props.color};
-  background-color: ${(props) => props.bgcolor};
-  border-radius: 5px;
-  cursor: pointer;
-  &:hover {
-    transition: all 0.5s;
-    background-color: var(--yellow-color);
-  }
-`;
+// const Button = styled.button`
+//   width: 280px;
+//   padding: 10px 20px;
+//   border: 1px solid ${(props) => props.color};
+//   background-color: ${(props) => props.bgcolor};
+//   border-radius: 6px;
+//   cursor: pointer;
+//   &:hover {
+//     transition: all 0.5s;
+//     background-color: var(--yellow-color);
+//   }
+// `;
 
 function NewPost() {
   const navigate = useNavigate();
@@ -133,21 +133,25 @@ function NewPost() {
   return (
     <Container direction={'column'}>
       <Slider postImage={fileImages} />
-      <input ref={(el) => (formRef.current[0] = el)} type="text" placeholder="제목을 입력해주세요" />
-      <Container direction={'row'}>
-        <CountrySelect />
-        <Tags />
-      </Container>
-      <textarea ref={(el) => (formRef.current[1] = el)} type="text" placeholder="내용을 입력해주세요"></textarea>
-      <Container direction={'row'}>
-        <HiddenInput type="file" multiple accept="image/*" ref={fileInputRef} onChange={handleChange} />
-        <Button bgcolor={'var(--white-color)'} color={'var(--yellow-color)'} onClick={handleClick}>
-          사진 업로드
-        </Button>
-        <Button bgcolor={'var(--yellow-color)'} color={'var(--yellow-color)'} onClick={handleSubmit}>
-          저장
-        </Button>
-      </Container>
+      <input
+        ref={(el) => (formRef.current[0] = el)}
+        type="text"
+        placeholder="제목을 입력해주세요"
+        className="title-input"
+      />
+      <CountrySelect />
+      <Tags />
+      <textarea
+        ref={(el) => (formRef.current[1] = el)}
+        type="text"
+        placeholder="내용을 입력해주세요"
+        className="content-box"
+      ></textarea>
+      <HiddenInput type="file" multiple accept="image/*" ref={fileInputRef} onChange={handleChange} />
+      <input className="photo-upload" type="file" onClick={handleClick} />
+      <button bgcolor={'var(--yellow-color)'} color={'var(--yellow-color)'} onClick={handleSubmit} className="post-btn">
+        저장
+      </button>
     </Container>
   );
 }
