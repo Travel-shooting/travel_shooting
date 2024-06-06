@@ -12,14 +12,19 @@ const Container = styled.div`
 
 const TagLabel = styled.label`
   display: inline-block;
-  background-color: var(--lightgrey-color);
-  padding: 5px 10px;
-  border-radius: 15px;
+  padding: 10px 16px;
+  margin: 4px;
+  background-color: var(--black-color);
+  color: var(--white-color);
+  border-radius: 50px;
+  font-size: 14px;
+  text-align: center;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.1s;
 
   &:hover {
-    background-color: #e0e0e0;
+    background-color: var(--yellow-color);
+    color: var(--black-color);
   }
 `;
 
@@ -27,8 +32,8 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
   display: none;
 
   &:checked + label {
-    background-color: var(--golden-color);
-    color: var(--white-color);
+    background-color: var(--yellow-color);
+    color: var(--black-color);
   }
 `;
 

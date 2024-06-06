@@ -27,7 +27,7 @@ const NextButton = styled(NavigationButton)`
 const Img = styled.img`
   display: block;
   width: 100%;
-  height: 500px;
+  height: 600px;
   object-fit: contain;
 `;
 

@@ -37,25 +37,37 @@ function Login() {
   if (!user) {
     return (
       <Modal>
-        <div className="logo-div">
-          <img src={LogoIcon} alt="logo" className="logo" />
-          <img src={LogoText} alt="logo" className="logo" />
+        <div style={{ marginTop: '80px' }}>
+          <div className="logo-div">
+            <img src={LogoIcon} alt="logo" className="logo-icon" />
+          </div>
+          <div className="logo-div">
+            <img src={LogoText} alt="logo" className="logo-text" />
+          </div>
         </div>
-        <p className="login-p">로그인</p>
-        <form className="login-form ">
-          <input className="login-input" placeholder="이메일" type="email" value={userId} onChange={onChangeId} />
-          <input className="login-input" placeholder="비밀번호" type="password" value={userPw} onChange={onChangePw} />
-          <button className="login-input-btn" type="submit" onClick={loginUser}>
-            로그인
-          </button>
-        </form>
-        <div className="login-btn-div">
+        <div>
+          <p className="login-p">로그인</p>
+          <form className="login-form ">
+            <input className="login-input" placeholder="이메일" type="email" value={userId} onChange={onChangeId} />
+            <input
+              className="login-input"
+              placeholder="비밀번호"
+              type="password"
+              value={userPw}
+              onChange={onChangePw}
+            />
+            <button className="login-input-btn" type="submit" onClick={loginUser}>
+              로그인
+            </button>
+          </form>
+        </div>
+        {/* <div className="login-btn-div">
           <button className="login-btn">아이디 찾기</button>
           <button className="login-btn">비밀번호 찾기</button>
           <button className="login-btn" href="src\components\UserComponent\Signup\Signup.jsx">
             회원가입
           </button>
-        </div>
+        </div> */}
       </Modal>
     );
   }

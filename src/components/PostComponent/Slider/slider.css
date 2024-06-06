@@ -1,12 +1,9 @@
 .swiper {
   width: 100%;
-  height: auto;
-  margin-top: 20px;
+  margin: 20px auto;
 }
 
 .swiper-wrapper {
-  width: 100%;
-  height: auto;
   object-fit: cover;
 }
 
@@ -14,8 +11,10 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1240px;
-  height: 600px;
+}
+
+.swiper-pagination {
+  margin-bottom: 10px;
 }
 
 .swiper-pagination-bullet {
@@ -28,18 +27,19 @@
   color: var(--yellow-color);
 }
 
-.custom-prev {
-  position: absolute;
-  z-index: 2;
-  cursor: pointer;
-  left: 100px;
-  top: 50%;
-}
-
+.custom-prev,
 .custom-next {
   position: absolute;
   z-index: 2;
   cursor: pointer;
+  top: 50%; /* 버튼을 부모 요소의 중앙에 위치시킵니다. */
+  transform: translateY(-50%); /* 버튼을 자신의 높이의 반만큼 위로 이동시켜 정확히 중앙에 배치합니다. */
+}
+
+.custom-prev {
+  left: 100px;
+}
+
+.custom-next {
   right: 100px;
-  top: 50%;
 }
