@@ -21,7 +21,9 @@ const postSlice = createSlice({
       state.formData = action.payload;
     },
     modifyPost: (state, action) => {},
-    deletePost: (state, action) => {},
+    deletePost: (state, action) => {
+      state.loadData = action.payalod;
+    },
     manageTags: (state, action) => {
       state.tags = action.payload;
     },

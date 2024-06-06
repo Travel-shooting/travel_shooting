@@ -36,7 +36,7 @@ function Menubar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const userId = JSON.parse(localStorage.getItem('logInUser'));
+  const userId = JSON.parse(sessionStorage.getItem('logInUser'));
   const goMyPage = () => {
     navigate(`/mypage/${userId}`);
   };
@@ -48,11 +48,11 @@ function Menubar() {
   };
   const handleLogOut = () => {
     const signOut = async () => {
-      const { data, error } = await supabase.auth.signOut();
+      const { error } = await supabase.auth.signOut();
       if (error) console.error(error);
       else {
         dispatch(logOut());
-        localStorage.removeItem('logInUser');
+        sessionStorage.removeItem('logInUser');
         alert('로그아웃되었습니다');
         navigate('/');
       }

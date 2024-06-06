@@ -1,1 +1,1 @@
-export { default } from "./NewPost";
+export { default } from './NewPostPage';
