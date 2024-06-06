@@ -40,7 +40,7 @@ const Comments = () => {
     const { data, error } = await supabase.from("COMMENTS").insert([
       {
         commentPostId: postId,
-        commentUserId: USER.userId, // 예제를 위해 임시로 설정한 값입니다. 실제 유저 ID로 대체해야 합니다.
+        commentUserId: USER.userId,
         commentContent: newComment,
         commentDate: new Date(),
       },
