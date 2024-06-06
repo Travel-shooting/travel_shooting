@@ -1,10 +1,23 @@
 .swiper {
   width: 100%;
-  height: 100%;
+  height: auto;
+  margin-top: 40px;
+  display: block;
+}
+
+.swiper-wrapper {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
 
 .swiper-slide {
   display: flex;
-  justify-content: center;
-  align-items: center;
+}
+
+.swiper-pagination-bullet {
+}
+
+.swiper-pagination-bullet-active {
+  color: var(--yellow-color);
 }

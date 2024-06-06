@@ -9,9 +9,10 @@ import './slider.css';
 const Img = styled.img`
   display: block;
   width: 100%;
-  height: 100%;
-  object-fit: scale-down;
+  height: auto;
+  object-fit: contain;
 `;
+
 function Slider({ postImage }) {
   return (
     <div>
