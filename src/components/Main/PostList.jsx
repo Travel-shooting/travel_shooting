@@ -26,7 +26,9 @@ const PostList = ({ postDatas, handleNavigate }) => {
                   <img src={post.imageURL[0]} alt="image" width={'100%'} />
                 </div>
                 <div style={{ paddingLeft: '20px', margin: '20px 0' }}>
-                  <p className="post-title">{post.postTitle}</p>
+                  <p className="post-title">
+                    {post.postTitle.length > 12 ? post.postTitle.slice(0, 10) + '...' : post.postTitle}
+                  </p>
                   <span className="post-date">{post.postDate}</span>
                 </div>
               </div>
