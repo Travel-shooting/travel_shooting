@@ -19,13 +19,14 @@ const FlexBox = styled.div`
 
 const Item = styled.div`
   width: 180px;
-  height: 240px;
+  height: 200px;
   background-image: 100%;
   cursor: pointer;
   img {
     width: 100%;
     height: 100%;
     border-radius: 10px;
+    object-fit: cover;
   }
 `;
 const Font = styled.p`

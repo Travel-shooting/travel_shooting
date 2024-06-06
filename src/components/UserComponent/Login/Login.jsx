@@ -14,11 +14,10 @@ function Login() {
       email: userId,
       password: userPw
     });
-    console.log(response.data.user.id);
-    const { data, error } = await supabase.from('USER').select('*').eq('userId', userId);
-    console.log('login : ', { data, error });
+    const { data } = await supabase.from('USER').select('*').eq('userId', userId);
     dispatch(logIn(response.data.user.id));
     sessionStorage.setItem('logInUser', JSON.stringify(response.data.user.id));
+    sessionStorage.setItem('logIn', JSON.stringify(data[0]));
     dispatch(close());
     setUser(data.user);
   };

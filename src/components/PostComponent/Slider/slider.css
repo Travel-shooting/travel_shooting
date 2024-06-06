@@ -1,8 +1,7 @@
 .swiper {
   width: 100%;
   height: auto;
-  margin-top: 40px;
-  display: block;
+  margin-top: 20px;
 }
 
 .swiper-wrapper {
@@ -13,11 +12,32 @@
 
 .swiper-slide {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1240px;
+  height: 600px;
 }
 
 .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background-color: var(--yellow-color);
 }
 
 .swiper-pagination-bullet-active {
   color: var(--yellow-color);
+}
+
+.custom-prev {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+  /* transition: left 0.3s ease; */
+}
+
+.custom-next {
+  position: absolute;
+  z-index: 2;
+  cursor: pointer;
+  /* transition: left 0.3s ease; */
 }
