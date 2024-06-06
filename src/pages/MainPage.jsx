@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import 'swiper/css';
 import 'swiper/css/virtual';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SearchInput from '../components/Main/SearchInput';
+import SearchInput from '../components/Main';
 import { logIn } from '../redux/slices/logSlice';
 import supabase from '../util/supabase/supabaseClient';
 
@@ -12,7 +12,7 @@ function MainPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userPosts, setUserPosts] = useState([]);
-  const userId = useSelector((state) => state.log.logInUser);
+  const userId = JSON.parse(sessionStorage.getItem('logInUser'));
   const [activeSlide, setActiveSlide] = useState(0);
   useEffect(() => {
     const fetchUserData = async () => {
@@ -22,7 +22,7 @@ function MainPage() {
       }
     };
     fetchUserData();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,7 +44,7 @@ function MainPage() {
       }
     };
     fetchData();
-  }, []);
+  }, [userId]);
   const slideStyle = (index) => {
     return index === activeSlide ? { transform: 'scale(1.1)', transition: 'all 0.5s' } : {};
   };

@@ -1,6 +1,27 @@
-import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
+import styled, { css } from 'styled-components';
 
+const FlexContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+`;
+const Button = styled.button`
+  width: 30px;
+  height: 30px;
+  border-radius: 25px;
+  padding: 0;
+  color: ${(props) => (props.selected ? 'var(--white-color)' : 'var(--black-color)')};
+  background-color: ${(props) => (props.selected ? 'var(--golden-color)' : 'transparent')};
+  font-weight: ${(props) => (props.selected ? 'bold' : 'normal')};
+
+  ${(props) =>
+    props.disabled &&
+    css`
+      opacity: 0.5;
+      cursor: auto;
+    `}
+`;
 const Pagination = ({ itemCount, itemCountPerPage, pageCountPerPage, clickListener }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
@@ -45,44 +66,26 @@ const Pagination = ({ itemCount, itemCountPerPage, pageCountPerPage, clickListen
   };
 
   return (
-    <div>
-      <button onClick={leftPageClicked} disabled={startPage === 1}>
+    <FlexContainer>
+      <Button onClick={leftPageClicked} disabled={startPage === 1}>
         &lt;
-      </button>
+      </Button>
       {pages.slice(startPage, endPage + 1).map((page, i) => (
         <Numbering key={i} page={page} currentPage={currentPage} clickListener={pageNumberClicked} />
       ))}
-      <button onClick={rightPageClicked} disabled={endPage === maxPage}>
+      <Button onClick={rightPageClicked} disabled={endPage === maxPage}>
         &gt;
-      </button>
-    </div>
+      </Button>
+    </FlexContainer>
   );
 };
 
 const Numbering = ({ page, currentPage, clickListener }) => {
   return (
-    <button
-      onClick={() => clickListener(page)}
-      style={{
-        fontWeight: page === currentPage ? 'bold' : 'normal'
-      }}
-    >
+    <Button onClick={() => clickListener(page)} selected={page === currentPage}>
       {page}
-    </button>
+    </Button>
   );
-};
-
-Pagination.propTypes = {
-  itemCount: PropTypes.number.isRequired,
-  pageCountPerPage: PropTypes.number.isRequired,
-  itemCountPerPage: PropTypes.number.isRequired,
-  clickListener: PropTypes.func.isRequired
-};
-
-Numbering.propTypes = {
-  page: PropTypes.number.isRequired,
-  currentPage: PropTypes.number.isRequired,
-  clickListener: PropTypes.func.isRequired
 };
 
 export default Pagination;

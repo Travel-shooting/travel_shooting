@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styled from 'styled-components';
 import MyPosts from '../components/UserComponent/MyPosts/MyPosts';
 import ProfileEdit from '../components/UserComponent/ProfileEdit/ProfileEdit';
@@ -7,10 +7,6 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;
   gap: 10px;
-
-  div:nth-child(2) {
-    border-left: 2px solid #ccc;
-  }
 `;
 
 const Profile = styled.div`
@@ -23,7 +19,7 @@ const Profile = styled.div`
 const ProfileImage = styled.img`
   width: 150px;
   height: 150px;
-  background-color: red;
+
   background-image: contain;
   border-radius: 50%;
 `;
