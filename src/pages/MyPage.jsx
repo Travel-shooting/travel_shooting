@@ -32,7 +32,7 @@ const MyPage = () => {
       <Profile>
         <h3>유저 프로필</h3>
 
-        <ProfileImage src={userInfo.profileImage} alt="프로필" />
+        <ProfileImage src={userInfo.userImageURL} alt="프로필" />
         <h3>{userInfo.userId}</h3>
 
         <div>

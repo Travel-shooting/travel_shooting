@@ -1,26 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import { createClient } from '@supabase/supabase-js';
+import { useEffect, useState } from 'react';
+import supabase from '../../../util/supabase/supabaseClient';
 
 const ProfileEdit = () => {
   const [userInfo, setUserInfo] = useState({
-    name: '',
-    profileImage: '',
-    password: '',
+    userId: '',
+    userImageURL: '',
+    password: ''
   });
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
-
-  const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-  const supabaseKey = import.meta.env.VITE_SUPABASE_KEY;
-  const supabase = createClient(supabaseUrl, supabaseKey);
+  const logInUserId = JSON.parse(sessionStorage.getItem('logInUser'));
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const { data, error } = await supabase
-        .from('user')
-        .select('name, userImageURL, password')
-        .eq('userId', 'email0@email.com'); // 로그인한 사용자의 이메일을 사용합니다.
+      const { data, error } = await supabase.from('USER').select('*').eq('uuid', logInUserId);
 
       if (error) {
         console.error('Error fetching user data:', error.message);
@@ -31,9 +25,9 @@ const ProfileEdit = () => {
       if (data && data.length > 0) {
         const userData = data[0];
         setUserInfo({
-          name: userData.name,
-          profileImage: userData.userImageURL,
-          password: userData.password, // 암호화된 비밀번호
+          userId: userData.userId,
+          userImageURL: userData.userImageURL,
+          password: userData.password // 암호화된 비밀번호
         });
       }
     };
@@ -54,47 +48,38 @@ const ProfileEdit = () => {
     if (!file) return;
 
     const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
+    const fileName = `${logInUserId}.${fileExt}`;
     const filePath = `public/${fileName}`;
 
-    const { error: uploadError } = await supabase.storage
-      .from('avatars')
-      .upload(filePath, file);
+    const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file);
 
     if (uploadError) {
       setError(uploadError.message);
       return;
     }
 
-    const { data, error: urlError } = await supabase.storage
-      .from('avatars')
-      .getPublicUrl(filePath);
+    const { data, error: urlError } = await supabase.storage.from('avatars').getPublicUrl(filePath);
 
     if (urlError) {
       setError(urlError.message);
       return;
     }
 
-    setUserInfo((prev) => ({ ...prev, profileImage: data.publicUrl }));
+    setUserInfo((prev) => ({ ...prev, userImageURL: data.publicUrl }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (file) {
-      await handleUpload();
-    }
+    if (file) await handleUpload();
 
     const updates = {
-      name: userInfo.name,
-      userImageURL: userInfo.profileImage,
+      userId: userInfo.userId,
+      userImageURL: userInfo.userImageURL
       // 비밀번호 업데이트는 별도의 핸들링이 필요할 수 있음
     };
 
-    const { error } = await supabase
-      .from('USER')
-      .update(updates)
-      .eq('userId', 'email0@email.com'); // 로그인한 사용자의 이메일을 사용합니다.
+    const { error } = await supabase.from('USER').update(updates).eq('uuid', logInUserId); // 로그인한 사용자의 이메일을 사용합니다.
 
     if (error) {
       console.error('Error updating user data:', error.message);
@@ -116,47 +101,39 @@ const ProfileEdit = () => {
             <label>프로필 이미지:</label>
             <input type="file" onChange={handleFileChange} />
           </div>
-          {userInfo.profileImage && (
+          {userInfo.userImageURL && (
             <div>
-              <img 
-                src={userInfo.profileImage} 
-                alt="프로필" 
-                style={{ width: '100px', height: '100px', borderRadius: '50%' }} 
+              <img
+                src={userInfo.userImageURL}
+                alt="프로필"
+                style={{ width: '100px', height: '100px', borderRadius: '50%' }}
               />
             </div>
           )}
           <div>
             <label>이름:</label>
-            <input
-              type="text"
-              name="name"
-              value={userInfo.name}
-              onChange={handleChange}
-            />
+            <input type="text" name="name" value={userInfo.name} onChange={handleChange} />
           </div>
           <div>
             <label>비밀번호:</label>
-            <input
-              type="password"
-              name="password"
-              value={userInfo.password}
-              onChange={handleChange}
-            />
+            <input type="password" name="password" value={userInfo.password} onChange={handleChange} />
           </div>
           <button type="submit">프로필 업데이트</button>
-          <button type="button" onClick={() => setEditMode(false)}>취소</button>
+          <button type="button" onClick={() => setEditMode(false)}>
+            취소
+          </button>
         </form>
       ) : (
         <div>
           <div>
-            <img 
-              src={userInfo.profileImage} 
-              alt="프로필" 
-              style={{ width: '100px', height: '100px', borderRadius: '50%' }} 
+            <img
+              src={userInfo.userImageURL}
+              alt="프로필"
+              style={{ width: '100px', height: '100px', borderRadius: '50%' }}
             />
           </div>
           <div>
-            <span>이름: {userInfo.name}</span>
+            <span>이름: {userInfo.userId}</span>
           </div>
           <div>
             <span>비밀번호: {userInfo.password}</span> {/* 암호화된 비밀번호 */}
@@ -169,3 +146,12 @@ const ProfileEdit = () => {
 };
 
 export default ProfileEdit;
+
+
+
+
+
+
+
+
+
