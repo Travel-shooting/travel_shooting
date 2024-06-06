@@ -9,6 +9,7 @@ function Signup() {
   const [signUpPw, setSignUpPw] = useState("");
   const [signUpPwConfirm, setSignUpPwConfirm] = useState("");
   const [user, setUser] = useState(null);
+  const [showToast, setShowToast] = useState(false);
 
   const onChangesignUpId = (e) => {
     setSignUpId(e.target.value);
@@ -22,30 +23,46 @@ function Signup() {
 
   const signUpNewUser = async (e) => {
     e.preventDefault();
-
+    if (!signUpId.includes("@") || signUpPw.length < 6) {
+      setShowToast(true);
+      return; // 유효성 검사가 실패하면 함수를 종료합니다.
+    }
     const { data, error } = await supabase.auth.signUp({
       email: signUpId,
       password: signUpPw,
     });
-    console.log(data.user.id);
-    console.log(error);
+    if (error) {
+      console.error("Sign up error:", error.message);
+      setShowToast(true);
+      return; // 오류가 발생하면 함수를 종료합니다.
+    } else {
+      console.log("Sign up successful:", data);
+      setShowToast(false);
+    }
 
-    await supabase.from("USER").insert({
-      uuid: data.user.id,
-      userId: signUpId,
-      userImageURL:
-        "https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg",
-    });
-
-    if (signUpPw.length < 6) {
-      alert("비밀번호는 6자리 이상으로 작성해주세요.");
-    } else if (signUpPw !== signUpPwConfirm) {
-      alert("비밀번호가 일치하지 않습니다.");
+    try {
+      await supabase.from("USER").insert({
+        uuid: data.user.id,
+        userId: signUpId,
+        userImageURL:
+          "https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg",
+      });
+    } catch (insertError) {
+      console.error("Error inserting user data:", insertError.message);
+      // 필요한 경우 추가적인 오류 처리를 할 수 있습니다.
     }
   };
 
   return (
     <Modal>
+      {showToast && (
+        <Toast
+          toast={{
+            message: "아이디 또는 비밀번호를 확인해주세요.",
+            seconds: 10000,
+          }}
+        />
+      )}
       <div className="logo-div">
         <img
           src="src\styles\images\logo-icon.png"

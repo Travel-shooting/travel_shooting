@@ -3,17 +3,21 @@ import styled from "styled-components";
 
 const BackDrop = styled.div`
   width: 500px;
-  height: 50px;
+  height: 70px;
+  position: fixed;
+  top: 0%;
+  margin: auto;
   color: #990000;
   background-color: #ffcece;
   border: 1px solid #990000;
   text-align: center;
-  margin: auto;
-  border-radius: 8px;
-  padding: 15px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  padding: 25px;
   transform: ${(props) =>
-    props.isDisplayed ? "translateY(-73px)" : "translateY(calc(100% - 200px))"};
-  transition-duration: 3000;
+    props.isDisplayed ? "translateY(0px)" : "translateY(calc(-100%))"};
+  transition: all 1s;
 `;
 
 function Toast({ toast }) {

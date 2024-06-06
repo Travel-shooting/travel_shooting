@@ -47,7 +47,7 @@ button {
 }
 
 .post-box {
-  weight: 100%;
+  width: 100%;
   border: 1px dashed var(--mintgreen-color);
   margin-bottom: 60px;
   border-radius: 6px;

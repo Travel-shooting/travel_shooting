@@ -3,15 +3,16 @@ import supabase from "../../../util/supabase/supabaseClient";
 import Modal from "../../Modal";
 import { useNavigate } from "react-router-dom";
 import Toast from "../../Toast";
+import { useDispatch } from "react-redux";
 
 function Login() {
   // 로그인 모달
-  // const isOpenLoginModal = useSelector((state) => state.modal.isOpenLoginModal);
-  // console.log(isOpenLoginModal);
+  const isOpenLoginModal = useSelector((state) => state.modal.isOpenLoginModal);
   const [userId, setUserId] = useState("");
   const [userPw, setUserPw] = useState("");
   const [user, setUser] = useState(null);
   const [showToast, setShowToast] = useState(false);
+  const dispatch = useDispatch();
 
   const onChangeId = (e) => {
     setUserId(e.target.value);
@@ -31,7 +32,7 @@ function Login() {
       email: userId,
       password: userPw,
     });
-    console.log(response.data.user.id);
+    // console.log(response.data.user.id);
     const { data, error } = await supabase
       .from("USER")
       .select("*")
@@ -47,7 +48,7 @@ function Login() {
           <Toast
             toast={{
               message: "아이디 또는 비밀번호를 확인해주세요.",
-              seconds: 5000,
+              seconds: 10000,
             }}
           />
         )}
@@ -84,7 +85,14 @@ function Login() {
           </button>
         </form>
         <div className="login-btn-div">
-          <button className="login-btn">회원가입</button>
+          <button
+            className="login-btn"
+            onClick={dispatch({
+              type: "true",
+            })}
+          >
+            회원가입
+          </button>
         </div>
       </Modal>
     );
