@@ -7,19 +7,28 @@ import supabase from '../../../util/supabase/supabaseClient';
 
 const FlexBox = styled.div`
   display: flex;
+  margin: 30px 0px;
   flex-direction: row;
   gap: 10px;
   justify-content: ${(props) => props.justifycontent};
 `;
-
 const Badge = styled.div`
   background-color: var(--lightgrey-color);
   border-radius: 20px;
   padding: 10px;
 `;
-
+const PostP = styled.p`
+  font-size: 17px;
+  padding: 5px;
+`;
 const Font = styled.span`
-  font-size: 25px;
+  font-size: 30px;
+  font-weight: bold;
+  flex: 1;
+  text-decoration: none;
+`;
+const FontUser = styled.span`
+  font-size: 20px;
   font-weight: bold;
   flex: 1;
   text-decoration: none;
@@ -28,6 +37,7 @@ const Button = styled.button`
   padding: 8px;
   background-color: var(--yellow-color);
 `;
+
 function PostDetail({ postDetailData, postTags }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -112,15 +122,15 @@ function PostDetail({ postDetailData, postTags }) {
           </>
         )}
       </FlexBox>
-      <p>{postDetailData.postDate}</p>
-      <p>{postDetailData.postContent}</p>
+      <PostP>{postDetailData.postDate}</PostP>
+      <PostP>{postDetailData.postContent}</PostP>
       <FlexBox justifycontent={'flex-start'}>
         {tags.map((tag, i) => (
           <Badge key={i}>#{tag}</Badge>
         ))}
       </FlexBox>
 
-      <Font>{postEmail.slice(0, postEmail.indexOf('@'))}</Font>
+      <FontUser>{postEmail.slice(0, postEmail.indexOf('@'))}</FontUser>
     </div>
   );
 }

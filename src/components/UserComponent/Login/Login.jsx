@@ -47,7 +47,6 @@ function Login() {
   if (!user) {
     return (
       <Modal>
-        {showToast && <Toast toast={toast} />}
         <div className="logo-div">
           <img src="src\styles\images\logo-icon.png" alt="logo" className="logo" />
           <img src="src\styles\images\logo-text.png" alt="logo" className="logo" />
