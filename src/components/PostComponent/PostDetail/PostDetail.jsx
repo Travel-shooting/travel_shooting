@@ -12,10 +12,6 @@ const FlexBox = styled.div`
   justify-content: ${(props) => props.justifycontent};
 `;
 
-<<<<<<< HEAD
-const Title = styled.p`
-  font-size: 32px;
-=======
 const Badge = styled.div`
   background-color: var(--lightgrey-color);
   border-radius: 20px;
@@ -24,7 +20,6 @@ const Badge = styled.div`
 
 const Font = styled.span`
   font-size: 25px;
->>>>>>> e271103c64d7803755b7be09494da741d14de9d8
   font-weight: bold;
   flex: 1;
   text-decoration: none;
@@ -101,31 +96,6 @@ function PostDetail({ postDetailData, postTags }) {
   };
   return (
     <div>
-<<<<<<< HEAD
-      <div>
-        <TitleBox>
-          <Title>{postDetailData.postTitle}</Title>
-          <BadgeBox>
-            {userId == postDetailData.postUserId && (
-              <>
-                <Button onClick={handleModify}>수정</Button>
-                <Button onClick={handleDelete}>삭제</Button>
-              </>
-            )}
-          </BadgeBox>
-        </TitleBox>
-        <p className="post-date">{postDetailData.postDate}</p>
-        <p>{postDetailData.postContent}</p>
-        <BadgeBox>
-          {tags.map((tag, i) => (
-            <Badge key={i}>#{tag}</Badge>
-          ))}
-        </BadgeBox>
-      </div>
-      <div>
-        <h1>{postEmail.slice(0, postEmail.indexOf('@'))}</h1>
-      </div>
-=======
       <FlexBox justifycontent={'space-between'}>
         <Font>{postDetailData.postTitle}</Font>
         {userId == postDetailData.postUserId && (
@@ -144,7 +114,6 @@ function PostDetail({ postDetailData, postTags }) {
       </FlexBox>
 
       <Font>{postEmail.slice(0, postEmail.indexOf('@'))}</Font>
->>>>>>> e271103c64d7803755b7be09494da741d14de9d8
     </div>
   );
 }
