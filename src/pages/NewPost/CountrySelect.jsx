@@ -2,13 +2,15 @@ import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import api from '../../util/api/api';
 const Select = styled.div`
-  width: 230px;
+  width: 100%;
+  font-size: 14px;
+  text-align: left;
+  position: relative;
 `;
 const CountryBox = styled.div`
   position: absolute;
   overflow-y: scroll;
-  width: 100%;
-  height: ${(props) => (props.selected ? '200px' : '0px')};
+  height: ${(props) => (props.selected ? '240px' : '0px')};
   margin-bottom: 4px;
   border: ${(props) => (props.selected ? 'solid 1px #e6e6ea ' : '0px')};
 `;
@@ -17,10 +19,11 @@ const CountryList = styled.ul`
   display: grid;
   grid-template-columns: 1fr;
   align-content: flex-start;
-  row-gap: 8px;
+  row-gap: 10px;
   position: relative;
   background-color: var(--white-color);
   width: 100%;
+  color: var(--black-color);
 `;
 const CountryItem = styled.li`
   padding: 10px;
@@ -55,9 +58,8 @@ function CountrySelect() {
         ref={selectedCountry}
         onClick={() => setIsShowOptions((prev) => !prev)}
         style={{
-          fontSize: '14px',
-          textAlign: 'left',
-          color: '#bbbbbb'
+          color: `${(props) => (props.selected ? 'black' : '#bbbbbb')}`,
+          padding: '12px'
         }}
       >
         나라를 선택해주세요

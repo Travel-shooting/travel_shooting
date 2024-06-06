@@ -69,13 +69,12 @@ button {
 
 .photo-upload {
   display: block;
-  width: 100%;
-  border: 1px solid var(--yellow-color);
+  width: 80%;
+  border: 2px solid var(--yellow-color);
   margin-bottom: 40px;
   border-radius: 6px;
-  padding: 20px auto;
-
-
+  padding: 40px 12px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .05);
 }
 
 .h2 {
@@ -105,6 +104,7 @@ button {
   box-sizing: border-box;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .05);
   text-align: left;
+  
 
   &:focus {
     border: 1px solid var(--yellow-color);
@@ -118,7 +118,7 @@ button {
   }
 
   .title-input::placeholder {
-    color: #bbbbbb;
+    color: black;
     text-align: left;
     font-size: 14px;
   }
@@ -127,7 +127,7 @@ button {
     height: 360px;
 
     &::placeholder {
-    color: #bbbbbb;
+    color: black;
     text-align: left;
     font-size: 14px;
     }
