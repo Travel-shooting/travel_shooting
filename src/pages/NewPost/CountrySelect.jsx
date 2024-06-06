@@ -13,6 +13,7 @@ const CountryBox = styled.div`
   height: ${(props) => (props.selected ? '240px' : '0px')};
   margin-bottom: 4px;
   border: ${(props) => (props.selected ? 'solid 1px #e6e6ea ' : '0px')};
+  /* color: ${(props) => (props.selected ? 'black' : '#bbbbbb')}; */
 `;
 const CountryList = styled.ul`
   list-style: none;

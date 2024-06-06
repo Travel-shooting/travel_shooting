@@ -32,14 +32,14 @@ textarea{
 input[type=text],textarea {
   width:100%;
   border-radius: 6px;
-  padding: 10px;
+  padding: 12px;
 }
 
 button {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 40px auto;
+  margin: 10px auto;
   border-radius: 6px;
   cursor: pointer;
   border: none;
@@ -180,7 +180,7 @@ button {
   flex-direction: column;
   width: 260px;
   height: 320px;
-  border-radius: 15px;
+  border-radius: 16px;
   border: solid 1px #e6e6ea;
   box-sizing: border-box;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .05);
@@ -208,14 +208,13 @@ button {
   font-weight: 600;
   font-size: 20px;
   text-decoration: none;
-  padding: 20px;
-
+  margin-bottom: 20px;
 }
 
-.post-date {
+.post-date, .user-id {
   font-size: 14px;
-  padding-left: 20px;
-  margin-bottom: 20px;
+  margin: 12px 0;
+  color: var(--darkgrey-color);
 }
 
 .logo-div {

@@ -25,8 +25,10 @@ const PostList = ({ postDatas, handleNavigate }) => {
                 <div className="post-img">
                   <img src={post.imageURL[0]} alt="image" width={'100%'} />
                 </div>
-                <p className="post-title">{post.postTitle}</p>
-                <span className="post-date">{post.postDate}</span>
+                <div style={{ paddingLeft: '20px', margin: '20px 0' }}>
+                  <p className="post-title">{post.postTitle}</p>
+                  <span className="post-date">{post.postDate}</span>
+                </div>
               </div>
             ))}
           </div>
