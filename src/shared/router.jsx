@@ -1,6 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 import Layout from '../layouts/Home';
 import HomeComponent from '../pages/MainPage';
+import ModifyPost from '../pages/ModifyPost/ModifyPostPage';
 import MyPage from '../pages/MyPage'; // 수정된 컴포넌트
 import NewPost from '../pages/NewPost';
 import PostComponent from '../pages/PostPage';
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: '/post/:postId',
         element: <PostComponent />
+      },
+      {
+        path: '/post/modify/:postId',
+        element: <ModifyPost />
       },
       {
         path: '/newpost',

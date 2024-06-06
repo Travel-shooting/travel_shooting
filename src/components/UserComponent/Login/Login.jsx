@@ -18,7 +18,7 @@ function Login() {
     const { data, error } = await supabase.from('USER').select('*').eq('userId', userId);
     console.log('login : ', { data, error });
     dispatch(logIn(response.data.user.id));
-    localStorage.setItem('logInUser', JSON.stringify(response.data.user.id));
+    sessionStorage.setItem('logInUser', JSON.stringify(response.data.user.id));
     dispatch(close());
     setUser(data.user);
   };
