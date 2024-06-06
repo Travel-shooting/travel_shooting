@@ -32,4 +32,5 @@ function Toast({ toast }) {
     </BackDrop>
   );
 }
+
 export default Toast;

@@ -70,10 +70,10 @@ function PostDetail({ postDetailData, postTags }) {
       }
     };
     fetchDeleteUserData();
-    executeDeletionForPostId(postDetailData.id);
+    deleteImagesFromSupabase();
   };
-  // 특정 postId와 관련된 이미지 파일 목록을 조회
-  const fetchImagesWithPostId = async (postId) => {
+  const fetchImagesWithPostId = async () => {
+    const postId = postDetailData.id;
     const { data, error } = await supabase.storage.from('postImages').list('', {
       search: `${postId}-`
     });
@@ -86,32 +86,25 @@ function PostDetail({ postDetailData, postTags }) {
     console.log('조회된 파일 목록:', data);
     return data.map((file) => file.name);
   };
+  const deleteImagesFromSupabase = async (files) => {
+    fetchImagesWithPostId();
+    const postId = postDetailData.id;
 
-  // 이미지 파일 삭제
-  const deleteImagesFromSupabase = async (fileNames) => {
-    const { data, error } = await supabase.storage.from('postImages').remove(fileNames);
+    return Promise.all(
+      files.map(async (file, index) => {
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${postId}-${index}.${fileExt}`;
+        const { data, error } = await supabase.storage.from('postImages').remove([fileName]);
 
-    if (error) {
-      console.error('이미지 삭제 실패...', error);
-    } else {
-      console.log('이미지 삭제 성공...', data);
-    }
+        if (error) {
+          console.error('이미지 삭제 실패...', error);
+        } else console.log('이미지 삭제 성공...', data);
 
-    return data;
+        return data;
+      })
+    );
   };
-
-  // 삭제 실행 함수
-  const executeDeletionForPostId = async (postId) => {
-    const fileNames = await fetchImagesWithPostId(postId);
-    if (fileNames.length > 0) {
-      await deleteImagesFromSupabase(fileNames);
-    } else {
-      console.log('삭제할 이미지가 없습니다.');
-    }
-  };
-  const handleModify = () => {
-    navigate(`/post/modify/${postDetailData.id}`);
-  };
+  const handleModify = () => {};
   return (
     <div>
       <div>

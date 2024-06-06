@@ -12,7 +12,6 @@ function Signup() {
   const [signUpPwConfirm, setSignUpPwConfirm] = useState('');
   const [showToast, setShowToast] = useState(false);
   const [toast, setToast] = useState({ message: '', seconds: 2000 });
-  const [testSeconds, setTestSeconds] = useState(2000);
 
   const onChangesignUpId = (e) => {
     setSignUpId(e.target.value);
@@ -26,25 +25,19 @@ function Signup() {
 
   const signUpNewUser = async (e) => {
     e.preventDefault();
-    setTestSeconds(testSeconds + 1);
-    if (!signUpId.includes('@') || signUpPw.length < 6) {
-      setToast({ message: '아이디 또는 비밀번호를 확인해주세요.', seconds: testSeconds });
-      setShowToast(true);
-      setShowToast(false);
-      return;
-    }
+
     const { data, error } = await supabase.auth.signUp({
       email: signUpId,
       password: signUpPw
     });
-    if (error) {
-      console.error('Sign up error:', error.message);
-      setToast({ message: '회원가입에 실패했습니다. 다시 시도해주세요.', seconds: testSeconds });
+
+    if (!signUpId.includes('@') || signUpPw.length < 6) {
+      setToast({ message: '아이디 또는 비밀번호를 확인해주세요.', seconds: 2000 });
       setShowToast(false);
       setShowToast(true);
-      return;
+      return; // 유효성 검사가 실패하면 함수를 종료합니다.
     } else {
-      console.log('Sign up successful:', data);
+      console.log('Signup successful:', data);
       setShowToast(false);
     }
 
@@ -55,11 +48,10 @@ function Signup() {
     });
     dispatch(close());
   };
-  console.log(showToast);
 
   return (
     <Modal>
-      <Toast toast={{ toast }} />
+      {showToast && <Toast toast={toast} />}
       <div className="logo-div">
         <img src="src\styles\images\logo-icon.png" alt="logo" className="logo" />
         <img src="src\styles\images\logo-text.png" alt="logo" className="logo" />
