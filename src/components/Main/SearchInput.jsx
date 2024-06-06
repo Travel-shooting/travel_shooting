@@ -21,12 +21,8 @@ const Tag = styled.button`
   letter-spacing: 0.05em;
   background-color: ${(props) => (props.selected ? 'var(--yellow-color)' : 'var(--black-color)')};
   &:hover {
-<<<<<<< HEAD
     background-color: var(--yellow-color);
     color: var(--black-color);
-=======
-    background-color: var(--mintgreen-color);
->>>>>>> e271103c64d7803755b7be09494da741d14de9d8
   }
 `;
 const SearchInput = () => {

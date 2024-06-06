@@ -56,7 +56,6 @@ function CountrySelect({ country }) {
 
   return (
     <Select>
-<<<<<<< HEAD:src/pages/NewPost/CountrySelect.jsx
       <div
         className="title-input"
         ref={selectedCountry}
@@ -66,13 +65,8 @@ function CountrySelect({ country }) {
           padding: '12px'
         }}
       >
-        나라를 선택해주세요
-      </div>
-=======
-      <h3 ref={selectedCountry} onClick={() => setIsShowOptions((prev) => !prev)}>
         {country ?? '나라를 선택해주세요'}
-      </h3>
->>>>>>> e271103c64d7803755b7be09494da741d14de9d8:src/components/CountrySelect/CountrySelect.jsx
+      </div>
 
       <CountryBox selected={isShowOptions}>
         {isShowOptions && (

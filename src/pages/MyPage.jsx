@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MyPosts from '../components/UserComponent/MyPosts/MyPosts';
 import ProfileEdit from '../components/UserComponent/ProfileEdit/ProfileEdit';
+import supabase from '../util/supabase/supabaseClient';
 
 const Container = styled.div`
   display: grid;
@@ -24,16 +25,23 @@ const ProfileImage = styled.img`
   border-radius: 50%;
 `;
 const MyPage = () => {
-  const [userInfo, setUserInfo] = useState({});
   const [mode, setMode] = useState('profile-edit');
-
+  const logInUser = JSON.parse(sessionStorage.getItem('logInUser'));
+  const [user, setUser] = useState({});
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const { data } = await supabase.from('USER').select('*').eq('uuid', logInUser);
+      setUser(data[0]);
+    };
+    fetchUserData();
+  }, [logInUser]);
   return (
     <Container>
       <Profile>
         <h3>유저 프로필</h3>
 
-        <ProfileImage src={userInfo.profileImage} alt="프로필" />
-        <h3>{userInfo.userId}</h3>
+        <ProfileImage src={user.userImageURL} alt="프로필" />
+        <h3>{user.userId}</h3>
 
         <div>
           <h1 onClick={() => setMode('profile-edit')}>프로필 편집</h1>
