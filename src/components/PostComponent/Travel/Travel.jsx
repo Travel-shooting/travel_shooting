@@ -2,22 +2,24 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
 const Container = styled.div`
+  background-color: var(--lightgrey-color);
+  border-radius: 16px;
   position: sticky;
   top: 50%;
-  padding: 20px;
+  padding: 0 20px;
 `;
 
 const FlexBox = styled.div`
   display: flex;
-  flex-direction: row;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: center;
 `;
 
 const Item = styled.div`
-  width: 40%;
+  width: 200px;
   height: 200px;
+  background-image: cover;
   cursor: pointer;
   img {
     width: 100%;
@@ -30,6 +32,7 @@ const Font = styled.p`
   font-weight: bold;
   text-align: center;
   margin: 20px;
+  line-height: 1.2;
 `;
 
 function getRandomElements(arr, count) {
@@ -58,7 +61,10 @@ function Travel() {
 
   return (
     <Container>
-      <Font>트래블 슈팅과 함께 여러 나라를 탐험하세요!</Font>
+      <Font>
+        트래블 슈팅과 함께 <br />
+        여러 나라를 탐험하세요!
+      </Font>
       <FlexBox>
         {randomData.map((data) => (
           <Item key={data.id} onClick={() => handleNavigate(data.id)}>

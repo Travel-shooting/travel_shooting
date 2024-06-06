@@ -3,12 +3,14 @@ import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { manageCountry } from '../../redux/slices/postSlice';
 import api from '../../util/api/api';
+
 const Select = styled.div`
   width: 100%;
   font-size: 14px;
   text-align: left;
   position: relative;
 `;
+
 const CountryBox = styled.div`
   position: absolute;
   overflow-y: scroll;
@@ -16,6 +18,7 @@ const CountryBox = styled.div`
   margin-bottom: 4px;
   border: ${(props) => (props.selected ? 'solid 1px #e6e6ea ' : '0px')};
 `;
+
 const CountryList = styled.ul`
   list-style: none;
   display: grid;
@@ -27,6 +30,7 @@ const CountryList = styled.ul`
   width: 100%;
   color: var(--black-color);
 `;
+
 const CountryItem = styled.li`
   padding: 10px;
   &:hover {
@@ -34,6 +38,7 @@ const CountryItem = styled.li`
     background-color: var(--yellow-color);
   }
 `;
+
 function CountrySelect({ country }) {
   const dispatch = useDispatch();
   const [countries, setCountries] = useState([]);
@@ -61,16 +66,12 @@ function CountrySelect({ country }) {
         ref={selectedCountry}
         onClick={() => setIsShowOptions((prev) => !prev)}
         style={{
-          color: `${(props) => (props.selected ? 'black' : '#bbbbbb')}`,
+          color: `${country ? 'black' : '#bbbbbb'}`,
           padding: '12px'
         }}
       >
-        나라를 선택해주세요
-      </div>
-      <h3 ref={selectedCountry} onClick={() => setIsShowOptions((prev) => !prev)}>
         {country ?? '나라를 선택해주세요'}
-      </h3>
-
+      </div>
       <CountryBox selected={isShowOptions}>
         {isShowOptions && (
           <CountryList>
