@@ -6,6 +6,7 @@ import { deletePost } from '../../../redux/slices/postSlice';
 import supabase from '../../../util/supabase/supabaseClient';
 
 const FlexBox = styled.div`
+  height: auto;
   display: flex;
   margin: 30px 0px;
   flex-direction: row;
@@ -19,11 +20,12 @@ const Badge = styled.div`
 `;
 const PostP = styled.p`
   font-size: 17px;
-  padding: 5px;
+  line-height: 30px;
 `;
 const Font = styled.span`
   font-size: 30px;
   font-weight: bold;
+  line-height: 38px;
   flex: 1;
   text-decoration: none;
 `;
@@ -33,7 +35,13 @@ const FontUser = styled.span`
   flex: 1;
   text-decoration: none;
 `;
+const ButtonDiv = styled.div`
+  display: flex;
+`;
 const Button = styled.button`
+  width: 160px;
+  height: 35px;
+  font-size: 16px;
   padding: 8px;
   background-color: var(--yellow-color);
 `;
@@ -115,12 +123,6 @@ function PostDetail({ postDetailData, postTags }) {
     <div>
       <FlexBox justifycontent={'space-between'}>
         <Font>{postDetailData.postTitle}</Font>
-        {userId == postDetailData.postUserId && (
-          <>
-            <Button onClick={handleModify}>수정</Button>
-            <Button onClick={handleDelete}>삭제</Button>
-          </>
-        )}
       </FlexBox>
       <PostP>{postDetailData.postDate}</PostP>
       <PostP>{postDetailData.postContent}</PostP>
@@ -129,8 +131,15 @@ function PostDetail({ postDetailData, postTags }) {
           <Badge key={i}>#{tag}</Badge>
         ))}
       </FlexBox>
-
-      <FontUser>{postEmail.slice(0, postEmail.indexOf('@'))}</FontUser>
+      <FontUser>
+        {postEmail.slice(0, postEmail.indexOf('@'))}
+        {userId == postDetailData.postUserId && (
+          <ButtonDiv>
+            <Button onClick={handleModify}>수정</Button>
+            <Button onClick={handleDelete}>삭제</Button>
+          </ButtonDiv>
+        )}
+      </FontUser>
     </div>
   );
 }
