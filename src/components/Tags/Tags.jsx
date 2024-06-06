@@ -49,22 +49,15 @@ function Tags() {
     tagData();
   }, []);
 
-  useEffect(() => {
-    const storedTags = JSON.parse(localStorage.getItem('tags')) || [];
-    setSelectedTags(storedTags);
-  }, []);
-
   const handleCheckBoxChange = (tagId, e) => {
     if (e.target.checked) {
       const newSelectedTags = [...selectedTags, { id: tagId, tagValue: e.target.value }];
       setSelectedTags(newSelectedTags);
       dispatch(manageTags(newSelectedTags));
-      //localStorage.setItem('tags', JSON.stringify(newSelectedTags));
     } else {
       const newSelectedTags = selectedTags.filter((t) => t.id !== tagId);
       setSelectedTags(newSelectedTags);
       dispatch(manageTags(newSelectedTags));
-      //localStorage.setItem('tags', JSON.stringify(newSelectedTags));
     }
   };
 

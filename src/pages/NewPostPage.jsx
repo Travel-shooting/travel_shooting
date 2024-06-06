@@ -1,13 +1,13 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import Slider from '../../components/PostComponent/Slider';
-import { addPost, manageRealImages, manageTags } from '../../redux/slices/postSlice';
-import { getPresentTime } from '../../util/date';
-import supabase from '../../util/supabase/supabaseClient';
-import CountrySelect from './CountrySelect';
-import Tags from './Tags';
+import CountrySelect from '../components/CountrySelect';
+import Slider from '../components/PostComponent/Slider';
+import Tags from '../components/Tags';
+import { addPost, manageRealImages, manageTags } from '../redux/slices/postSlice';
+import { getPresentTime } from '../util/date';
+import supabase from '../util/supabase/supabaseClient';
 
 const Container = styled.div`
   display: flex;
@@ -36,14 +36,17 @@ function NewPost() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userId = useSelector((state) => state.log.logInUser);
+  const country = useSelector((state) => state.post.country);
   const selectedTags = useSelector((state) => state.post.tags);
   const [fileImages, setFileImages] = useState([]);
   const [realFiles, setRealFiles] = useState([]);
-  const fileInputRef = useRef();
   const formRef = useRef([]);
 
+  useEffect(() => {
+    formRef.current[0].focus();
+  }, []);
   const handleClick = () => {
-    fileInputRef.current.click();
+    formRef.current[2].click();
   };
 
   const handleChange = (event) => {
@@ -54,19 +57,23 @@ function NewPost() {
   };
 
   const uploadImagesToSupabase = async (files, postId) => {
-    return Promise.all(
-      files.map(async (file, index) => {
-        const fileExt = file.name.split('.').pop();
-        const fileName = `${postId}-${index}.${fileExt}`;
-        const { data, error } = await supabase.storage.from('postImages').upload(fileName, file);
+    try {
+      const uploadPromises = await Promise.all(
+        files.map(async (file, index) => {
+          const fileExt = file.name.split('.').pop();
+          const fileName = `${postId}-${index}.${fileExt}`;
+          const { data, error } = await supabase.storage.from('postImages').upload(fileName, file);
 
-        if (error) {
-          console.error(error);
-        } else console.log('이미지 성공...', data);
+          if (error) console.error('이미지 업로드 실패:', error);
+          else console.log('이미지 성공:', data);
 
-        return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/postImages/${fileName}`;
-      })
-    );
+          return `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/postImages/${fileName}`;
+        })
+      );
+      return uploadPromises.map((url) => ({ url }));
+    } catch (error) {
+      console.error('이미지 업로드 중 오류 발생:', error);
+    }
   };
 
   const handleSubmit = async () => {
@@ -74,9 +81,6 @@ function NewPost() {
     try {
       const uploadedImageUrls = await uploadImagesToSupabase(realFiles, id);
 
-      const imageURLs = uploadedImageUrls.map((url) => ({
-        url
-      }));
       const postFormData = {
         id,
         postUserId: userId,
@@ -84,8 +88,8 @@ function NewPost() {
         postContent: formRef.current[1].value,
         postDate: getPresentTime(),
         postLike: 0,
-        imageURL: imageURLs,
-        country: JSON.parse(localStorage.getItem('country'))
+        imageURL: uploadedImageUrls,
+        country: country
       };
 
       const tagsFormData = selectedTags.map(
@@ -99,8 +103,8 @@ function NewPost() {
       const postError = {
         title: !formRef.current[0].value.trim().length,
         content: !formRef.current[1].value.trim().length,
-        country: JSON.parse(localStorage.getItem('country')) == '',
-        imageURL: !imageURLs.length,
+        country: country == '',
+        imageURL: !uploadedImageUrls.length,
         tags: !tagsFormData.length
       };
       if (postError.title || postError.content || postError.country || postError.imageURL || postError.tags) {
@@ -108,25 +112,17 @@ function NewPost() {
         return;
       }
 
+      await supabase.from('POST').insert(postFormData);
+      await supabase.from('TAGS').insert(tagsFormData);
+
       dispatch(addPost({ postFormData }));
       dispatch(manageTags({ tagsFormData }));
       dispatch(manageRealImages(postFormData));
 
-      console.log('postFormData: ', postFormData);
-
-      const { data, error } = await supabase.from('POST').insert(postFormData);
-      if (error) console.error(error);
-      else console.log(data);
-
-      const { data: tagData, tagError } = await supabase.from('TAGS').insert(tagsFormData);
-      if (tagError) console.error(tagError);
-      else console.log(tagData);
-
       alert('데이터가 정상적으로 추가되었습니다');
       navigate('/');
     } catch (error) {
-      console.error('Error uploading files:', error);
-      alert('에러 발생: ' + error.message);
+      console.error('에러 발생: ' + error.message);
     }
   };
 
@@ -140,7 +136,13 @@ function NewPost() {
       </Container>
       <textarea ref={(el) => (formRef.current[1] = el)} type="text" placeholder="내용을 입력해주세요"></textarea>
       <Container direction={'row'}>
-        <HiddenInput type="file" multiple accept="image/*" ref={fileInputRef} onChange={handleChange} />
+        <HiddenInput
+          type="file"
+          multiple
+          accept="image/*"
+          ref={(el) => (formRef.current[2] = el)}
+          onChange={handleChange}
+        />
         <Button bgcolor={'var(--white-color)'} color={'var(--yellow-color)'} onClick={handleClick}>
           사진 업로드
         </Button>

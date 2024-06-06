@@ -25,31 +25,24 @@ function PostPage() {
   const [postImages, setPostImages] = useState([]);
   const [postTags, setPostTags] = useState([]);
   const { postId } = useParams();
+
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from('POST').select('*').eq('id', postId);
-      if (error) {
-        console.error(error);
-      } else {
-        console.log(data[0]);
-        setPostDetailDatas(data[0]);
-        const urls = JSON.parse(data[0].imageURL).map((image) => image.url, []);
-        setPostImages(urls);
-        dispatch(loadPost(data[0]));
-      }
-    };
-    const tagFetchData = async () => {
-      const { data, error } = await supabase.from('TAGS').select('*').eq('postId', postId);
-      if (error) console.error(error);
+      const { data: postData, error: postError } = await supabase.from('POST').select('*').eq('id', postId);
+      const { data: tagData, error: tagError } = await supabase.from('TAGS').select('*').eq('postId', postId);
+      if (postError || tagError) console.error(postError);
       else {
-        console.log(data);
-        setPostTags(data);
+        setPostDetailDatas(postData[0]);
+        const urls = JSON.parse(postData[0].imageURL).map((image) => image.url, []);
+        setPostImages(urls);
+        dispatch(loadPost(postData[0]));
+        setPostTags(tagData);
       }
     };
 
     fetchData();
-    tagFetchData();
-  }, [postId]);
+  }, [dispatch, postId]);
+
   return (
     <Container>
       <Slider postImage={postImages} />

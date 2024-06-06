@@ -6,6 +6,7 @@ import supabase from '../../../util/supabase/supabaseClient';
 import Modal from '../../Modal';
 import { useNavigate } from 'react-router-dom';
 import Toast from '../../Toast';
+import LogModal from '../../LogModal';
 
 function Login() {
   // const isOpenLoginModal = useSelector((state) => state.modal.isOpenLoginModal);

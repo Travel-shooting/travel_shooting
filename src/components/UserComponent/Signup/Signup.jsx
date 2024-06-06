@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { close } from '../../../redux/slices/modalSlice';
 import supabase from '../../../util/supabase/supabaseClient';
-import Modal from '../../Modal';
+import Modal from '../../LogModal';
 import Toast from '../../Toast';
 
 function Signup() {

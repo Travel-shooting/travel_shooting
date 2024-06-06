@@ -34,7 +34,7 @@ const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
 
 function Tags({ postTags }) {
   const dispatch = useDispatch();
-  const [selectedTags, setSelectedTags] = useState(postTags);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [tags, setTags] = useState([]);
 
   useEffect(() => {
