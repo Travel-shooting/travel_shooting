@@ -1,18 +1,50 @@
-import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import { loadPost } from "../../redux/slices/postSlice";
-import supabase from "../../util/supabase/supabaseClient";
-import { tags } from "../../util/tags";
-
-const SearchInput = ({ onSearch }) => {
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import { loadPost } from '../../redux/slices/postSlice';
+import supabase from '../../util/supabase/supabaseClient';
+const Img = styled.img`
+  cursor: pointer;
+`;
+const Tag = styled.button`
+  padding: 10px 16px;
+  margin: 4px;
+  color: var(--white-color);
+  border-radius: 50px;
+  font-size: 14px;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  background-color: ${(props) => (props.selected ? 'var(--mintgreen-color)' : 'var(--black-color)')};
+  &:hover {
+    background-color: var(--mintgreen-color);
+    color: var(--white-color);
+  }
+`;
+const NoData = styled.div`
+  width: 100%;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+const SearchInput = () => {
   const dispatch = useDispatch();
-  const [search, setSearch] = useState("");
+  const navigate = useNavigate();
+  const [search, setSearch] = useState('');
   const [postDatas, setPostDatas] = useState([]);
+  const loadData = useSelector((state) => state.post.loadData);
+  const [tags, setTags] = useState([]);
+  const [selectedTagId, setSelectedTagId] = useState(null);
   useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase.from("POST").select("*");
+    const tagData = async () => {
+      const { data: tagData, tagError } = await supabase.from('POSTTAG').select('*');
+      if (tagError) console.error(tagError);
+      else setTags(tagData);
+    };
 
+    const fetchData = async () => {
+      const { data, error } = await supabase.from('POST').select('*');
       if (error) {
         console.error(error);
       } else {
@@ -20,33 +52,47 @@ const SearchInput = ({ onSearch }) => {
           const imageURLs = JSON.parse(item.imageURL).map((obj) => obj.url);
           return {
             ...item,
-            imageURL: imageURLs,
+            imageURL: imageURLs
           };
         });
-        console.log(updatedData);
         setPostDatas(updatedData);
         dispatch(loadPost(updatedData));
       }
     };
-
+    tagData();
     fetchData();
   }, []);
+
   const searchHandler = (e) => {
     setSearch(e.target.value);
   };
+  const handleSearch = (query) => {
+    const filtered = postDatas.filter((post) => post.postTitle.toLowerCase().includes(query));
+    setPostDatas(filtered);
+  };
 
   const handleKeyPress = (e) => {
-    if (e.key === "Enter" && search) {
-      onSearch(search);
-    } else if (e.key === "Enter" && !search) {
-      alert("나라를 입력하세요");
+    if (e.key === 'Enter' && search) {
+      handleSearch(search);
+    } else if (e.key === 'Enter' && !search) {
+      alert('나라를 입력하세요');
     }
   };
-
-  const handleTagClick = (tag) => {
-    onSearch(tag);
+  const handleTags = (query) => {
+    setSelectedTagId(query);
+    const fetchTags = async () => {
+      const { data: tagData, error } = await supabase.from('TAGS').select('*').eq('tagId', query);
+      if (error) console.error(error);
+      else {
+        const filteredPostDatas = loadData.filter((postData) => tagData.some((tag) => tag.postId === postData.id));
+        setPostDatas(filteredPostDatas);
+      }
+    };
+    fetchTags();
   };
-
+  const handleNavigate = (postId) => {
+    navigate(`/post/${postId}`);
+  };
   return (
     <>
       <p className="h2">
@@ -64,27 +110,37 @@ const SearchInput = ({ onSearch }) => {
           onKeyPress={handleKeyPress}
         />
         <div className="search-icon">
-          <img
+          <Img
             src="https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/icon/search.svg"
             alt="검색"
+            onClick={() => handleSearch(search)}
           />
         </div>
       </div>
       <div className="tags">
         {tags.map((tag) => (
-          <div className="tag" key={tag} onClick={() => handleTagClick(tag)}>
-            #{tag}
-          </div>
+          <Tag selected={tag.id == selectedTagId} key={tag.id} onClick={() => handleTags(tag.id)}>
+            #{tag.tagValue}
+          </Tag>
         ))}
-        {postDatas.map((post) => (
-          <Link to={`/post/${post.id}`} className="post" key={post.id}>
-            <div className="post-img">
-              <img src={post.imageURL[0]} alt="image" width={"200px"} />
-            </div>
-            <p className="post-title">{post.postTitle}</p>
-            <span>{post.postDate}</span>
-          </Link>
-        ))}
+      </div>
+      <div className="tags">
+        {postDatas.length ? (
+          <>
+            {' '}
+            {postDatas.map((post) => (
+              <div className="post" onClick={() => handleNavigate(post.id)} key={post.id}>
+                <div className="post-img">
+                  <img src={post.imageURL[0]} alt="image" width={'100%'} />
+                </div>
+                <p className="post-title">{post.postTitle}</p>
+                <span>{post.postDate}</span>
+              </div>
+            ))}
+          </>
+        ) : (
+          <NoData>해당하는 데이터가 없어요 ! 여기 이미지 아무거나 구해주세용</NoData>
+        )}
       </div>
     </>
   );

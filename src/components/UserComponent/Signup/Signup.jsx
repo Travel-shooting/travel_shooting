@@ -1,15 +1,18 @@
-import { useState } from "react";
-import Modal from "../../Modal";
-import styled from "styled-components";
-import supabase from "../../../util/supabase/supabaseClient";
-import Toast from "../../Toast";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { close } from '../../../redux/slices/modalSlice';
+import supabase from '../../../util/supabase/supabaseClient';
+import Modal from '../../Modal';
+import Toast from '../../Toast';
 
 function Signup() {
-  const [signUpId, setSignUpId] = useState("");
-  const [signUpPw, setSignUpPw] = useState("");
-  const [signUpPwConfirm, setSignUpPwConfirm] = useState("");
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const [signUpId, setSignUpId] = useState('');
+  const [signUpPw, setSignUpPw] = useState('');
+  const [signUpPwConfirm, setSignUpPwConfirm] = useState('');
   const [showToast, setShowToast] = useState(false);
+  const [toast, setToast] = useState({ message: '', seconds: 2000 });
+  const [testSeconds, setTestSeconds] = useState(2000);
 
   const onChangesignUpId = (e) => {
     setSignUpId(e.target.value);
@@ -23,67 +26,47 @@ function Signup() {
 
   const signUpNewUser = async (e) => {
     e.preventDefault();
-    if (!signUpId.includes("@") || signUpPw.length < 6) {
+    setTestSeconds(testSeconds + 1);
+    if (!signUpId.includes('@') || signUpPw.length < 6) {
+      setToast({ message: '아이디 또는 비밀번호를 확인해주세요.', seconds: testSeconds });
       setShowToast(true);
-      return; // 유효성 검사가 실패하면 함수를 종료합니다.
+      setShowToast(false);
+      return;
     }
     const { data, error } = await supabase.auth.signUp({
       email: signUpId,
-      password: signUpPw,
+      password: signUpPw
     });
     if (error) {
-      console.error("Sign up error:", error.message);
+      console.error('Sign up error:', error.message);
+      setToast({ message: '회원가입에 실패했습니다. 다시 시도해주세요.', seconds: testSeconds });
+      setShowToast(false);
       setShowToast(true);
-      return; // 오류가 발생하면 함수를 종료합니다.
+      return;
     } else {
-      console.log("Sign up successful:", data);
+      console.log('Sign up successful:', data);
       setShowToast(false);
     }
 
-    try {
-      await supabase.from("USER").insert({
-        uuid: data.user.id,
-        userId: signUpId,
-        userImageURL:
-          "https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg",
-      });
-    } catch (insertError) {
-      console.error("Error inserting user data:", insertError.message);
-      // 필요한 경우 추가적인 오류 처리를 할 수 있습니다.
-    }
+    await supabase.from('USER').insert({
+      uuid: data.user.id,
+      userId: signUpId,
+      userImageURL: 'https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg'
+    });
+    dispatch(close());
   };
+  console.log(showToast);
 
   return (
     <Modal>
-      {showToast && (
-        <Toast
-          toast={{
-            message: "아이디 또는 비밀번호를 확인해주세요.",
-            seconds: 10000,
-          }}
-        />
-      )}
+      <Toast toast={{ toast }} />
       <div className="logo-div">
-        <img
-          src="src\styles\images\logo-icon.png"
-          alt="logo"
-          className="logo"
-        />
-        <img
-          src="src\styles\images\logo-text.png"
-          alt="logo"
-          className="logo"
-        />
+        <img src="src\styles\images\logo-icon.png" alt="logo" className="logo" />
+        <img src="src\styles\images\logo-text.png" alt="logo" className="logo" />
       </div>
       <p className="login-p">회원가입</p>
       <form className="login-form">
-        <input
-          className="login-input"
-          type="email"
-          placeholder="이메일"
-          value={signUpId}
-          onChange={onChangesignUpId}
-        />
+        <input className="login-input" type="email" placeholder="이메일" value={signUpId} onChange={onChangesignUpId} />
         <input
           className="login-input"
           type="password"
@@ -98,11 +81,7 @@ function Signup() {
           value={signUpPwConfirm}
           onChange={onChangesignUpPwConfirm}
         />
-        <button
-          className="login-input-btn"
-          type="submit"
-          onClick={signUpNewUser}
-        >
+        <button className="login-input-btn" type="submit" onClick={signUpNewUser}>
           회원가입
         </button>
       </form>

@@ -15,6 +15,7 @@ function Home() {
   const modal = useSelector((state) => state.modal.modalOptions);
   return (
     <>
+      <GlobalStyle modal={modal} />
       {modal == "login" && <Login />}
       {modal == "signup" && <Signup />}
       <Menubar />

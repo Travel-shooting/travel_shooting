@@ -1,5 +1,5 @@
-import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";
+import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
 
 /**
  * 전역스타일링인데 막 html 태그 기본 스타일 설정을 여기서 해줘용
@@ -125,24 +125,6 @@ button {
   gap: 4px;
 }
 
-.tag {
-  display: inline-block;
-  padding: 10px 16px;
-  margin: 4px;
-  background-color: var(--black-color);
-  color: var(--white-color);
-  font-weight: 300;
-  border-radius: 50px;
-  font-size: 14px;
-  text-align: center;
-  cursor: pointer;
-  letter-spacing: 0.05em;
-}
-
-.tag:hover {
-  background-color: var(--mintgreen-color);
-  color: var(--white-color);
-}
 
 .post {
   display: flex;
@@ -224,6 +206,9 @@ button {
   color: grey;
   margin: 0;
 }
+.swiper-slide{
+  border-radius: 25px;
 
+}
 `;
 export default GlobalStyle;

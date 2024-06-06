@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import styled from "styled-components";
+import { useEffect, useState } from 'react';
+import styled from 'styled-components';
 
 const BackDrop = styled.div`
   width: 500px;
@@ -15,17 +15,16 @@ const BackDrop = styled.div`
   justify-content: center;
   border-radius: 10px;
   padding: 25px;
-  transform: ${(props) =>
-    props.isDisplayed ? "translateY(0px)" : "translateY(calc(-100%))"};
+  transform: ${(props) => (props.isDisplayed ? 'translateY(0px)' : 'translateY(calc(-100%))')};
   transition: all 1s;
 `;
 
 function Toast({ toast }) {
   const [isDisplayed, setIsDisplayed] = useState(false);
-
+  console.log(toast);
   useEffect(() => {
     setIsDisplayed(true);
-    setTimeout(() => setIsDisplayed(false), 2000);
+    setTimeout(() => setIsDisplayed(false), 3000);
   }, [toast.seconds]);
   return (
     <BackDrop isDisplayed={isDisplayed}>
