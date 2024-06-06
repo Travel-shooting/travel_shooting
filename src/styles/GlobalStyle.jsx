@@ -28,12 +28,11 @@ textarea{
   height: 200px;
   resize:none;
 }
+
 input[type=text],textarea {
   width:100%;
-  border: none;
-  border-radius: 8px;
+  border-radius: 6px;
   padding: 10px;
-  background-color: var(--lightgrey-color);
 }
 
 button {
@@ -43,12 +42,12 @@ button {
   margin: 40px auto;
   border-radius: 6px;
   cursor: pointer;
-  border: 0px;
+  border: none;
 }
 
 .post-box {
-  width: 100%;
-  border: 1px dashed var(--mintgreen-color);
+  weight: 100%;
+  border: 1px dashed var(--yellow-color);
   margin-bottom: 60px;
   border-radius: 6px;
 }
@@ -57,13 +56,12 @@ button {
   margin: 40px auto;
   border-radius: 6px;
   cursor: pointer;
-  width: 200px;
-  color: var(--white-color);
+  width: 240px;
+  color: var(--black-color);
   display: block;
-  width: 60%;
   margin-top: 14px;
   padding: 14px 0;
-  background-color: var(--mintgreen-color);
+  background-color: var(--yellow-color);
   box-sizing: border-box;
   font-size: 14px;
   text-align: center;
@@ -71,7 +69,7 @@ button {
 
 .h2 {
   font-size: 32px;
-  line-height: 1.2;
+  line-height: 1.3;
   font-weight: bold;
   color: var(--black-color);
   text-align: center;
@@ -86,7 +84,7 @@ button {
   position: relative;
 }
 
-.search-input {
+.search-input, .title-input, .content-box {
   display: block;
   width: 100%;
   height: 100%;
@@ -99,17 +97,31 @@ button {
   text-align: left;
 
   &:focus {
-    border: 1px solid var(--mintgreen-color);
+    border: 1px solid var(--yellow-color);
     outline: none;
-  }
+  }}
 
-  &::placeholder {
+  .search-input::placeholder {
     color: #bbbbbb;
     text-align: center;
     font-size: 14px;
   }
-}
 
+  .title-input::placeholder {
+    color: #bbbbbb;
+    text-align: left;
+    font-size: 14px;
+  }
+
+  .content-box {
+    height: 360px;
+
+    &::placeholder {
+    color: #bbbbbb;
+    text-align: left;
+    font-size: 14px;
+    }
+  }
 
 .search-icon {
   position: absolute;
@@ -121,26 +133,79 @@ button {
 .tags {
   display: flex; /* 기존의 inline-block 대신 flex를 사용 */
   flex-wrap: wrap; /* 태그들이 넘칠 때 다음 줄로 넘어가도록 설정 */
-  justify-content: center; /* 가운데 정렬 */
+  justify-content: center;
   gap: 4px;
 }
 
+.tag {
+  display: inline-block;
+  padding: 10px 16px;
+  margin: 4px;
+  background-color: var(--black-color);
+  color: var(--white-color);
+  font-weight: 300;
+  border-radius: 50px;
+  font-size: 14px;
+  text-align: center;
+  cursor: pointer;
+  letter-spacing: 0.05em;
+  transition: background-color 0.3s;
+}
+
+.tag:hover {
+  background-color: var(--yellow-color);
+  color: var(--white-color);
+}
+
+.post-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin: 60px 0;
+}
 
 .post {
   display: flex;
-  width: 340px;
-  height: 400px;
-  border-radius: 6px;
+  flex-direction: column;
+  width: 260px;
+  height: 320px;
+  border-radius: 15px;
   border: solid 1px #e6e6ea;
   box-sizing: border-box;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .05);
-  margin: 40px 0 20px 0;
+  margin-bottom: 20px;
+  background-size: cover;
+  overflow: hidden;
 }
 
-.post .post-img {
+.post-img {
   width: 100%;
-  height: 160px;
-  background-color: red;
+  height: 300px;
+  position: relative;
+}
+
+.post-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.post-title {
+  font-weight: 600;
+  font-size: 20px;
+  text-decoration: none;
+  padding: 20px;
+
+}
+
+.post-date {
+  font-size: 14px;
+  padding-left: 20px;
+  margin-bottom: 20px;
 }
 
 .logo-div {
@@ -202,9 +267,19 @@ button {
   background-color: transparent;
   color: grey;
 }
-.swiper-slide{
-  border-radius: 25px;
 
+.select-box {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: center; */
+  gap: 4px;
 }
+
+// swiper
+.swiper-img {
+  width: 100%;
+}
+
 `;
+
 export default GlobalStyle;

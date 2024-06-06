@@ -7,7 +7,7 @@ import Logo from '../styles/images/logo.png';
 import supabase from '../util/supabase/supabaseClient';
 const MenuContainer = styled.div`
   height: 80px;
-  background-color: var(--lightgrey-color);
+  background-color: var(--black-color);
 `;
 const MenuInnerContainer = styled.div`
   width: 80%;
@@ -19,8 +19,8 @@ const MenuInnerContainer = styled.div`
   justify-content: space-between;
 `;
 const Button = styled.button`
-  padding: 6px;
-  border-radius: 4px;
+  padding: 10px;
+  border-radius: 6px;
   border: 1px solid ${(props) => props.bordercolor};
   background-color: ${(props) => props.bgcolor};
   color: ${(props) => props.color};
@@ -32,6 +32,7 @@ const ButtonBox = styled.div`
   flex-direction: row;
   gap: 10px;
 `;
+
 function Menubar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -64,24 +65,24 @@ function Menubar() {
       <MenuInnerContainer>
         <div>
           <Link to="/">
-            <img src={Logo} />
+            <img style={{ width: '240px' }} src={Logo} />
           </Link>
         </div>
         <ButtonBox>
           {userId ? (
             <>
               <Button
-                bgcolor={'var(--white-color)'}
-                color={'var(--golden-color)'}
-                bordercolor={'var(--golden-color)'}
+                bgcolor={'var(--black-color)'}
+                color={'var(--yellow-color)'}
+                bordercolor={'var(--yellow-color)'}
                 onClick={handleLogOut}
               >
                 Log Out
               </Button>
               <Button
-                bgcolor={'var(--golden-color)'}
-                color={'var(--white-color)'}
-                bordercolor={'var(--golden-color)'}
+                bgcolor={'var(--yellow-color)'}
+                color={'var(--black-color)'}
+                bordercolor={'var(--yellow-color)'}
                 onClick={goMyPage}
               >
                 MY PAGE
@@ -90,17 +91,17 @@ function Menubar() {
           ) : (
             <>
               <Button
-                bgcolor={'var(--white-color)'}
-                color={'var(--golden-color)'}
-                bordercolor={'var(--golden-color)'}
+                bgcolor={'var(--black-color)'}
+                color={'var(--yellow-color)'}
+                bordercolor={'var(--yellow-color)'}
                 onClick={handleLogIn}
               >
                 Log In
               </Button>
               <Button
-                bgcolor={'var(--golden-color)'}
-                color={'var(--white-color)'}
-                bordercolor={'var(--golden-color)'}
+                bgcolor={'var(--yellow-color)'}
+                color={'var(--black-color)'}
+                bordercolor={'var(--yellow-color)'}
                 onClick={handleSignup}
               >
                 Sign up
