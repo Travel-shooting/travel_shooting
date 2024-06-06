@@ -2,9 +2,10 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../../../redux/slices/logSlice';
 import { close } from '../../../redux/slices/modalSlice';
+import LogoIcon from '../../../styles/images/logo-icon.png';
+import LogoText from '../../../styles/images/logo-text.png';
 import supabase from '../../../util/supabase/supabaseClient';
 import Modal from '../../LogModal';
-
 function Login() {
   const dispatch = useDispatch();
   const loginUser = async (e) => {
@@ -37,8 +38,8 @@ function Login() {
     return (
       <Modal>
         <div className="logo-div">
-          <img src="src\styles\images\logo-icon.png" alt="logo" className="logo" />
-          <img src="src\styles\images\logo-text.png" alt="logo" className="logo" />
+          <img src={LogoIcon} alt="logo" className="logo" />
+          <img src={LogoText} alt="logo" className="logo" />
         </div>
         <p className="login-p">로그인</p>
         <form className="login-form ">
