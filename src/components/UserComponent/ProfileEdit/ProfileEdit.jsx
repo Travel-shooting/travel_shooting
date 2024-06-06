@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import supabase from '../../../util/supabase/supabaseClient';
+import styled from 'styled-components';
 
 const ProfileEdit = () => {
   const [userInfo, setUserInfo] = useState({
@@ -93,7 +94,9 @@ const ProfileEdit = () => {
 
   return (
     <div>
-      <h2>프로필 편집</h2>
+      <Font size={'25px'} weight={'bold'} color={'var(--grey-color)'}>
+          내가 쓴 글
+        </Font>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       {editMode ? (
         <form onSubmit={handleSubmit}>
@@ -146,12 +149,3 @@ const ProfileEdit = () => {
 };
 
 export default ProfileEdit;
-
-
-
-
-
-
-
-
-
