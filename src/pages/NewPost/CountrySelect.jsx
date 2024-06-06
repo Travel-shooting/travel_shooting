@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { manageCountry } from '../../redux/slices/postSlice';
 import api from '../../util/api/api';
 const Select = styled.div`
   width: 100%;
@@ -34,8 +32,7 @@ const CountryItem = styled.li`
     background-color: var(--yellow-color);
   }
 `;
-function CountrySelect({ country }) {
-  const dispatch = useDispatch();
+function CountrySelect() {
   const [countries, setCountries] = useState([]);
   const [isShowOptions, setIsShowOptions] = useState(false);
   const selectedCountry = useRef(null);
@@ -51,12 +48,11 @@ function CountrySelect({ country }) {
   const handleSelectValue = (e) => {
     selectedCountry.current.innerText = e.target.innerText;
     setIsShowOptions(false); // 선택 후 드롭다운 닫기
-    dispatch(manageCountry(e.target.innerText));
+    localStorage.setItem('country', JSON.stringify(e.target.innerText));
   };
 
   return (
     <Select>
-<<<<<<< HEAD:src/pages/NewPost/CountrySelect.jsx
       <div
         className="title-input"
         ref={selectedCountry}
@@ -68,11 +64,6 @@ function CountrySelect({ country }) {
       >
         나라를 선택해주세요
       </div>
-=======
-      <h3 ref={selectedCountry} onClick={() => setIsShowOptions((prev) => !prev)}>
-        {country ?? '나라를 선택해주세요'}
-      </h3>
->>>>>>> e271103c64d7803755b7be09494da741d14de9d8:src/components/CountrySelect/CountrySelect.jsx
 
       <CountryBox selected={isShowOptions}>
         {isShowOptions && (

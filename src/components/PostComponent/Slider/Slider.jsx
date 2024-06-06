@@ -1,11 +1,11 @@
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide } from 'swiper/react';
 // Import Swiper styles
-import styled from "styled-components";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import { Navigation, Pagination } from "swiper/modules";
-import "./slider.css";
+import styled from 'styled-components';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import { Navigation, Pagination } from 'swiper/modules';
+import './slider.css';
 const Img = styled.img`
   display: block;
   width: 100%;
@@ -18,7 +18,7 @@ function Slider({ postImage }) {
       <Swiper
         slidesPerView={1}
         pagination={{
-          clickable: true,
+          clickable: true
         }}
         navigation={true}
         modules={[Pagination, Navigation]}

@@ -4,28 +4,30 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { loadPost } from '../../redux/slices/postSlice';
 import supabase from '../../util/supabase/supabaseClient';
+import PostList from './PostList';
+
 const Img = styled.img`
   cursor: pointer;
 `;
+
 const Tag = styled.button`
   padding: 10px 16px;
   margin: 4px;
-  color: var(--white-color);
+  color: ${(props) => (props.selected ? 'var(--black-color)' : 'var(--white-color)')};
   border-radius: 50px;
   font-size: 14px;
+  font-weight: 400;
   cursor: pointer;
   letter-spacing: 0.05em;
-  background-color: ${(props) => (props.selected ? 'var(--mintgreen-color)' : 'var(--black-color)')};
+  background-color: ${(props) => (props.selected ? 'var(--yellow-color)' : 'var(--black-color)')};
   &:hover {
+<<<<<<< HEAD
+    background-color: var(--yellow-color);
+    color: var(--black-color);
+=======
     background-color: var(--mintgreen-color);
+>>>>>>> e271103c64d7803755b7be09494da741d14de9d8
   }
-`;
-const NoData = styled.div`
-  width: 100%;
-  height: 500px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 `;
 const SearchInput = () => {
   const dispatch = useDispatch();
@@ -111,28 +113,11 @@ const SearchInput = () => {
       <div className="tags">
         {tags.map((tag) => (
           <Tag selected={tag.id == selectedTagId} key={tag.id} onClick={() => handleTags(tag.id)}>
-            #{tag.tagValue}
+            # {tag.tagValue}
           </Tag>
         ))}
       </div>
-      <div className="tags">
-        {postDatas.length ? (
-          <>
-            {' '}
-            {postDatas.map((post) => (
-              <div className="post" onClick={() => handleNavigate(post.id)} key={post.id}>
-                <div className="post-img">
-                  <img src={post.imageURL[0]} alt="image" width={'100%'} />
-                </div>
-                <p className="post-title">{post.postTitle}</p>
-                <span>{post.postDate}</span>
-              </div>
-            ))}
-          </>
-        ) : (
-          <NoData>해당하는 데이터가 없어요 ! 여기 이미지 아무거나 구해주세용</NoData>
-        )}
-      </div>
+      <PostList postDatas={postDatas} handleNavigate={handleNavigate} />
     </>
   );
 };

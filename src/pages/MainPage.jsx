@@ -93,7 +93,7 @@ function MainPage() {
                 <SwiperSlide
                   style={slideStyle(i)}
                   onClick={() => handleNavigate(post.id)}
-                  className="swiper-slide post"
+                  className="post"
                   key={post.id}
                 >
                   <div>

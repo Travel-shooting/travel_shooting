@@ -12,7 +12,7 @@ const Container = styled.div`
   grid-template-rows: 700px 1fr;
   grid-template-columns: 1.5fr 1fr;
   grid-template-areas: 'slider' 'post travel';
-  gap: 25px;
+  gap: 24px;
 
   div:nth-child(1) {
     grid-column: 1/3;
