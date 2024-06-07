@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = `http://apis.data.go.kr/1262000/CountryCodeService2/getCountryCodeList2?serviceKey=${
+const BASE_URL = `https://apis.data.go.kr/1262000/CountryCodeService2/getCountryCodeList2?serviceKey=${
   import.meta.env.VITE_COUNTRY_KEY
 }`;
 const PAGE_NO = 24;
