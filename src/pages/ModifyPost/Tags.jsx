@@ -6,19 +6,20 @@ import supabase from '../../util/supabase/supabaseClient';
 
 const Container = styled.div`
   display: flex;
+  flex-wrap: wrap;
   flex-direction: row;
 `;
 
-const TagLabel = styled.button`
+const TagLabel = styled.label`
   display: inline-block;
   padding: 10px 16px;
   margin: 4px;
-  text-align: center;
-  color: ${(props) => (props.selected ? 'var(--black-color)' : 'var(--white-color)')};
+  background-color: var(--black-color);
+  color: var(--white-color);
   border-radius: 50px;
   font-size: 14px;
+  text-align: center;
   cursor: pointer;
-  background-color: ${(props) => (props.selected ? 'var(--yellow-color)' : 'var(--black-color)')};
   transition: background-color 0.1s;
 
   &:hover {
@@ -80,9 +81,7 @@ function Tags({ postTags }) {
             checked={selectedTags.some((selectedTag) => selectedTag.tagId === tag.id)}
             value={tag.tagValue}
           />
-          <TagLabel className="tag" htmlFor={`checkbox-${tag.id}`}>
-            {tag.tagValue}
-          </TagLabel>
+          <TagLabel htmlFor={`checkbox-${tag.id}`}>{tag.tagValue}</TagLabel>
         </div>
       ))}
     </Container>

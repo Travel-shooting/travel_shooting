@@ -126,7 +126,7 @@ button {
   }
 
   .title-input::placeholder {
-    color: #bbbbbb;
+    color: var(--black-color);
     text-align: left;
     font-size: 14px;
   }
@@ -135,9 +135,9 @@ button {
     height: 360px;
 
     &::placeholder {
-    color: #bbbbbb;
+    color: var(--black-color);
     text-align: left;
-    font-size: 16px;
+    font-size: 14px;
     }
   }
 
