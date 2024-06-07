@@ -161,10 +161,9 @@ const ProfileEdit = () => {
     if (error) {
       console.error('Error updating user data:', error.message);
       return;
-    } else {
-      setEditMode(false);
-      alert('프로필이 성공적으로 업데이트되었습니다.');
     }
+    setEditMode(false);
+    alert('프로필이 성공적으로 업데이트되었습니다.');
   };
   return (
     <>
