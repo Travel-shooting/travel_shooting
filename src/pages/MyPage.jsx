@@ -17,13 +17,26 @@ const Profile = styled.div`
   align-items: center;
   gap: 10px;
 `;
+
 const ProfileImage = styled.img`
   width: 150px;
   height: 150px;
-
   background-image: contain;
   border-radius: 50%;
 `;
+
+const Font = styled.h3`
+  font-size: ${(props) => props.size};
+  font-weight: ${(props) => props.weight};
+  color: ${(props) => props.color};
+  overflow: hidden;
+  cursor: pointer; /* 마우스를 가져다 대면 커서가 손가락 모양으로 변경 */
+  &:hover {
+    text-decoration: underline; /* 마우스를 가져다 대면 밑줄이 생깁니다. */
+  }
+`;
+
+
 const MyPage = () => {
   const [mode, setMode] = useState('profile-edit');
   const logInUser = JSON.parse(sessionStorage.getItem('logInUser'));
@@ -38,16 +51,14 @@ const MyPage = () => {
   return (
     <Container>
       <Profile>
-        <h3>유저 프로필</h3>
-
         <ProfileImage src={user.userImageURL} alt="프로필" />
-        <h3>{user.userId}</h3>
+        <Font size="24px" weight="bold" color="black">{user.userId}</Font>
 
         <div>
-          <h1 onClick={() => setMode('profile-edit')}>프로필 편집</h1>
+          <Font size="18px" weight="bold" color="lightgrey" onClick={() => setMode('profile-edit')}>프로필 수정</Font>
         </div>
         <div>
-          <h1 onClick={() => setMode('my-posts')}>내가 쓴 글</h1>
+          <Font size="18px" weight="bold" color="lightgrey" onClick={() => setMode('my-posts')}>내가 쓴 글</Font>
         </div>
       </Profile>
       <div>

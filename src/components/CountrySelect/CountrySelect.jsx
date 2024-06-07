@@ -80,6 +80,7 @@ function CountrySelect({ country: initialCountry }) {
         focused={isShowOptions}
         country={selectedCountry}
         onClick={() => setIsShowOptions((prev) => !prev)}
+
       >
         {selectedCountry ?? '나라를 선택해주세요'}
       </TitleInput>
