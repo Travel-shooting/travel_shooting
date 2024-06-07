@@ -56,7 +56,7 @@ function PostDetail({ postDetailData, postTags }) {
   const [tags, setTags] = useState([]);
   const [postEmail, setPostEmail] = useState('');
   const userId = JSON.parse(sessionStorage.getItem('logInUser'));
-
+  const [userImage, setUserImage] = useState('');
   useEffect(() => {
     const fetchTagsData = async () => {
       const { data, error } = await supabase.from('POSTTAG').select('*');
@@ -74,7 +74,10 @@ function PostDetail({ postDetailData, postTags }) {
     const fetchUserData = async () => {
       const { data, error } = await supabase.from('USER').select('*').eq('uuid', postDetailData.postUserId);
       if (error) console.error(error);
-      else setPostEmail(data[0].userId);
+      else {
+        setPostEmail(data[0].userId);
+        setUserImage(data[0].userImageURL);
+      }
     };
     fetchUserData();
   }, [postDetailData]);
@@ -128,7 +131,8 @@ function PostDetail({ postDetailData, postTags }) {
           ))}
         </FlexBox>
 
-        <p className="user-id" style={{ marginTop: '20px' }}>
+        <p className="user-id" style={{ marginTop: '20px', display: 'wrap', alignContent: 'center' }}>
+          <img src={userImage} width={'30px'} height={'30px'} style={{ borderRadius: '25px' }} />{' '}
           {postEmail.slice(0, postEmail.indexOf('@'))}
         </p>
         <p style={{ marginBottom: '40px' }}>{postDetailData.postContent}</p>
