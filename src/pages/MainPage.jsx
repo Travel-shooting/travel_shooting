@@ -93,10 +93,8 @@ function MainPage() {
           )}
         </div>
 
-        <button className="post-btn">
-          <Link to="/newpost" style={{ textDecoration: 'none' }}>
-            기록 하러가기
-          </Link>
+        <button className="post-btn" onClick={() => navigate('/newpost')}>
+          기록 하러가기
         </button>
       </div>
       <SearchInput />
