@@ -141,9 +141,20 @@ function NewPost() {
         ref={(el) => (formRef.current[2] = el)}
         onChange={handleChange}
       />
-      <button className="input-btn" onClick={handleClick}>
-        {' '}
-        사진 업로드{' '}
+      <button
+        style={{
+          borderRadius: '6px',
+          cursor: 'pointer',
+          width: '280px',
+          height: '48px',
+          fontWeight: '600px',
+          color: 'var(--black-color)',
+          fontSize: '14px',
+          marginTop: '20px'
+        }}
+        onClick={handleClick}
+      >
+        사진 업로드
       </button>
       <button className="save-btn" onClick={handleSubmit}>
         저장
