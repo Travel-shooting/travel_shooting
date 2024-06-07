@@ -17,10 +17,11 @@ const Container = styled.div`
 
 const Button = styled.button`
   width: 280px;
-  padding: 10px 20px;
+  padding: 10px 16px;
+  font-size: 14px;
   border: 1px solid ${(props) => props.color};
   background-color: ${(props) => props.bgcolor};
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
   &:hover {
     transition: all 0.5s;
@@ -113,6 +114,7 @@ function ModifyPostPage() {
     <Container direction={'column'}>
       <Slider postImage={fileImages} />
       <input
+        className="title-input"
         ref={(el) => (formRef.current[0] = el)}
         type="text"
         placeholder="제목을 입력해주세요"
@@ -123,6 +125,7 @@ function ModifyPostPage() {
         <Tags postTags={postTags} />
       </Container>
       <textarea
+        className="content-box"
         ref={(el) => (formRef.current[1] = el)}
         type="text"
         placeholder="내용을 입력해주세요"

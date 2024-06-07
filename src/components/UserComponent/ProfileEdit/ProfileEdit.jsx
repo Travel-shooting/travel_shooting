@@ -104,12 +104,15 @@ const FormButton = styled.button`
   }
 `;
 
+
 const ProfileEdit = () => {
   const dispatch = useDispatch();
   const [userInfo, setUserInfo] = useState({
     userId: '',
     userImageURL: '',
+
   });
+  const userIdRef = useRef(null);
   const [editMode, setEditMode] = useState(false);
   const [error, setError] = useState(null);
   const [file, setFile] = useState(null);
@@ -129,6 +132,7 @@ const ProfileEdit = () => {
         setUserInfo({
           userId: data[0].userId,
           userImageURL: data[0].userImageURL,
+
         });
       }
     };
@@ -150,6 +154,19 @@ const ProfileEdit = () => {
     e.preventDefault();
     if (!editMode) {
       setEditMode(false);
+    if (!file) return;
+
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Date.now()}.${fileExt}`;
+
+    const filePath = `public/${fileName}`;
+    const realPath = `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/avatars/${filePath}`;
+    const { error: uploadError } = await supabase.storage.from('avatars').upload(filePath, file);
+    dispatch(updateImage(realPath));
+
+    if (uploadError) {
+      setError(uploadError.message);
+      alert('이미 있는 똑같은 이미지');
       return;
     }
     let updatedUserInfo = { ...userInfo };
@@ -246,6 +263,7 @@ const ProfileEdit = () => {
         </EditForm>
       </ProfileContainer>
     </ProfileEditWrapper>
+
   );
 };
 

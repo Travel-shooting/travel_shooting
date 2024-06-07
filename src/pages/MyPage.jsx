@@ -53,6 +53,7 @@ const MyPage = () => {
       <Profile>
         <ProfileImage src={user.userImageURL} alt="프로필" />
         <Font size="24px" weight="bold" color="black">{user.userId}</Font>
+
         <div>
           <Font size="18px" weight="bold" color="lightgrey" onClick={() => setMode('profile-edit')}>프로필 수정</Font>
         </div>

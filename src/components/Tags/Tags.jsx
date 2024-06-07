@@ -19,8 +19,7 @@ const TagLabel = styled.label`
   font-size: 14px;
   text-align: center;
   cursor: pointer;
-  letter-spacing: 0.05em;
-  transition: background-color 0.3s;
+  transition: background-color 0.1s;
 
   &:hover {
     background-color: var(--yellow-color);

@@ -11,14 +11,13 @@ const Img = styled.img`
 `;
 
 const Tag = styled.button`
+  display: inline-block;
   padding: 10px 16px;
   margin: 4px;
   color: ${(props) => (props.selected ? 'var(--black-color)' : 'var(--white-color)')};
   border-radius: 50px;
   font-size: 14px;
-  font-weight: 400;
   cursor: pointer;
-  letter-spacing: 0.05em;
   background-color: ${(props) => (props.selected ? 'var(--yellow-color)' : 'var(--black-color)')};
   &:hover {
     background-color: var(--yellow-color);

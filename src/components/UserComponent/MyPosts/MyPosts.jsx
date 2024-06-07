@@ -81,7 +81,7 @@ const MyPosts = () => {
                   <Item key={post.id} onClick={() => handleNavigate(post.id)}>
                     <img src={post.imageURL[0]} />
                     <Font size={'18px'} weight={'500'}>
-                      {post.postTitle}
+                      {post.postTitle.length > 12 ? post.postTitle.slice(0, 10) + '...' : post.postTitle}
                     </Font>
                   </Item>
                 ))}
