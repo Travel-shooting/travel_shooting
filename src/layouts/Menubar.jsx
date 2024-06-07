@@ -5,6 +5,7 @@ import { logOut } from '../redux/slices/logSlice';
 import { open } from '../redux/slices/modalSlice';
 import Logo from '../styles/images/logo.png';
 import supabase from '../util/supabase/supabaseClient';
+
 const MenuContainer = styled.div`
   height: 80px;
   background-color: var(--black-color);
@@ -27,6 +28,7 @@ const Button = styled.button`
   width: 100px;
   font-size: 14px;
 `;
+
 const ButtonBox = styled.div`
   display: flex;
   flex-direction: row;

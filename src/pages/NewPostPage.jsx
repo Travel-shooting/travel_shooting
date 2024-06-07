@@ -134,7 +134,6 @@ function NewPost() {
         type="text"
         placeholder="내용을 입력해주세요"
       ></textarea>
-      {/* <Container direction={'row'}> */}
       <HiddenInput
         type="file"
         multiple
@@ -142,12 +141,11 @@ function NewPost() {
         ref={(el) => (formRef.current[2] = el)}
         onChange={handleChange}
       />
-      <input type="file" bgcolor={'var(--white-color)'} color={'var(--yellow-color)'} onClick={handleClick} />
-      <button className="save-btn" bgcolor={'var(--yellow-color)'} color={'var(--yellow-color)'} onClick={handleSubmit}>
+      <button onClick={handleClick} />
+      <button className="save-btn" onClick={handleSubmit}>
         저장
       </button>
     </Container>
-    // </Container>
   );
 }
 

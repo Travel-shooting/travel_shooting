@@ -6,6 +6,7 @@ import LogoIcon from '../../../styles/images/logo-icon.png';
 import LogoText from '../../../styles/images/logo-text.png';
 import supabase from '../../../util/supabase/supabaseClient';
 import Modal from '../../LogModal';
+
 function Login() {
   const dispatch = useDispatch();
   const loginUser = async (e) => {
@@ -61,13 +62,6 @@ function Login() {
             </button>
           </form>
         </div>
-        {/* <div className="login-btn-div">
-          <button className="login-btn">아이디 찾기</button>
-          <button className="login-btn">비밀번호 찾기</button>
-          <button className="login-btn" href="src\components\UserComponent\Signup\Signup.jsx">
-            회원가입
-          </button>
-        </div> */}
       </Modal>
     );
   }

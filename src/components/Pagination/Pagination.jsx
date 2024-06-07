@@ -4,16 +4,17 @@ import styled, { css } from 'styled-components';
 const FlexContainer = styled.div`
   display: flex;
   flex-direction: row;
-  gap: 10px;
+  gap: 12px;
 `;
 const Button = styled.button`
   width: 30px;
   height: 30px;
   border-radius: 25px;
   padding: 0;
-  color: ${(props) => (props.selected ? 'var(--white-color)' : 'var(--black-color)')};
-  background-color: ${(props) => (props.selected ? 'var(--golden-color)' : 'transparent')};
-  font-weight: ${(props) => (props.selected ? 'bold' : 'normal')};
+  color: ${(props) => (props.selected ? 'var(--black-color)' : 'var(--black-color)')};
+  background-color: ${(props) => (props.selected ? 'var(--yellow-color)' : 'transparent')};
+  font-weight: ${(props) => (props.selected ? 'regular' : 'normal')};
+  margin: 80px;
 
   ${(props) =>
     props.disabled &&
@@ -25,9 +26,9 @@ const Button = styled.button`
 const Pagination = ({ itemCount, itemCountPerPage, pageCountPerPage, clickListener }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const [startPage, setStartPage] = useState(1);
-  const [endPage, setEndPage] = useState(pageCountPerPage); //5
+  const [endPage, setEndPage] = useState(pageCountPerPage);
 
-  const maxPage = Math.ceil(itemCount / itemCountPerPage); //17
+  const maxPage = Math.ceil(itemCount / itemCountPerPage);
   const pages = Array.from({ length: maxPage + 1 }, (_, i) => i);
 
   useEffect(() => {
