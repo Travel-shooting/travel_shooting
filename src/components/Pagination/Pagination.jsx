@@ -10,7 +10,6 @@ const Button = styled.button`
   width: 30px;
   height: 30px;
   border-radius: 25px;
-  padding: 0;
   color: ${(props) => (props.selected ? 'var(--black-color)' : 'var(--black-color)')};
   background-color: ${(props) => (props.selected ? 'var(--yellow-color)' : 'transparent')};
   font-weight: ${(props) => (props.selected ? 'regular' : 'normal')};

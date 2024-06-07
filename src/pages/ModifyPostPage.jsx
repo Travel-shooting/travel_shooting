@@ -122,7 +122,7 @@ function ModifyPostPage() {
       <Container direction={'row'}>
         <CountrySelect country={postData.country} />
       </Container>
-      <Tags style={{ display: 'flex' }} postTags={postTags} />
+      <Tags postTags={postTags} />
 
       <textarea
         className="content-box"

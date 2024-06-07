@@ -196,6 +196,10 @@ button {
   margin-bottom: 20px;
   background-size: cover;
   overflow: hidden;
+
+  &:hover {
+    cursor: pointer;
+  }
 }
 
 .post-img {

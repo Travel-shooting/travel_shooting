@@ -8,27 +8,30 @@ const ProfileContainer = styled.div`
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
-  background-color: var(--lightgrey-color);
+  background-color: var(--grey-color);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.05);
   position: relative;
 `;
 const ProfileImageContainer = styled.div`
   display: flex;
+  flex-direction: column;
   align-items: center;
+  margin-top: 20px;
 `;
 const ProfileImage = styled.img`
   width: 150px;
   height: 150px;
   border-radius: 50%;
   object-fit: cover;
-  margin-right: 20px;
+  /* margin-right: 20px; */
 `;
 const Username = styled.h2`
   font-size: 24px;
   font-weight: bold;
-  margin-left: 20px;
+  margin: 20px 0 20px;
+  /* margin-left: 20px; */
 `;
 const Font = styled.h3`
   font-size: ${(props) => props.size};
@@ -40,7 +43,6 @@ const Font = styled.h3`
 const EditButton = styled.button`
   width: 250px;
   padding: 10px 20px;
-  border: 1px solid ${(props) => props.color};
   background-color: ${(props) => props.bgcolor};
   border-radius: 5px;
   cursor: pointer;
@@ -58,33 +60,40 @@ const EditForm = styled.form`
   display: ${(props) => (props.editMode ? 'flex' : 'none')};
   flex-direction: column;
   align-items: center;
-  width: 100%;
+  justify-content: center;
+  width: 80%;
   margin-top: 20px;
 `;
 const Label = styled.label`
   margin: 10px 0;
   font-size: 16px;
+  font-weight: 500;
 `;
 const Input = styled.input`
   width: 100%;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 6px;
 `;
 const ButtonContainer = styled.div`
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
   margin-top: 10px;
 `;
 const FormButton = styled.button`
-  width: 140px;
-  padding: 10px 20px;
-  border: 1px solid ${(props) => props.color};
+  width: 200px;
   background-color: ${(props) => props.bgcolor};
-  border-radius: 5px;
+  border-radius: 6px;
   cursor: pointer;
+  margin: 20px 0;
+  display: flex;
+  justify-content: center;
+  font-size: 14px;
+
   &:hover {
     transition: all 0.5s;
     background-color: var(--yellow-color);

@@ -8,6 +8,7 @@ const Container = styled.div`
   display: grid;
   grid-template-columns: 1fr 3fr;
   gap: 10px;
+  margin-top: 40px;
 `;
 
 const Profile = styled.div`
@@ -25,10 +26,16 @@ const ProfileImage = styled.img`
   border-radius: 50%;
 `;
 
+const Email = styled.p`
+  font-size: 20px;
+  font-weight: bold;
+  margin-top: 20px;
+`;
+
 const Font = styled.h3`
   font-size: ${(props) => props.size};
   font-weight: ${(props) => props.weight};
-  color: ${(props) => (props.selected ? 'var(--yellow-color)' : 'var(--black-color)')};
+  color: ${(props) => (props.selected ? 'var(--yellow-color)' : 'var(--darkgrey-color)')};
   overflow: hidden;
   cursor: pointer;
 `;
@@ -49,11 +56,9 @@ const MyPage = () => {
     <Container>
       <Profile>
         <ProfileImage src={user.userImageURL} alt="프로필" />
-        <Font size="24px" weight="bold" color="black">
-          {user.userId}
-        </Font>
+        <Email>{user.userId}</Email>
 
-        <div>
+        <div style={{ marginTop: '20px' }}>
           <Font
             selected={mode === 'profile-edit'}
             size="18px"
