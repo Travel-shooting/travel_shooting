@@ -6,7 +6,8 @@ const Container = styled.div`
   border-radius: 16px;
   position: sticky;
   top: 50%;
-  padding: 0 20px;
+  padding: 20px 10px;
+  margin: 40px 0;
 `;
 
 const FlexBox = styled.div`
@@ -17,21 +18,22 @@ const FlexBox = styled.div`
 `;
 
 const Item = styled.div`
-  width: 200px;
+  width: 180px;
   height: 200px;
-  background-image: cover;
+  background-image: 100%;
   cursor: pointer;
   img {
     width: 100%;
     height: 100%;
     border-radius: 10px;
+    object-fit: cover;
   }
 `;
 const Font = styled.p`
-  font-size: 20px;
+  font-size: 24px;
   font-weight: bold;
   text-align: center;
-  margin: 20px;
+  margin: 24px;
   line-height: 1.2;
 `;
 

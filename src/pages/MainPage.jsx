@@ -52,7 +52,7 @@ function MainPage() {
   return (
     <>
       <div className="post-box">
-        <p className="h2">나의 여행지 기록</p>
+        <p className="h2">나의 여행 기록</p>
         <div>
           {!userPosts.length ? (
             <div
@@ -94,11 +94,11 @@ function MainPage() {
           )}
         </div>
 
-        <div>
-          <Link to="/newpost" className="button post-btn" style={{ textDecoration: 'none' }}>
+        <button className="post-btn">
+          <Link to="/newpost" style={{ textDecoration: 'none' }}>
             기록 하러가기
           </Link>
-        </div>
+        </button>
       </div>
       <SearchInput />
     </>

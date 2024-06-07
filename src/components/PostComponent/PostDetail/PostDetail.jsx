@@ -10,6 +10,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: flex-start;
   text-align: left;
+  margin: 40px 0;
 `;
 
 const FlexBox = styled.div`
