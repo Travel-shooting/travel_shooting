@@ -1,9 +1,6 @@
-import { createGlobalStyle } from "styled-components";
-import reset from "styled-reset";
+import { createGlobalStyle } from 'styled-components';
+import reset from 'styled-reset';
 
-/**
- * 전역스타일링인데 막 html 태그 기본 스타일 설정을 여기서 해줘용
- */
 const GlobalStyle = createGlobalStyle`
 ${reset}
 
@@ -13,65 +10,82 @@ ${reset}
     src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
     font-weight: 400;
     font-style: normal;
-}
+  }
 }
 
 body{
   font-family: 'Pretendard', sans-serif;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
 }
 
 div {
   box-sizing: border-box;
 }
+
 textarea{
   height: 200px;
   resize:none;
 }
+
 input[type=text],textarea {
   width:100%;
- 
-  border: none;
-  border-radius: 8px;
-    padding: 10px;
-    background-color: var(--lightgrey-color);
+  border-radius: 6px;
+  padding: 12px;
 }
 
 button {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 40px auto;
+  margin: 10px auto;
   border-radius: 6px;
   cursor: pointer;
-  border: 0px;
+  border: none;
+  height: 40px;
 }
 
 .post-box {
   weight: 100%;
-  border: 1px dashed var(--mintgreen-color);
-  margin-bottom: 60px;
+  border: 1px dashed var(--yellow-color);
+  margin: 40px 0 60px;
   border-radius: 6px;
 }
 
-.post-btn {
+.post-btn, .save-btn {
   margin: 40px auto;
   border-radius: 6px;
   cursor: pointer;
-  width: 200px;
-  color: var(--white-color);
+  width: 280px;
+  height: 48px;
+  font-weight: 600;
+  color: var(--black-color);
   display: block;
-  width: 60%;
   margin-top: 14px;
-  padding: 14px 0;
-  background-color: var(--mintgreen-color);
+  background-color: var(--yellow-color);
   box-sizing: border-box;
-  font-size: 14px;
+  font-size: 16px;
   text-align: center;
+}
+
+.post-btn a, .post-btn a:visited {
+  color: black;
+  text-decoration: none;
+}
+
+.photo-upload {
+  display: block;
+  width: 80%;
+  border: 2px solid var(--yellow-color);
+  margin-bottom: 40px;
+  border-radius: 6px;
+  padding: 40px 12px;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .05);
 }
 
 .h2 {
   font-size: 32px;
-  line-height: 1.2;
+  line-height: 1.3;
   font-weight: bold;
   color: var(--black-color);
   text-align: center;
@@ -79,37 +93,53 @@ button {
 }
 
 .search-box {
-  width: 320px;
+  width: 500px;
   display: flex;
   justify-content: center;
   margin: 20px auto 40px;
   position: relative;
 }
 
-.search-input {
+.search-input, .title-input, .content-box {
   display: block;
   width: 100%;
-  height: 100%;
-  padding: 14px 18px 16px 18px;
+  min-width: 320px;
+  height: 48px;
   background-color: var(--white-color);
   border-radius: 6px;
   border: solid 1px #e6e6ea;
   box-sizing: border-box;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .05);
   text-align: left;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
 
   &:focus {
-    border: 1px solid var(--mintgreen-color);
+    border: 1px solid var(--yellow-color);
     outline: none;
-  }
+  }}
 
-  &::placeholder {
+  .search-input::placeholder {
     color: #bbbbbb;
     text-align: center;
-    font-size: 14px;
+    font-size: 16px;
   }
-}
 
+  .title-input::placeholder {
+    color: #bbbbbb;
+    text-align: left;
+    font-size: 16px;
+  }
+
+  .content-box {
+    height: 360px;
+
+    &::placeholder {
+    color: #bbbbbb;
+    text-align: left;
+    font-size: 16px;
+    }
+  }
 
 .search-icon {
   position: absolute;
@@ -119,9 +149,9 @@ button {
 }
 
 .tags {
-  display: flex; /* 기존의 inline-block 대신 flex를 사용 */
-  flex-wrap: wrap; /* 태그들이 넘칠 때 다음 줄로 넘어가도록 설정 */
-  justify-content: center; /* 가운데 정렬 */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 4px;
 }
 
@@ -136,39 +166,92 @@ button {
   font-size: 14px;
   text-align: center;
   cursor: pointer;
-  letter-spacing: 0.05em;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  transition: background-color 0.3s;
+
+  &:hover {
+  background-color: var(--yellow-color);
+  color: var(--white-color);
+}
 }
 
-.tag:hover {
-  background-color: var(--mintgreen-color);
-  color: var(--white-color);
+.post-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 16px;
+  margin: 60px 0;
 }
 
 .post {
   display: flex;
-  width: 340px;
-  height: 400px;
-  border-radius: 6px;
+  flex-direction: column;
+  width: 260px;
+  height: 320px;
+  border-radius: 16px;
   border: solid 1px #e6e6ea;
   box-sizing: border-box;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .05);
-  margin: 40px 0 20px 0;
+  margin-bottom: 20px;
+  background-size: cover;
+  overflow: hidden;
 }
 
-.post .post-img {
+.post-img {
   width: 100%;
-  height: 160px;
-  background-color: red;
+  height: 300px;
+  position: relative;
+}
+
+.post-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.post-title {
+  font-weight: 600;
+  font-size: 20px;
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.post-date, .user-id {
+  font-size: 14px;
+  margin: 12px 0;
+  color: var(--darkgrey-color);
 }
 
 .logo-div {
-  margin: 60px auto 0px auto;
+  margin: 20px auto 20px auto;
+  width: 180px;
+  height: auto;
+  text-align: center;
+  img{
+    max-width: 100%;
+  }
 }
 
-.logo {
-  display: block; 
-  margin: 0 auto 25px auto;
+.logo-div.logo-icon {
+  display: block;
+  margin: 0 auto 40px auto;
   text-align: center;
+  width: 24px;
+  height: 24px;
+}
+
+.logo-div.logo-text {
+  display: block;
+  margin: 0 auto 24px auto;
+  text-align: center;
+  width: 200px;
+  img{
+    max-width: 200px;
+  }
 }
 
 .login-form {
@@ -178,32 +261,43 @@ button {
 
 .login-input {
   width: 350px;
-  height: 50px;
-  border: 0;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  height: 48px;
+  border-radius: 6px;
+  margin-bottom: 8px;
   padding-left: 15px;
-  font-size: 15px;
+  border: solid 1px #e6e6ea;
+  box-sizing: border-box;
+  box-shadow: 0 2px 8px 0 rgba(0, 0, 0, .05);
+
+  &:focus {
+    border: 1px solid var(--yellow-color);
+    outline: none;}
+
+  &::placeholder {
+    color: #bbbbbb;
+    text-align: left;
+    font-size: 14px;
+    }
 }
 
 .login-p {
   font-size: 24px;
   font-weight: 600;
   text-align: center;
-  margin: 30px 0px 40px 0px;
+  margin: 40px 0px 20px 0px;
 }
 
 .login-input-btn {
   width: 350px;
-  height: 50px;
+  height: 48px;
   font-size: 16px;
   font-weight: 600;
   display: block;
-  margin: 15px auto 30px auto;
-  background-color: #bbb800;
-  color: white;
+  margin: 25px auto 0px auto;
+  background-color: var(--yellow-color);
+  color: var(--black-color);
   border: 0;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .login-btn-div {
@@ -221,5 +315,18 @@ button {
   color: grey;
 }
 
+.select-box {
+  display: flex;
+  flex-wrap: wrap;
+  /* justify-content: center; */
+  gap: 4px;
+}
+
+// swiper
+.swiper-img {
+  width: 100%;
+}
+
 `;
+
 export default GlobalStyle;

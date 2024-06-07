@@ -1,17 +1,18 @@
 /** 데이터에 관한 Reducer를 여기서 관리할 것입니당 */
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  loadData: [],
+  loadData: JSON.parse(localStorage.getItem('loadData')) || [],
   formData: {},
   tags: [],
   previewImages: [],
   realImageFiles: [],
+  country: ''
 };
 
 const postSlice = createSlice({
-  name: "post",
+  name: 'post',
   initialState,
   reducers: {
     loadPost: (state, action) => {
@@ -20,8 +21,9 @@ const postSlice = createSlice({
     addPost: (state, action) => {
       state.formData = action.payload;
     },
-    modifyPost: (state, action) => {},
-    deletePost: (state, action) => {},
+    deletePost: (state, action) => {
+      state.loadData = action.payalod;
+    },
     manageTags: (state, action) => {
       state.tags = action.payload;
     },
@@ -31,21 +33,13 @@ const postSlice = createSlice({
     manageRealImages: (state, action) => {
       state.realImageFiles = action.payload;
     },
-    addHeart: (state) => {
-      state.formData.postLike += 1;
-    },
-  },
+    manageCountry: (state, action) => {
+      state.country = action.payload;
+    }
+  }
 });
 
-export const {
-  loadPost,
-  addPost,
-  modifyPost,
-  deletePost,
-  manageTags,
-  manageImages,
-  manageRealImages,
-  addHeart,
-} = postSlice.actions;
+export const { loadPost, addPost, deletePost, manageTags, manageImages, manageRealImages, manageCountry } =
+  postSlice.actions;
 
 export default postSlice.reducer;

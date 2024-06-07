@@ -1,39 +1,43 @@
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
-import SearchInput from "../components/Main/SearchInput";
-import { logIn } from "../redux/slices/logSlice";
-import supabase from "../util/supabase/supabaseClient";
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import 'swiper/css';
+import 'swiper/css/virtual';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SearchInput from '../components/Main';
+import { logIn } from '../redux/slices/logSlice';
+import supabase from '../util/supabase/supabaseClient';
 
 function MainPage() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const [userPosts, setUserPosts] = useState([]);
-  const loadData = useSelector((state) => state.post.loadData);
-  const userId = useSelector((state) => state.log.logInUser);
-
+  const userId = JSON.parse(sessionStorage.getItem('logInUser'));
   useEffect(() => {
     const fetchUserData = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
+      const { data: user } = await supabase.auth.getUser();
       if (user) {
-        dispatch(logIn(user.id)); // 현재 로그인된 사용자의 ID 설정
+        dispatch(logIn(user.uuid));
       }
     };
     fetchUserData();
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchData = async () => {
       if (userId) {
-        const { data, error } = await supabase
-          .from("POST")
-          .select("*")
-          .eq("userId", userId);
+        const { data, error } = await supabase.from('POST').select('*').eq('postUserId', userId);
 
         if (error) console.error(error);
         else {
-          setUserPosts(data);
+          const updatedData = data.map((item) => {
+            const imageURLs = JSON.parse(item.imageURL).map((obj) => obj.url);
+            return {
+              ...item,
+              imageURL: imageURLs
+            };
+          });
+          setUserPosts(updatedData);
           console.log(data);
         }
       }
@@ -41,81 +45,62 @@ function MainPage() {
     fetchData();
   }, [userId]);
 
-  const handleSearch = (query) => {
-    const lowerCaseQuery = query.toLowerCase();
-    const filtered = loadData.filter(
-      (post) =>
-        post.postTitle.toLowerCase().includes(lowerCaseQuery) ||
-        (post.tags && post.tags.toLowerCase().includes(lowerCaseQuery))
-    );
-    setUserPosts(filtered);
+  const handleNavigate = (postId) => {
+    navigate(`/post/${postId}`);
   };
 
-  // if (userId === null) {
-  //   return (
-  //     <div
-  //       style={{
-  //         textAlign: "center",
-  //         color: "#bbbbbb",
-  //         marginBottom: "32px",
-  //         fontSize: "40px",
-  //         font: "pretendard-regular",
-  //       }}
-  //     >
-  //       Loading...
-  //     </div>
-  //   );
-  // } else if (!userId) {
-  //   return (
-  //     <div
-  //       style={{
-  //         textAlign: "center",
-  //         color: "var(--mintgreen-color)",
-  //         marginBottom: "32px",
-  //         fontSize: "40px",
-  //       }}
-  //     >
-  //       로그인이 필요합니다
-  //     </div>
-  //   );
-  // } else {
   return (
     <>
       <div className="post-box">
-        <p className="h2">나의 여행지 기록</p>
-        {userPosts.length === 0 ? (
-          <div
-            style={{
-              textAlign: "center",
-              color: "#bbbbbb",
-              marginBottom: "32px",
-              fontSize: "16px",
-            }}
-          >
-            {"나의 기록이 아직 없어요!"}
-          </div>
-        ) : (
-          userPosts.map((post) => (
-            <Link to={`/post/${post.id}`} className="post" key={post.id}>
-              <div className="post-img">
-                <img src={post.image_url || ""} alt="image" />
-              </div>
-              <p className="post-title">{post.title}</p>
-              <span>{post.date}</span>
-            </Link>
-          ))
-        )}
+        <p className="h2">나의 여행 기록</p>
         <div>
-          <Link
-            to="/newpost"
-            className="button post-btn"
-            style={{ textDecoration: "none" }}
-          >
+          {!userPosts.length ? (
+            <div
+              style={{
+                textAlign: 'center',
+                color: '#bbbbbb',
+                marginBottom: '32px',
+                fontSize: '16px'
+              }}
+            >
+              나의 기록이 아직 없어요!
+            </div>
+          ) : (
+            <Swiper
+              className="post-container"
+              spaceBetween={40}
+              centeredSlides={true}
+              breakpoints={{
+                980: {
+                  slidesPerView: 3.5
+                },
+                568: {
+                  slidesPerView: 2.5
+                },
+                0: {
+                  slidesPerView: 1.5
+                }
+              }}
+            >
+              {userPosts.map((post) => (
+                <SwiperSlide onClick={() => handleNavigate(post.id)} className="post" key={post.id}>
+                  <img className="post-img" src={post.imageURL[0]} alt="image" width={'100%'} />
+                  <h1 className="post-title" style={{ margin: '20px' }}>
+                    {post.postTitle.length > 12 ? post.postTitle.slice(0, 10) + '...' : post.postTitle}
+                  </h1>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          )}
+        </div>
+
+        <button className="post-btn">
+          <Link to="/newpost" style={{ textDecoration: 'none' }}>
             기록 하러가기
           </Link>
-        </div>
+        </button>
       </div>
-      <SearchInput onSearch={handleSearch} />
+      <SearchInput />
     </>
   );
 }

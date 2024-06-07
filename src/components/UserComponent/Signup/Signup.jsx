@@ -1,13 +1,16 @@
-import { useState } from "react";
-import Modal from "../../Modal";
-import styled from "styled-components";
-import supabase from "../../../util/supabase/supabaseClient";
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { close } from '../../../redux/slices/modalSlice';
+import LogoIcon from '../../../styles/images/logo-icon.png';
+import LogoText from '../../../styles/images/logo-text.png';
+import supabase from '../../../util/supabase/supabaseClient';
+import Modal from '../../LogModal';
 
 function Signup() {
-  const [signUpId, setSignUpId] = useState("");
-  const [signUpPw, setSignUpPw] = useState("");
-  const [signUpPwConfirm, setSignUpPwConfirm] = useState("");
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  const [signUpId, setSignUpId] = useState('');
+  const [signUpPw, setSignUpPw] = useState('');
+  const [signUpPwConfirm, setSignUpPwConfirm] = useState('');
 
   const onChangesignUpId = (e) => {
     setSignUpId(e.target.value);
@@ -22,49 +25,32 @@ function Signup() {
   const signUpNewUser = async (e) => {
     e.preventDefault();
 
-    const { data, error } = await supabase.auth.signUp({
+    const { data } = await supabase.auth.signUp({
       email: signUpId,
-      password: signUpPw,
+      password: signUpPw
     });
-    console.log(data.user.id);
-    console.log(error);
 
-    await supabase
-      .from("USER")
-      .insert({ uuid: data.user.id, userId: signUpId });
-
-    // const { data, error } = await supabase
-    //   .from("USER") // 여기에서 'USER'은 테이블 이름입니다.
-    //   .select("*")
-    //   .eq("userId", signUpId)
-    //   .eq("userPw", signUpPw);
-    // console.log("login : ", { data, error });
-    // setUser(data.user);
+    await supabase.from('USER').insert({
+      uuid: data.user.id,
+      userId: signUpId,
+      userImageURL: 'https://skwkufggbhgnltheimss.supabase.co/storage/v1/object/public/avatars/default-profile.jpg'
+    });
+    dispatch(close());
   };
 
   return (
     <Modal>
-      <div className="logo-div">
-        <img
-          src="src\styles\images\logo-icon.png"
-          alt="logo"
-          className="logo"
-        />
-        <img
-          src="src\styles\images\logo-text.png"
-          alt="logo"
-          className="logo"
-        />
+      <div style={{ marginTop: '60px' }}>
+        <div className="logo-div">
+          <img src={LogoIcon} alt="logo" className="logo-icon" />
+        </div>
+        <div className="logo-div">
+          <img src={LogoText} alt="logo" className="logo-text" />
+        </div>
       </div>
       <p className="login-p">회원가입</p>
       <form className="login-form">
-        <input
-          className="login-input"
-          type="email"
-          placeholder="이메일"
-          value={signUpId}
-          onChange={onChangesignUpId}
-        />
+        <input className="login-input" type="email" placeholder="이메일" value={signUpId} onChange={onChangesignUpId} />
         <input
           className="login-input"
           type="password"
@@ -79,11 +65,7 @@ function Signup() {
           value={signUpPwConfirm}
           onChange={onChangesignUpPwConfirm}
         />
-        <button
-          className="login-input-btn"
-          type="submit"
-          onClick={signUpNewUser}
-        >
+        <button className="login-input-btn" type="submit" onClick={signUpNewUser}>
           회원가입
         </button>
       </form>
