@@ -38,7 +38,6 @@ function MainPage() {
             };
           });
           setUserPosts(updatedData);
-          console.log(data);
         }
       }
     };
@@ -58,7 +57,7 @@ function MainPage() {
             <div
               style={{
                 textAlign: 'center',
-                color: '#bbbbbb',
+                color: 'var(--placeholder-color)',
                 marginBottom: '32px',
                 fontSize: '16px'
               }}

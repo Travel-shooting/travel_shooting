@@ -43,15 +43,15 @@ const CountryItem = styled.li`
 const TitleInput = styled.div`
   padding: 12px;
   border: 1px solid var(--grey-color);
-  color: ${(props) => (props.country ? 'var(--black-color)' : 'var(--placeholder-color)')};
-  ${(props) => props.focused && `border-color: var(--yellow-color);`}
+  color: var(--black-color);
+  border-color: ${(props) => props.focused && `var(--yellow-color)`};
 `;
 
-function CountrySelect({ country: initialCountry }) {
+function CountrySelect({ country: country }) {
   const dispatch = useDispatch();
   const [countries, setCountries] = useState([]);
   const [isShowOptions, setIsShowOptions] = useState(false);
-  const [selectedCountry, setSelectedCountry] = useState(initialCountry);
+  const selectedCountry = useRef(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -62,8 +62,7 @@ function CountrySelect({ country: initialCountry }) {
   }, []);
 
   const handleSelectValue = (e) => {
-    const newSelectedCountry = e.target.innerText;
-    setSelectedCountry(newSelectedCountry);
+    selectedCountry.current.innerText = e.target.innerText;
     setIsShowOptions(false);
     dispatch(manageCountry(e.target.innerText));
   };
@@ -71,12 +70,13 @@ function CountrySelect({ country: initialCountry }) {
   return (
     <Select>
       <TitleInput
+        ref={selectedCountry}
         className="title-input"
         focused={isShowOptions}
-        country={selectedCountry}
+        country={country}
         onClick={() => setIsShowOptions((prev) => !prev)}
       >
-        {selectedCountry ?? '나라를 선택해주세요'}
+        {country ?? '나라를 선택해주세요'}
       </TitleInput>
 
       <CountryBox selected={isShowOptions}>

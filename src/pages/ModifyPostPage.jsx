@@ -88,9 +88,9 @@ function ModifyPostPage() {
         tags: !tagsFormData.length
       };
       if (postError.title || postError.content || postError.country || postError.tags) {
-        if (postError.title || postError.content) console.log('제목/내용 문제');
-        else if (postError.country) console.log('나라문제');
-        else if (postError.tags) console.log('태그문제');
+        if (postError.title || postError.content) alert('제목과 내용을 확인해주세요');
+        else if (postError.country) alert('나라를 선택해주세요');
+        else if (postError.tags) alert('태그를 선택해주세요');
         alert('업로드에 문제가생겼어요 확인해주세요');
         return;
       }
@@ -121,8 +121,8 @@ function ModifyPostPage() {
       />
       <Container direction={'row'}>
         <CountrySelect country={postData.country} />
-        <Tags postTags={postTags} />
       </Container>
+      <Tags postTags={postTags} />
       <textarea
         className="content-box"
         ref={(el) => (formRef.current[1] = el)}
