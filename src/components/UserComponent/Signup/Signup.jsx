@@ -25,12 +25,10 @@ function Signup() {
   const signUpNewUser = async (e) => {
     e.preventDefault();
 
-    const { data, error } = await supabase.auth.signUp({
+    const { data } = await supabase.auth.signUp({
       email: signUpId,
       password: signUpPw
     });
-    console.log(data.user.id);
-    console.log(error);
 
     await supabase.from('USER').insert({
       uuid: data.user.id,

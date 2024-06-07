@@ -32,8 +32,8 @@
   position: absolute;
   z-index: 2;
   cursor: pointer;
-  top: 50%; /* 버튼을 부모 요소의 중앙에 위치시킵니다. */
-  transform: translateY(-50%); /* 버튼을 자신의 높이의 반만큼 위로 이동시켜 정확히 중앙에 배치합니다. */
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .custom-prev {

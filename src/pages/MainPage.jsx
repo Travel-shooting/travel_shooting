@@ -17,7 +17,7 @@ function MainPage() {
     const fetchUserData = async () => {
       const { data: user } = await supabase.auth.getUser();
       if (user) {
-        dispatch(logIn(user.uuid)); // 현재 로그인된 사용자의 ID 설정
+        dispatch(logIn(user.uuid));
       }
     };
     fetchUserData();

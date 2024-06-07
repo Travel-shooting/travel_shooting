@@ -1,9 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 import reset from 'styled-reset';
 
-/**
- * 전역스타일링인데 막 html 태그 기본 스타일 설정을 여기서 해줘용
- */
 const GlobalStyle = createGlobalStyle`
 ${reset}
 
@@ -72,8 +69,8 @@ button {
 }
 
 .post-btn a, .post-btn a:visited {
-  color: black; /* 검은색 적용 */
-  text-decoration: none; /* 밑줄 제거 */
+  color: black;
+  text-decoration: none;
 }
 
 .photo-upload {
@@ -152,8 +149,8 @@ button {
 }
 
 .tags {
-  display: flex; /* 기존의 inline-block 대신 flex를 사용 */
-  flex-wrap: wrap; /* 태그들이 넘칠 때 다음 줄로 넘어가도록 설정 */
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   gap: 4px;
 }

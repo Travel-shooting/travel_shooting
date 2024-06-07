@@ -1,9 +1,9 @@
-import axios from "axios";
+import axios from 'axios';
 
 const BASE_URL = `http://apis.data.go.kr/1262000/CountryCodeService2/getCountryCodeList2?serviceKey=${
   import.meta.env.VITE_COUNTRY_KEY
 }`;
-const PAGE_NO = 24; // 총 페이지 수
+const PAGE_NO = 24;
 class API {
   #baseURL = BASE_URL;
   #client;

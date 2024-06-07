@@ -11,8 +11,8 @@ import nextButtonImage from '../../../styles/images/arrow-right.png';
 const NavigationButton = styled.div`
   background-size: cover;
   border: none;
-  width: 50px; // 버튼 크기 조절
-  height: 50px; // 버튼 크기 조절
+  width: 50px;
+  height: 50px;
   cursor: pointer;
 `;
 

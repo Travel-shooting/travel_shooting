@@ -33,7 +33,6 @@ function ModifyPostPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { postId } = useParams();
-  //const userId = useSelector((state) => state.log.logInUser);
   const selectedTags = useSelector((state) => state.post.tags);
   const [fileImages, setFileImages] = useState([]);
 
