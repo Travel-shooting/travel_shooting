@@ -122,13 +122,13 @@ button {
   .search-input::placeholder {
     color: #bbbbbb;
     text-align: center;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .title-input::placeholder {
     color: #bbbbbb;
     text-align: left;
-    font-size: 16px;
+    font-size: 14px;
   }
 
   .content-box {
@@ -318,11 +318,9 @@ button {
 .select-box {
   display: flex;
   flex-wrap: wrap;
-  /* justify-content: center; */
   gap: 4px;
 }
 
-// swiper
 .swiper-img {
   width: 100%;
 }

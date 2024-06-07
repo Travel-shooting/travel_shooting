@@ -62,6 +62,7 @@ function Menubar() {
     };
     signOut();
   };
+
   return (
     <MenuContainer>
       <MenuInnerContainer>

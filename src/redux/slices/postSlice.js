@@ -1,5 +1,3 @@
-/** 데이터에 관한 Reducer를 여기서 관리할 것입니당 */
-
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {

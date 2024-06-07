@@ -1,13 +1,11 @@
-/** 모달에 관한 reducer를 관리할 겁니당 */
-
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
-  modalOptions: null,
+  modalOptions: null
 };
 
 const modalSlice = createSlice({
-  name: "modal",
+  name: 'modal',
   initialState,
   reducers: {
     open: (state, action) => {
@@ -15,8 +13,8 @@ const modalSlice = createSlice({
     },
     close: (state) => {
       state.modalOptions = null;
-    },
-  },
+    }
+  }
 });
 
 export const { open, close } = modalSlice.actions;
